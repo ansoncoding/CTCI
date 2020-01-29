@@ -5,6 +5,8 @@
 #include "is_one_edit.h"
 #include "compress_string.h"
 #include "rotate_matrix.h"
+#include "matrix_utils.h"
+#include "zero_matrix.h"
 int main() {
     //string s1 = "adbdb"; // true
     //string s2 = "1b";     // false
@@ -74,15 +76,19 @@ int main() {
     delete[] mat;*/
 
 
+    //int N = 5;
+    //int M = 4;
+    //int ** mat = init_matrix(N, M);
+    //print_matrix(mat, N, M);
+    //rotate_180(mat, N, M);
+    //print_matrix(mat, N, M);
+
     int N = 5;
     int M = 4;
-    int ** mat = init_matrix(N, M);
+    int ** mat = init_matrix_rand(N, M);
     print_matrix(mat, N, M);
-    rotate_180(mat, N, M);
+    zero_matrix(mat, N, M);
     print_matrix(mat, N, M);
-
-    
-
 
     system("pause");
 }

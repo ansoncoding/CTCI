@@ -19,3 +19,5 @@ bin/
 *.pyc
 *.opensdf
 *.sdf
+C++/Practice_pad/Practice_pad.sdf
+*.sdf

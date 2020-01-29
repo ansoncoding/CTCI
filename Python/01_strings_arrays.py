@@ -5,6 +5,9 @@ import IsPalindromePerm
 import IsOneEdit
 import CompressString
 import RotateMatrix
+import ZeroMatrix
+import matrix_utils
+
 # print(IsUnique.is_unique_3("str")) # true
 # print(IsUnique.is_unique_3("strr")) # false
 # print(IsUnique.is_unique_3("abcd")) # true
@@ -47,72 +50,79 @@ import RotateMatrix
 
 
 # N = 3
-# mat_3 = RotateMatrix.init_matrix(N, N)
-# RotateMatrix.print_matrix(mat_3, N, N)
+# mat_3 = matrix_utils.init_matrix(N, N)
+# matrix_utils.print_matrix(mat_3, N, N)
 # print("Rotate\n")
 # RotateMatrix.rotate_ccw_90(mat_3, N)
-# RotateMatrix.print_matrix(mat_3, N, N)
+# matrix_utils.print_matrix(mat_3, N, N)
 
 # N = 4
-# mat_4 = RotateMatrix.init_matrix(N, N)
-# RotateMatrix.print_matrix(mat_4, N, N)
+# mat_4 = matrix_utils.init_matrix(N, N)
+# matrix_utils.print_matrix(mat_4, N, N)
 # print("Rotate\n")
 # RotateMatrix.rotate_ccw_90(mat_4, N)
-# RotateMatrix.print_matrix(mat_4, N, N)
+# matrix_utils.print_matrix(mat_4, N, N)
 
 # N = 5
-# mat_5 = RotateMatrix.init_matrix(N, N)
-# RotateMatrix.print_matrix(mat_5, N, N)
+# mat_5 = matrix_utils.init_matrix(N, N)
+# matrix_utils.print_matrix(mat_5, N, N)
 # print("Rotate\n")
 # RotateMatrix.rotate_ccw_90(mat_5, N)
-# RotateMatrix.print_matrix(mat_5, N, N)
+# matrix_utils.print_matrix(mat_5, N, N)
 
 # N = 6
-# mat_6 = RotateMatrix.init_matrix(N, N)
-# RotateMatrix.print_matrix(mat_6, N, N)
+# mat_6 = matrix_utils.init_matrix(N, N)
+# matrix_utils.print_matrix(mat_6, N, N)
 # print("Rotate\n")
 # RotateMatrix.rotate_ccw_90(mat_6, N)
-# RotateMatrix.print_matrix(mat_6, N, N)
+# matrix_utils.print_matrix(mat_6, N, N)
 
 
 # N = 3
-# mat_3 = RotateMatrix.init_matrix(N, N)
-# RotateMatrix.print_matrix(mat_3, N, N)
+# mat_3 = matrix_utils.init_matrix(N, N)
+# matrix_utils.print_matrix(mat_3, N, N)
 # RotateMatrix.flip_180(mat_3, N, N)
-# RotateMatrix.print_matrix(mat_3, N, N)
+# matrix_utils.print_matrix(mat_3, N, N)
 
 # N = 3
 # M = 4
-# mat_3x4 = RotateMatrix.init_matrix(N, M)
-# RotateMatrix.print_matrix(mat_3x4, N, M)
+# mat_3x4 = matrix_utils.init_matrix(N, M)
+# matrix_utils.print_matrix(mat_3x4, N, M)
 # RotateMatrix.flip_180(mat_3x4, N, M)
-# RotateMatrix.print_matrix(mat_3x4, N, M)
+# matrix_utils.print_matrix(mat_3x4, N, M)
 
 # N = 4
 # M = 4
-# mat_4x4 = RotateMatrix.init_matrix(N, M)
-# RotateMatrix.print_matrix(mat_4x4, N, M)
+# mat_4x4 = matrix_utils.init_matrix(N, M)
+# matrix_utils.print_matrix(mat_4x4, N, M)
 # RotateMatrix.flip_180(mat_4x4, N, M)
-# RotateMatrix.print_matrix(mat_4x4, N, M)
+# matrix_utils.print_matrix(mat_4x4, N, M)
 
 
-N = 3
-mat_3 = RotateMatrix.init_matrix(N, N)
-RotateMatrix.print_matrix(mat_3, N, N)
-RotateMatrix.rotate_180(mat_3, N, N)
-RotateMatrix.print_matrix(mat_3, N, N)
+# N = 3
+# mat_3 = matrix_utils.init_matrix(N, N)
+# matrix_utils.print_matrix(mat_3, N, N)
+# RotateMatrix.rotate_180(mat_3, N, N)
+# matrix_utils.print_matrix(mat_3, N, N)
 
-N = 4
-M = 4
-mat_4x4 = RotateMatrix.init_matrix(N, M)
-RotateMatrix.print_matrix(mat_4x4, N, M)
-RotateMatrix.rotate_180(mat_4x4, N, N)
-RotateMatrix.print_matrix(mat_4x4, N, M)
+# N = 4
+# M = 4
+# mat_4x4 = matrix_utils.init_matrix(N, M)
+# matrix_utils.print_matrix(mat_4x4, N, M)
+# RotateMatrix.rotate_180(mat_4x4, N, N)
+# matrix_utils.print_matrix(mat_4x4, N, M)
 
 
-N = 4
-M = 5
-mat = RotateMatrix.init_matrix(N, M)
-RotateMatrix.print_matrix(mat, N, M)
-RotateMatrix.rotate_180(mat, N, M)
-RotateMatrix.print_matrix(mat, N, M)
+# N = 4
+# M = 5
+# mat = matrix_utils.init_matrix(N, M)
+# matrix_utils.print_matrix(mat, N, M)
+# RotateMatrix.rotate_180(mat, N, M)
+# matrix_utils.print_matrix(mat, N, M)
+
+N = 5
+M = 6
+mat = matrix_utils.init_rand_matrix(N, M)
+matrix_utils.print_matrix(mat, N, M)
+ZeroMatrix.zero_matrix(mat, N, M)
+matrix_utils.print_matrix(mat, N, M)
