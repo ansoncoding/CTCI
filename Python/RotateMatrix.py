@@ -60,3 +60,14 @@ def rotate_180(mat, N):
             swap(mat, start+i, end, end-i, start)
             swap(mat, start, start+i, end, end-i)
     return mat
+
+
+def rotate_180(mat, N, M):
+    for i in range (0, N//2):
+        for j in range(0, M):
+            swap(mat, i, j, N-i-1, M-j-1)
+    if (N % 2):
+        row = N//2
+        print("row " + str(row))
+        for c in range(0, M//2):
+            swap(mat,row, c, row, M-c-1)

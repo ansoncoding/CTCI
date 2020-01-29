@@ -99,12 +99,20 @@ import RotateMatrix
 N = 3
 mat_3 = RotateMatrix.init_matrix(N, N)
 RotateMatrix.print_matrix(mat_3, N, N)
-RotateMatrix.rotate_180(mat_3, N)
+RotateMatrix.rotate_180(mat_3, N, N)
 RotateMatrix.print_matrix(mat_3, N, N)
 
 N = 4
 M = 4
 mat_4x4 = RotateMatrix.init_matrix(N, M)
 RotateMatrix.print_matrix(mat_4x4, N, M)
-RotateMatrix.rotate_180(mat_4x4, N)
+RotateMatrix.rotate_180(mat_4x4, N, N)
 RotateMatrix.print_matrix(mat_4x4, N, M)
+
+
+N = 4
+M = 5
+mat = RotateMatrix.init_matrix(N, M)
+RotateMatrix.print_matrix(mat, N, M)
+RotateMatrix.rotate_180(mat, N, M)
+RotateMatrix.print_matrix(mat, N, M)

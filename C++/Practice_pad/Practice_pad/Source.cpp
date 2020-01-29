@@ -36,7 +36,8 @@ int main() {
     //compress("aabbcc"); //a2b2c2
     //compress("aabbcccdddd"); //a2b2c3d4
     //compress("abcabdaca"); //abcabdaca
-    int ** matrix = NULL;
+   
+    /*int ** matrix = NULL;
     int ** mat = NULL;
     int N = 3;
     mat = init_matrix(N);
@@ -70,7 +71,18 @@ int main() {
     cout << "Rotate" << endl;
     rotate_ccw_90(mat, N);
     print_matrix(mat, N);
-    delete[] mat;
+    delete[] mat;*/
+
+
+    int N = 5;
+    int M = 4;
+    int ** mat = init_matrix(N, M);
+    print_matrix(mat, N, M);
+    rotate_180(mat, N, M);
+    print_matrix(mat, N, M);
+
+    
+
 
     system("pause");
 }

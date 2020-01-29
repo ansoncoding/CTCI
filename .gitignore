@@ -17,3 +17,5 @@ bin/
 *.filters
 *.sln
 *.pyc
+*.opensdf
+*.sdf
