@@ -7,6 +7,9 @@
 #include "rotate_matrix.h"
 #include "matrix_utils.h"
 #include "zero_matrix.h"
+#include "is_string_rotation.h"
+
+
 int main() {
     //string s1 = "adbdb"; // true
     //string s2 = "1b";     // false
@@ -83,12 +86,44 @@ int main() {
     //rotate_180(mat, N, M);
     //print_matrix(mat, N, M);
 
-    int N = 5;
-    int M = 7;
-    int ** mat = init_matrix_rand(N, M);
-    print_matrix(mat, N, M);
-    zero_matrix_2(mat, N, M);
-    print_matrix(mat, N, M);
+    //int N = 5;
+    //int M = 7;
+    //int ** mat = init_matrix_rand(N, M);
+    //print_matrix(mat, N, M);
+    //zero_matrix_2(mat, N, M);
+    //print_matrix(mat, N, M);
+
+    //string s1 = "edabcd";
+    //string s2 = "dabcd";
+    //cout << is_substring(s1, s2) << endl;
+
+    //s1 = "abc";
+    //s2 = "ab";
+    //cout << is_substring(s1, s2) << endl;
+
+    //s1 = "abc";
+    //s2 = "abc";
+    //cout << is_substring(s1, s2) << endl;
+
+    //s1 = "dabc";
+    //s2 = "abc";
+    //cout << is_substring(s1, s2) << endl;
+
+    //s1 = "abc";
+    //s2 = "abcd";
+    //cout << is_substring(s1, s2) << endl;
+
+    string s1 = "abc";
+    string s2 = "bca";
+    cout << is_string_rotation(s1, s2)<< endl;
+
+    s1 = "abc";
+    s2 = "bcb";
+    cout << is_string_rotation(s1, s2)<< endl;
+
+    s1 = "waterbottle";
+    s2 = "terbottlewa";
+    cout << is_string_rotation(s1, s2)<< endl;
 
     system("pause");
 }

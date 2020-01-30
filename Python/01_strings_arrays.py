@@ -7,7 +7,7 @@ import CompressString
 import RotateMatrix
 import ZeroMatrix
 import matrix_utils
-
+import IsStringRotation
 # print(IsUnique.is_unique_3("str")) # true
 # print(IsUnique.is_unique_3("strr")) # false
 # print(IsUnique.is_unique_3("abcd")) # true
@@ -120,9 +120,16 @@ import matrix_utils
 # RotateMatrix.rotate_180(mat, N, M)
 # matrix_utils.print_matrix(mat, N, M)
 
-N = 5
-M = 6
-mat = matrix_utils.init_matrix(N, M)
-matrix_utils.print_matrix(mat, N, M)
-ZeroMatrix.zero_matrix_2(mat, N, M)
-matrix_utils.print_matrix(mat, N, M)
+# N = 5
+# M = 6
+# mat = matrix_utils.init_matrix(N, M)
+# matrix_utils.print_matrix(mat, N, M)
+# ZeroMatrix.zero_matrix_2(mat, N, M)
+# matrix_utils.print_matrix(mat, N, M)
+
+print(IsStringRotation.is_string_rotation("water", "aterw"))
+print(IsStringRotation.is_string_rotation("water", "waterr"))
+print(IsStringRotation.is_string_rotation("water", "wat"))
+print(IsStringRotation.is_string_rotation("water", "atern"))
+print(IsStringRotation.is_string_rotation("water", "terwa"))
+print(IsStringRotation.is_string_rotation("water", "erwat"))
