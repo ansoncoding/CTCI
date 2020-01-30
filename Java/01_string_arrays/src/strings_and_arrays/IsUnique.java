@@ -1,3 +1,4 @@
+package strings_and_arrays;
 
 public class IsUnique {
 	// determine if the string given has all unique characters

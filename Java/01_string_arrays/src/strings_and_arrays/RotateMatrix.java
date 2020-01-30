@@ -1,20 +1,7 @@
+package strings_and_arrays;
+
 
 public class RotateMatrix {
-
-	
-	public static void print_matrix(int[][] mat, int N, int M) {
-		for (int i= 0; i < N; i++) {
-			for (int j = 0; j < M; j++) {
-				System.out.format("%2d ", mat[i][j]);
-			}
-			System.out.println();
-		}
-		System.out.println();
-	}
-	
-	public static void print_matrix(int[][] mat, int N) {
-		print_matrix(mat, N, N);
-	}
 	
 	public static void rotate_cw_90(int[][] mat, int N) {
 	    
@@ -64,44 +51,24 @@ public class RotateMatrix {
 	    }
 	}
 	
-	public static int[][] init_matrix(int N, int M) {
-		int[][] mat = new int[N][M];
-		int count = 0;
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < M; j++) {
-				mat[i][j] = count++;
-			}
-		}
-		return mat;
-	}
-	
-	public static int[][] init_matrix(int N) {
-		return init_matrix(N, N);
-	}
-	
-	public static void swap(int[][] mat, int i1, int j1, int i2, int j2) {
-		int temp = mat[i1][j1];
-		mat[i1][j1] = mat[i2][j2];
-		mat[i2][j2] = temp;
-	}
 	
 	public static void flip_180(int[][] mat, int N, int M) {
 	    for (int i=0 ; i< N/2; i++) {
 	        for (int j=0; j < M; j++) {
-	            swap(mat, i, j, N-i-1, j);
+	            MatrixUtils.swap(mat, i, j, N-i-1, j);
 	        }
 	    }
 	}
 	public static void rotate_180( int[][] mat, int N, int M) {
 		for (int i= 0; i < N/2; i++) {
 			for (int j = 0;j < M; j++) {
-				swap(mat, i, j, N-i-1, M-j-1);
+				MatrixUtils.swap(mat, i, j, N-i-1, M-j-1);
 			}
 		}
 		if ((N % 2) == 1) {
 			int row = N/2;
 			for (int j = 0; j < M/2; j++) {
-				swap(mat, row, j, row, M-j-1);
+				MatrixUtils.swap(mat, row, j, row, M-j-1);
 			}
 		}
 	}
@@ -110,26 +77,26 @@ public class RotateMatrix {
 		
 //		int[][] mat;
 //		int N = 8;
-//		mat = init_matrix(N);
-//		print_matrix(mat, N);
+//		mat = MatrixUtils.init_matrix(N);
+//		MatrixUtils.print_matrix(mat, N);
 //		rotate_ccw_90(mat, N);
-//		print_matrix(mat, N);
+//		MatrixUtils.print_matrix(mat, N);
 		
 //		int [][] mat;
 //		int N = 4; 
 //		int M = 5;
-//		mat = init_matrix(N, M);
-//		print_matrix(mat, N, M);
+//		mat = MatrixUtils.init_matrix(N, M);
+//		MatrixUtils.print_matrix(mat, N, M);
 //		flip_180(mat, N, M);
-//		print_matrix(mat, N, M);
+//		MatrixUtils.print_matrix(mat, N, M);
 		
 		int[][] mat;
 		int N = 5;
 		int M = 3;
-		mat = init_matrix(N, M);
-		print_matrix(mat, N, M);
+		mat = MatrixUtils.init_matrix(N, M);
+		MatrixUtils.print_matrix(mat, N, M);
 		rotate_180(mat, N, M);
-		print_matrix(mat, N, M);
+		MatrixUtils.print_matrix(mat, N, M);
 		
 	}
 
