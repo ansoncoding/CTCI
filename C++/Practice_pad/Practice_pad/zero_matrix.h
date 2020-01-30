@@ -7,4 +7,6 @@
 #include <iostream>
 
 void zero_matrix(int** mat, int N, int M);
+void zero_matrix_2(int** mat, int N, int M);
+
 #endif

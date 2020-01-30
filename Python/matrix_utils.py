@@ -21,7 +21,7 @@ def init_rand_matrix(N, M):
     for i in range(0, N):
         for j in range(0, M):
             
-            value = random.randrange(N*M) % ((N+M)*2)
+            value = random.randrange(N*M) % ((N*M)//2)
             #print("Value " + str(value) + " " + str(i) + " " + str(j))
             mat[i][j] = value
     #print_matrix(mat, N, M)

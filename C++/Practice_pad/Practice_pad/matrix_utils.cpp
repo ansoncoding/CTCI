@@ -31,7 +31,7 @@ int ** init_matrix(int N, int M) {
 int ** init_matrix_rand(int N, int M) {
     int ** mat;
     int count;
-    int rand_int = rand()%15;
+    int rand_int;
     mat = new int*[N];
 
     for (int i = 0; i < N; i++) {
@@ -40,7 +40,8 @@ int ** init_matrix_rand(int N, int M) {
     count = 5;
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < M; j++) {
-            mat[i][j] = count % rand_int;
+            rand_int = rand();
+            mat[i][j] = rand_int % (N*M/2);
             count++;
         }
     }

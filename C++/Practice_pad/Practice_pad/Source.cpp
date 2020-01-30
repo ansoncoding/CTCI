@@ -84,10 +84,10 @@ int main() {
     //print_matrix(mat, N, M);
 
     int N = 5;
-    int M = 4;
+    int M = 7;
     int ** mat = init_matrix_rand(N, M);
     print_matrix(mat, N, M);
-    zero_matrix(mat, N, M);
+    zero_matrix_2(mat, N, M);
     print_matrix(mat, N, M);
 
     system("pause");

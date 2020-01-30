@@ -122,7 +122,7 @@ import matrix_utils
 
 N = 5
 M = 6
-mat = matrix_utils.init_rand_matrix(N, M)
+mat = matrix_utils.init_matrix(N, M)
 matrix_utils.print_matrix(mat, N, M)
-ZeroMatrix.zero_matrix(mat, N, M)
+ZeroMatrix.zero_matrix_2(mat, N, M)
 matrix_utils.print_matrix(mat, N, M)
