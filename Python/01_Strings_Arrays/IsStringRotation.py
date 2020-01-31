@@ -23,3 +23,13 @@ def is_string_rotation(s1, s2):
     #return is_substring(test, s2)
     return s2 in test
 
+
+
+
+
+print(is_string_rotation("water", "aterw"))
+print(is_string_rotation("water", "waterr"))
+print(is_string_rotation("water", "wat"))
+print(is_string_rotation("water", "atern"))
+print(is_string_rotation("water", "terwa"))
+print(is_string_rotation("water", "erwat"))

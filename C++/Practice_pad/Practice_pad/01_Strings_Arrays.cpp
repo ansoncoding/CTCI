@@ -10,7 +10,7 @@
 #include "is_string_rotation.h"
 
 
-int main() {
+//int main() {
     //string s1 = "adbdb"; // true
     //string s2 = "1b";     // false
     //string s3 = "abbb"; // false
@@ -113,7 +113,7 @@ int main() {
     //s2 = "abcd";
     //cout << is_substring(s1, s2) << endl;
 
-    string s1 = "abc";
+    /*string s1 = "abc";
     string s2 = "bca";
     cout << is_string_rotation(s1, s2)<< endl;
 
@@ -126,4 +126,4 @@ int main() {
     cout << is_string_rotation(s1, s2)<< endl;
 
     system("pause");
-}
+}*/
