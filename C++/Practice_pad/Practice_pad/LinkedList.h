@@ -224,9 +224,9 @@ public:
                         prev = temp;
                         temp = temp->next;
                     } else {
-                        prepend(temp->data);
                         prev->next = temp->next;
-                        delete temp;
+                        temp->next = head;
+                        head = temp;
                         temp = prev->next;
                     }
                 } else {
