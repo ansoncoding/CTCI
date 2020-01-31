@@ -174,7 +174,6 @@ public:
             ret = k_th_last->data;
             return true;
         }
-
 };
 
 #endif

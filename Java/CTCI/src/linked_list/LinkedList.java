@@ -1,5 +1,6 @@
 package linked_list;
 import java.util.*;
+ 
 
 public class LinkedList {
 
@@ -56,7 +57,6 @@ public class LinkedList {
 			}
 			temp = temp.next;
 		}
-
 	}
 	public void remove_dups2() {
 		if (head == null) {
@@ -80,12 +80,52 @@ public class LinkedList {
 			valnode = valnode.next;
 		}
 	}
+	
+	public boolean kth_last_elment(int k, Node retval) {
+		if (k == 0) {
+			System.out.println("K cannot be 0");
+			return false;
+		}
+		
+		if (head == null) {
+			System.out.println("List is empty, cannot return " + k + "th element");
+			return false;
+		}
+		
+		Node to_end = head;
+		Node kth_last = head;
+		int count = 0;
+		
+		while((to_end != null) && (count < k)) {
+			to_end = to_end.next;
+			count++;
+		}
+		
+		if (count < k) {
+			System.out.println("List is " + count + " elements long, cannot return " + k + "th element");
+			return false;
+		}
+		
+		while (to_end != null) {
+			to_end = to_end.next;
+			kth_last = kth_last.next;		
+		}
+		retval.data = kth_last.data;
+		return true;
+	}
+	
 	public static void main(String[] args) {
 
 		LinkedList ll = new LinkedList(10);
 		ll.print();
 		ll.remove_dups2();
 		ll.print();
+		
+		Node ret = new Node();
+		boolean answer = ll.kth_last_elment(1, ret);
+		if (answer) {
+			System.out.println(ret.data);
+		}
 	}
 
 }

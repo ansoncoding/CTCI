@@ -73,8 +73,36 @@ class LinkedList:
                 temp = temp.next
             valnode = valnode.next
 
+    def kth_last_element(self, k):
+        if self.head is None:
+            print("List is empty, cannot return " + str(k) + "th element")
+            return False, 0
+
+        if k == 0:
+            print("K cannot be 0")
+            return False, 0
+
+        to_end = self.head
+        k_last = self.head
+        count = 0
+        while(to_end is not None and count < k):
+            to_end = to_end.next
+            count += 1
+
+        if count < k:
+            print("List is " + str(count) + " elements long, cannot return " + str(k) + "th element")
+            return False, 0
+
+        while to_end is not None:
+            to_end = to_end.next
+            k_last = k_last.next
+
+        return True, k_last.data
 
 l1 = LinkedList(10)
 l1.print()
 l1.remove_duplicates2()
 l1.print()
+is_answer, val = l1.kth_last_element(10)
+if is_answer:
+    print("answer is " + str(val))
