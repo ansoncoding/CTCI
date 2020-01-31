@@ -113,6 +113,29 @@ public class LinkedList {
 		kth_last.copy(retval);
 		return true;
 	}
+	public void partition(int k) {
+		boolean passed = false;
+		Node temp = head;
+		Node prev = head;
+		while(temp != null) {
+			if (temp.data < k) {
+				
+				if (passed) {
+					prev.next = temp.next;
+					temp.next = head;
+					head = temp;
+					temp = prev.next;
+				} else {
+					prev = temp;
+					temp = temp.next;
+				}
+			} else {
+				passed = true;
+				prev = temp;
+				temp = temp.next;
+			}
+		}
+	}
 	// node cannot be head or last element
 	public static void remove_middle_node(Node n) {
 		Node temp = n.next;
@@ -132,6 +155,8 @@ public class LinkedList {
 		if (answer) {
 			System.out.println(ret.data);
 			remove_middle_node(ret);
+			ll.print();
+			ll.partition(4);
 			ll.print();
 		}
 	}

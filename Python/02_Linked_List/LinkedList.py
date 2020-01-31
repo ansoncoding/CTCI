@@ -99,6 +99,28 @@ class LinkedList:
 
         return True, k_last
 
+    def partition(self, k):
+        passed = False
+        temp = self.head
+        prev = self.head
+        while(temp is not None):
+            if (temp.data < k):
+                if not passed:
+                    prev = temp
+                    temp = temp.next
+                    
+                else:
+                    prev.next = temp.next
+                    temp.next = self.head
+                    self.head = temp
+                    temp = prev.next
+            else:
+                passed = True
+                prev = temp
+                temp = temp.next
+                
+
+
 # the node given is not the first nor last node of the list
 def remove_middle_node(n):
     temp = n.next
@@ -115,4 +137,6 @@ is_answer, node = l1.kth_last_node(5)
 if is_answer:
     print("answer is " + str(node.data))
     remove_middle_node(node)
+    l1.print()
+    l1.partition(4)
     l1.print()
