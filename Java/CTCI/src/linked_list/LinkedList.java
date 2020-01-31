@@ -81,7 +81,7 @@ public class LinkedList {
 		}
 	}
 	
-	public boolean kth_last_elment(int k, Node retval) {
+	public boolean kth_last_node(int k, Node retval) {
 		if (k == 0) {
 			System.out.println("K cannot be 0");
 			return false;
@@ -110,8 +110,14 @@ public class LinkedList {
 			to_end = to_end.next;
 			kth_last = kth_last.next;		
 		}
-		retval.data = kth_last.data;
+		kth_last.copy(retval);
 		return true;
+	}
+	// node cannot be head or last element
+	public static void remove_middle_node(Node n) {
+		Node temp = n.next;
+		n.data = temp.data;
+		n.next = temp.next;
 	}
 	
 	public static void main(String[] args) {
@@ -122,9 +128,11 @@ public class LinkedList {
 		ll.print();
 		
 		Node ret = new Node();
-		boolean answer = ll.kth_last_elment(1, ret);
+		boolean answer = ll.kth_last_node(5, ret);
 		if (answer) {
 			System.out.println(ret.data);
+			remove_middle_node(ret);
+			ll.print();
 		}
 	}
 

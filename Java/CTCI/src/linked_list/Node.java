@@ -9,4 +9,8 @@ public class Node {
 	Node(int data) {
 		this.data = data;
 	}
+	public void copy(Node n) {
+		n.data = data;
+		n.next = next;
+	}
 }

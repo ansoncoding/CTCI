@@ -73,7 +73,7 @@ class LinkedList:
                 temp = temp.next
             valnode = valnode.next
 
-    def kth_last_element(self, k):
+    def kth_last_node(self, k):
         if self.head is None:
             print("List is empty, cannot return " + str(k) + "th element")
             return False, 0
@@ -97,12 +97,22 @@ class LinkedList:
             to_end = to_end.next
             k_last = k_last.next
 
-        return True, k_last.data
+        return True, k_last
+
+# the node given is not the first nor last node of the list
+def remove_middle_node(n):
+    temp = n.next
+    n.data = temp.data
+    n.next = temp.next
+
+
 
 l1 = LinkedList(10)
 l1.print()
 l1.remove_duplicates2()
 l1.print()
-is_answer, val = l1.kth_last_element(10)
+is_answer, node = l1.kth_last_node(5)
 if is_answer:
-    print("answer is " + str(val))
+    print("answer is " + str(node.data))
+    remove_middle_node(node)
+    l1.print()
