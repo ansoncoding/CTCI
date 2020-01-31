@@ -8,10 +8,18 @@ int main() {
     LL1.print();
     
     int ret;
-    int is_answer = LL1.kth_last_element2(4, ret);
+    bool is_answer = LL1.kth_last_element2(4, ret);
     if (is_answer) {
         cout << ret << endl;
-    } 
+    }
+    Node * retval;
+    is_answer = LL1.kth_last_node(2, &retval);
+    if (is_answer) {
+        cout << retval->data << endl;
+        delete_middle_node(retval);
+        LL1.print();
+    }
+
     
     system("pause");
 }

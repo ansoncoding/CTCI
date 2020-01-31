@@ -17,6 +17,8 @@ public:
 };
 
 
+void delete_middle_node(Node * n);
+
 class LinkedList {
     
 public:
@@ -82,13 +84,14 @@ public:
                 set<int> ::iterator it = vals.find(temp->data);
                 if (it != vals.end()) {
                     prev->next = temp->next;
+                    delete temp;
                     length--;
+                    temp = prev->next;
                 } else {
                     vals.insert(temp->data);
                     prev = temp;
+                    temp = temp->next;
                 }
-                
-                temp = temp->next;
             }
         }
         // no temp buffer
@@ -109,11 +112,13 @@ public:
                 while (temp != NULL) {
                     if (temp->data == val) {
                         prev->next = temp->next;
+                        delete temp;
                         length--;
+                        temp = prev->next;
                     } else {
                         prev = temp;
+                        temp = temp->next;
                     }
-                    temp = temp->next;
                 }
                 val_node = val_node->next;
             }
@@ -172,6 +177,34 @@ public:
                 k_th_last = k_th_last->next;
             }
             ret = k_th_last->data;
+            return true;
+        }
+
+        bool kth_last_node(int k, Node ** ret) {
+            if (k == 0) {
+                cerr << "K cannot be 0" << endl;
+                return false;
+            }
+            if (head == NULL) {
+                cerr << "Cannot get "<< k << "th last element. List is empty" << endl;
+                return false;
+            }
+            Node * to_end = head;
+            Node * k_th_last = head;
+            int count = 0;
+            while ((to_end != NULL) && (count < k)) {
+                to_end = to_end->next;
+                count++;
+            }
+            if (count < k) {
+                cerr << "Cannot get " << k << "th last element. List has " << count << " nodes" << endl;
+                return false;
+            }
+            while (to_end != NULL) {
+                to_end = to_end->next;
+                k_th_last = k_th_last->next;
+            }
+            *ret = k_th_last;
             return true;
         }
 };
