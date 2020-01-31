@@ -35,7 +35,7 @@ public:
             head = NULL;
             int count = 0;
             for (int i = 0; i < length; i++){
-                int val = count % 4;
+                int val = count % length;
                 count++;
                 prepend(val);
                 
@@ -206,6 +206,35 @@ public:
             }
             *ret = k_th_last;
             return true;
+        }
+        void partition(int k) {
+            LinkedList other = LinkedList();
+            if (head == NULL) {
+                cerr << "List is empty" << endl;
+                return;
+            }
+            Node * temp = head;
+            Node * prev = head;
+            bool passed = false;
+
+            while (temp != NULL) {
+                if (temp->data < k) {
+
+                    if (!passed) {
+                        prev = temp;
+                        temp = temp->next;
+                    } else {
+                        prepend(temp->data);
+                        prev->next = temp->next;
+                        delete temp;
+                        temp = prev->next;
+                    }
+                } else {
+                    passed = true;
+                    prev = temp;
+                    temp = temp->next;
+                }
+            }
         }
 };
 
