@@ -54,24 +54,27 @@ class LinkedList:
             temp = temp.next
     
     def remove_duplicates2(self):
-        if head is None:
+        if self.head is None:
             return
 
-        prev = self.head
-        val = self.head.data
-        temp = self.head.next
-        while(temp is not None):
-            if temp.data == val:
-                prev.next = temp.next
-            else:
-                prev = temp
+        
+        valnode = self.head
+        while(valnode is not None):
+            prev = valnode
+            val = valnode.data
+            #print(str(val))
+            temp = prev.next
+            while(temp is not None):
+                if temp.data == val:
+                    prev.next = temp.next
+                    self.length-=1
+                else:
+                    prev = temp
                 temp = temp.next
-
-
-            
+            valnode = valnode.next
 
 
 l1 = LinkedList(10)
 l1.print()
-l1.remove_duplicates()
+l1.remove_duplicates2()
 l1.print()
