@@ -118,7 +118,62 @@ public:
                 val_node = val_node->next;
             }
         }
+        // O(n) time, O(k) space
+        bool kth_last_element(int k, int & ret) {
+            if (k == 0) {
+                cerr << "K cannot be 0" << endl;
+                return false;
+            }
+            if (head == NULL) {
+                return false;
+            }
+            int * vals = new int[k];
+            int count = 0;
+            Node * temp = head;
+            while (temp != NULL) {
+                vals[count%k] = temp->data;
+                
+                temp = temp->next;
+                //cout << count%k << " " << vals[count%k] << endl;
+                count++;
+            }
+            if (count < k) {
+                cout << "No Kth last element, array is too small" << endl;
+                return false;
+            }
+            //cout << "Count " << count << endl;
+            ret = vals[count%k];
+            return true;
+        }
 
+        // O(n) time O(1) space, use two pointers k nodes apart
+        bool kth_last_element2(int k, int & ret) {
+            if (k == 0) {
+                cerr << "K cannot be 0" << endl;
+                return false;
+            }
+            if (head == NULL) {
+                cerr << "Cannot get "<< k << "th last element. List is empty" << endl;
+                return false;
+            }
+            Node * to_end = head;
+            Node * k_th_last = head;
+            int count = 0;
+            while ((to_end != NULL) && (count < k)) {
+                to_end = to_end->next;
+                count++;
+            }
+            if (count < k) {
+                cerr << "Cannot get " << k << "th last element. List has " << count << " nodes" << endl;
+                return false;
+            }
+            while (to_end != NULL) {
+                to_end = to_end->next;
+                k_th_last = k_th_last->next;
+            }
+            ret = k_th_last->data;
+            return true;
+        }
 
 };
 

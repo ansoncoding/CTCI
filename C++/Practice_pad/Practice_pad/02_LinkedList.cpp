@@ -4,10 +4,14 @@ int main() {
 
     LinkedList LL1 = LinkedList(10);
     LL1.print();
-    cout << LL1.getLength() << endl;
     LL1.remove_duplicates2();
     LL1.print();
-    cout << LL1.getLength() << endl;
+    
+    int ret;
+    int is_answer = LL1.kth_last_element2(4, ret);
+    if (is_answer) {
+        cout << ret << endl;
+    } 
     
     system("pause");
 }
