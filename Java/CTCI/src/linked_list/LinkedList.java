@@ -42,7 +42,7 @@ public class LinkedList {
 		if (head == null) {
 			return;
 		}
-		HashSet<Integer> vals = new HashSet();	
+		HashSet<Integer> vals = new HashSet<Integer>();	
 		Node prev = head;
 		Node temp = head.next;
 		vals.add(head.data);
@@ -81,7 +81,7 @@ public class LinkedList {
 		}
 	}
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+
 		LinkedList ll = new LinkedList(10);
 		ll.print();
 		ll.remove_dups2();
