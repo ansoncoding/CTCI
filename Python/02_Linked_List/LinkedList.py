@@ -30,7 +30,48 @@ class LinkedList:
         self.length = 0
         for i in range(0, list_length):
             self.prepend(i)
-        self.print()
+            self.prepend(i)
+        
+
+    def remove_duplicates(self):
+        if self.head is None:
+            return
+
+        vals = set()
+        vals.add(self.head.data)
+        #print(vals)
+        prev = self.head
+        temp = self.head.next
+
+        while(temp is not None):
+            if temp.data in vals:
+                prev.next = temp.next
+                self.length-= 1
+            else:
+                vals.add(temp.data)
+                prev = temp
+
+            temp = temp.next
+    
+    def remove_duplicates2(self):
+        if head is None:
+            return
+
+        prev = self.head
+        val = self.head.data
+        temp = self.head.next
+        while(temp is not None):
+            if temp.data == val:
+                prev.next = temp.next
+            else:
+                prev = temp
+                temp = temp.next
 
 
-LinkedList(10)
+            
+
+
+l1 = LinkedList(10)
+l1.print()
+l1.remove_duplicates()
+l1.print()

@@ -21,3 +21,5 @@ bin/
 *.sdf
 C++/Practice_pad/Practice_pad.sdf
 *.sdf
+*.ipch
+C++/Practice_pad/Practice_pad/ReadMe.txt
