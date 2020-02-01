@@ -21,9 +21,9 @@ void delete_middle_node(Node * n);
 
 class LinkedList {
     
-public:
+protected:
         Node * head;
-private:
+
         int length; 
 public:
         LinkedList() {
@@ -31,7 +31,7 @@ public:
             length = 0;
         }
         LinkedList(int length) {
-            cout << length << endl;
+            //cout << length << endl;
             head = NULL;
             int count = 0;
             for (int i = 0; i < length; i++){
@@ -237,5 +237,60 @@ public:
             }
         }
 };
+
+class LinkedListT : public LinkedList
+{
+private:
+    Node * tail = NULL;
+public:
+    LinkedListT(){
+        LinkedList::LinkedList();
+    }
+    LinkedListT(int len){
+        for (int i = 0; i < len; i++) {
+            append(len-i);
+            //print();
+        }
+    }
+    Node * getHead() {
+        return head;
+    }
+    Node * getNext(Node * current) {
+        return current->next;
+    }
+    bool isTail(Node * current) {
+        return (current == NULL);
+    }
+    void append(int data) {
+        //cout << "Data " << data << endl;
+        if (head == NULL) {
+            //cout << "1" << endl;
+            head = new Node(data);
+            head->next = tail;
+            length++;
+            return;
+        }
+        if (tail == NULL) {
+            //cout << "2 " << head->next << endl;
+            tail = new Node(data);
+            head->next = tail;
+            //cout << "2 " << head->next << endl;
+            length++;
+            return;
+        }
+        Node * temp = new Node(data);
+        tail->next = temp;
+        tail = temp;
+        length++;
+        return;
+    }
+
+ 
+};
+
+
+LinkedListT sum_lists(LinkedListT l1, LinkedListT l2);
+
+
 
 #endif

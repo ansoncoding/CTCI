@@ -113,6 +113,7 @@ public class LinkedList {
 		kth_last.copy(retval);
 		return true;
 	}
+	
 	public void partition(int k) {
 		boolean passed = false;
 		Node temp = head;
