@@ -4,10 +4,14 @@ import java.util.*;
 
 public class LinkedList {
 
-	private Node head = null;
+	protected Node head = null;
 	
-	private int length = 0;
+	protected int length = 0;
 	
+	public LinkedList() {
+		length = 0;
+		head = null;
+	}
 	public LinkedList(int len) {
 		for (int i= 0; i < len ;i++) {
 			this.prepend(i);

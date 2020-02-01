@@ -4,9 +4,6 @@ class Node:
         self.next = None
 
 class LinkedList:
-    def __init__(self):
-        self.head = None
-        self.length = 0
 
     def print(self):
         temp = self.head
@@ -25,13 +22,16 @@ class LinkedList:
             self.head = temp
             self.length += 1
 
-    def __init__(self, list_length):
-        self.head = None
-        self.length = 0
-        for i in range(0, list_length):
-            self.prepend(i)
-            self.prepend(i)
-        
+    def __init__(self, list_length=None):
+        if list_length is not None:
+            self.head = None
+            self.length = 0
+            for i in range(0, list_length):
+                self.prepend(i)
+                self.prepend(i)
+        else:
+            self.head = None
+            self.length = 0
 
     def remove_duplicates(self):
         if self.head is None:
@@ -129,14 +129,14 @@ def remove_middle_node(n):
 
 
 
-l1 = LinkedList(10)
-l1.print()
-l1.remove_duplicates2()
-l1.print()
-is_answer, node = l1.kth_last_node(5)
-if is_answer:
-    print("answer is " + str(node.data))
-    remove_middle_node(node)
-    l1.print()
-    l1.partition(4)
-    l1.print()
+# l1 = LinkedList(10)
+# l1.print()
+# l1.remove_duplicates2()
+# l1.print()
+# is_answer, node = l1.kth_last_node(5)
+# if is_answer:
+#     print("answer is " + str(node.data))
+#     remove_middle_node(node)
+#     l1.print()
+#     l1.partition(4)
+#     l1.print()
