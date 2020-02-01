@@ -119,6 +119,26 @@ class LinkedList:
                 prev = temp
                 temp = temp.next
                 
+    def reverse(self):
+        retval = LinkedList()
+        temp = self.head;
+        while (temp is not None):
+            retval.prepend(temp.data)
+            temp = temp.next
+        return retval
+    
+    def isPalindrome(self):
+        rev = self.reverse()
+        rev.print()
+        n1 = self.head
+        n2 = rev.head
+        while(n1 is not None):
+            if (n1.data != n2.data):
+                print("n1 : " + str(n1.data) + " n2 : " + str(n2.data))
+                return False
+            n1 = n1.next
+            n2 = n2.next
+        return True
 
 
 # the node given is not the first nor last node of the list
@@ -140,3 +160,16 @@ def remove_middle_node(n):
 #     l1.print()
 #     l1.partition(4)
 #     l1.print()
+
+# l1 = LinkedList(10)
+# l1.print()
+# l2 = l1.reverse()
+# l2 = l2.print()
+
+# l1 = LinkedList()
+# for i in range(0,3):
+#     l1.prepend(i)
+# for i in range(2, 0, -1):
+#     l1.prepend(i)
+# l1.print()
+# print(l1.isPalindrome())
