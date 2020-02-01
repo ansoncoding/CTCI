@@ -41,6 +41,15 @@ public:
                 
             }
         }
+        LinkedList reverse() {
+            Node * temp = head;
+            LinkedList retval = LinkedList();
+            while (temp != NULL) {
+                retval.prepend(temp->data);
+                temp = temp->next;
+            }
+            return retval;
+        }
 
         int getLength() {
             return length;
@@ -236,61 +245,19 @@ public:
                 }
             }
         }
+        bool is_palindrome(){
+            LinkedList rev = reverse();
+            Node * n1 = head;
+            Node * n2 = rev.head;
+            while (n1 != NULL) {
+                if (n1->data != n2->data) {
+                    return false;
+                }
+                n1 = n1->next;
+                n2 = n2->next;
+            }
+            return true;
+        }
 };
-
-class LinkedListT : public LinkedList
-{
-private:
-    Node * tail = NULL;
-public:
-    LinkedListT(){
-        LinkedList::LinkedList();
-    }
-    LinkedListT(int len){
-        for (int i = 0; i < len; i++) {
-            append(len-i);
-            //print();
-        }
-    }
-    Node * getHead() {
-        return head;
-    }
-    Node * getNext(Node * current) {
-        return current->next;
-    }
-    bool isTail(Node * current) {
-        return (current == NULL);
-    }
-    void append(int data) {
-        //cout << "Data " << data << endl;
-        if (head == NULL) {
-            //cout << "1" << endl;
-            head = new Node(data);
-            head->next = tail;
-            length++;
-            return;
-        }
-        if (tail == NULL) {
-            //cout << "2 " << head->next << endl;
-            tail = new Node(data);
-            head->next = tail;
-            //cout << "2 " << head->next << endl;
-            length++;
-            return;
-        }
-        Node * temp = new Node(data);
-        tail->next = temp;
-        tail = temp;
-        length++;
-        return;
-    }
-
- 
-};
-
-
-LinkedListT sum_lists(LinkedListT l1, LinkedListT l2);
-
-
 
 #endif

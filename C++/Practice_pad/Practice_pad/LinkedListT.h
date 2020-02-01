@@ -1,0 +1,82 @@
+#ifndef LINKED_LIST_T_H
+#define LINKED_LIST_T_H
+
+#include "LinkedList.h"
+
+class LinkedListT : public LinkedList
+{
+private:
+    Node * tail = NULL;
+public:
+    LinkedListT(){
+        LinkedList();
+    }
+    LinkedListT(int len){
+        for (int i = 0; i < len; i++) {
+            append(len-i);
+            //print();
+        }
+    }
+    Node * getHead() {
+        return head;
+    }
+    Node * getNext(Node * current) {
+        return current->next;
+    }
+    bool isTail(Node * current) {
+        return (current == NULL);
+    }
+    void append(int data) {
+        //cout << "Data " << data << endl;
+        if (head == NULL) {
+            //cout << "1" << endl;
+            head = new Node(data);
+            head->next = tail;
+            length++;
+            return;
+        }
+        if (tail == NULL) {
+            //cout << "2 " << head->next << endl;
+            tail = new Node(data);
+            head->next = tail;
+            //cout << "2 " << head->next << endl;
+            length++;
+            return;
+        }
+        Node * temp = new Node(data);
+        tail->next = temp;
+        tail = temp;
+        length++;
+        return;
+    }
+    void prepend(int data) {
+        if (head== NULL) {
+            head = new Node(data);
+            head->next = tail;
+
+        } else if (tail == NULL) {
+
+            tail = new Node(data);
+
+        } else {
+            Node * temp =  new Node(data); 
+            temp->next = head;
+            head = temp;
+        }
+        length++;
+    }
+    LinkedListT reverse() {
+        Node * temp = head;
+        LinkedListT retval = LinkedListT();
+        while (temp != NULL) {
+            retval.prepend(temp->data);
+            temp = temp->next;
+        }
+        return retval;
+    }
+ 
+};
+
+LinkedListT sum_lists(LinkedListT l1, LinkedListT l2);
+
+#endif
