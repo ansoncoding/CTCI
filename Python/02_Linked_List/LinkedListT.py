@@ -20,12 +20,13 @@ class LinkedListT(LinkedListModule.LinkedList):
             self.length = 0
             self.tail = None
             for i in range(0, list_length):
-                print(str(i))
                 self.append(i)
         else:
             LinkedListModule.LinkedList.__init__(self)
             self.tail = None
             self.length = 0
+        return
+
 
     def prepend(self, data):
         if self.head == None:
@@ -37,7 +38,8 @@ class LinkedListT(LinkedListModule.LinkedList):
             temp.next = self.head
             self.head = temp
             self.length += 1
-        #self.print()
+        return
+
 
     def reverse(self):
         retval = LinkedListT()
@@ -66,7 +68,7 @@ def sum_lists(LLT1, LLT2):
         remainder = the_sum % 10
         retval.append(remainder)
         previous_quotient = the_sum // 10
-    
+        
         if n1 is not None:
             n1 = n1.next
         if n2 is not None:
@@ -74,6 +76,7 @@ def sum_lists(LLT1, LLT2):
 
     return retval
 
+#================================================================================
 # LLT1 = LinkedListT(7)
 # LLT1.print()
 # LLT2 = LinkedListT(4)

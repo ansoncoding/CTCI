@@ -11,10 +11,6 @@ def is_substring(src, substr):
             return True
     return False
 
-# print (is_substring("abc", "ab"))
-# print (is_substring("abc", "abc"))
-# print (is_substring("abc", "abcd"))
-# print (is_substring("dabc", "abc"))
 
 def is_string_rotation(s1, s2):
     if len(s1) != len(s2):
@@ -24,8 +20,12 @@ def is_string_rotation(s1, s2):
     return s2 in test
 
 
+#================================================================================
 
-
+# print (is_substring("abc", "ab"))
+# print (is_substring("abc", "abc"))
+# print (is_substring("abc", "abcd"))
+# print (is_substring("dabc", "abc"))
 
 print(is_string_rotation("water", "aterw"))
 print(is_string_rotation("water", "waterr"))

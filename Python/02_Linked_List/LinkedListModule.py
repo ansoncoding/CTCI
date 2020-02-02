@@ -1,7 +1,10 @@
 class Node:
+
     def __init__(self, data):
         self.data = data;
         self.next = None
+        return
+
 
 class LinkedList:
 
@@ -11,6 +14,8 @@ class LinkedList:
             print(str(temp.data) + " ", end='')
             temp = temp.next
         print("\n")
+        return
+
 
     def prepend(self, data):
         if self.head == None:
@@ -21,6 +26,8 @@ class LinkedList:
             temp.next = self.head
             self.head = temp
             self.length += 1
+        return
+
 
     def __init__(self, list_length=None):
         if list_length is not None:
@@ -32,6 +39,8 @@ class LinkedList:
         else:
             self.head = None
             self.length = 0
+        return
+
 
     def remove_duplicates(self):
         if self.head is None:
@@ -39,7 +48,6 @@ class LinkedList:
 
         vals = set()
         vals.add(self.head.data)
-        #print(vals)
         prev = self.head
         temp = self.head.next
 
@@ -52,12 +60,13 @@ class LinkedList:
                 prev = temp
 
             temp = temp.next
-    
+        return
+
+
     def remove_duplicates2(self):
         if self.head is None:
             return
 
-        
         valnode = self.head
         while(valnode is not None):
             prev = valnode
@@ -72,6 +81,8 @@ class LinkedList:
                     prev = temp
                 temp = temp.next
             valnode = valnode.next
+        return
+
 
     def kth_last_node(self, k):
         if self.head is None:
@@ -99,10 +110,12 @@ class LinkedList:
 
         return True, k_last
 
+
     def partition(self, k):
         passed = False
         temp = self.head
         prev = self.head
+
         while(temp is not None):
             if (temp.data < k):
                 if not passed:
@@ -118,7 +131,9 @@ class LinkedList:
                 passed = True
                 prev = temp
                 temp = temp.next
-                
+        return
+
+
     def reverse(self):
         retval = LinkedList()
         temp = self.head;
@@ -126,7 +141,8 @@ class LinkedList:
             retval.prepend(temp.data)
             temp = temp.next
         return retval
-    
+
+
     def isPalindrome(self):
         if(self.head is None):
             print("List is empty")
@@ -149,8 +165,10 @@ def remove_middle_node(n):
     temp = n.next
     n.data = temp.data
     n.next = temp.next
+    return
 
 
+#================================================================================
 
 # l1 = LinkedList(10)
 # l1.print()

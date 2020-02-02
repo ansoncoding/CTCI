@@ -8,11 +8,13 @@ def print_matrix(mat, N, M):
             print('{:02} '.format(mat[i][j]), end = '')
         print("\n")
     print("\n")
+    return
 
 
 def init_matrix(N, M):
     mat = [[i+N*j for i in range(M)] for j in range(N)]
     return mat
+
 
 def init_rand_matrix(N, M):
     random.seed()
@@ -32,3 +34,4 @@ def swap(mat, i1, j1, i2, j2):
     temp = mat[i1][j1]
     mat[i1][j1] = mat[i2][j2]
     mat[i2][j2] = temp
+    return

@@ -15,7 +15,7 @@ def is_palindrome_perm(string):
 
     return True
 
-
+#================================================================================
 print(is_palindrome_perm("abba")) #true
 print(is_palindrome_perm("abcba")) # true
 print(is_palindrome_perm("abbac"))#true

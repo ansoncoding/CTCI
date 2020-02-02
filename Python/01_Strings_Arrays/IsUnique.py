@@ -12,6 +12,7 @@ def is_unique(string):
     #print(end - start)
     return True
 
+
 def is_unique_2(string):
     string.lower()
     counts = {} # use a dictionary instead of array in python
@@ -21,6 +22,7 @@ def is_unique_2(string):
         else:
             return False
     return True
+
 
 def is_unique_3(string):
     string.lower()
@@ -34,7 +36,7 @@ def is_unique_3(string):
             counts = (counts | (1 << index))
     return True
 
-
+#================================================================================
 print(is_unique_3("str")) # true
 print(is_unique_3("strr")) # false
 print(is_unique_3("abcd")) # true

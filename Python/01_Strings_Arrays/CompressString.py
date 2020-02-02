@@ -21,6 +21,7 @@ def compress(string):
 
     return result
 
+
 def compress_efficient(string):
     result_list = []
 
@@ -45,6 +46,8 @@ def compress_efficient(string):
         return string
 
     return result
+
+#================================================================================
 
 print(compress_efficient("abb")) #abb
 print(compress_efficient("abc")) #abc

@@ -20,6 +20,7 @@ def is_permutation(str1, str2):
             #print(counts)
     return True
 
+
 # use sorting to save space
 def is_permutation_2(str1, str2):
     if len(str1) != len(str2):
@@ -30,6 +31,7 @@ def is_permutation_2(str1, str2):
         if (str1_sorted[i] != str2_sorted[i]):
             return False
     return True
+
 
 # instead of dictionary use list
 # this will save some space
@@ -53,6 +55,8 @@ def is_permutation_3(str1, str2):
             return False
     return True
 
+
+#================================================================================
 print(is_permutation_3("str", "")) #false
 print(is_permutation_3("str", "st")) #false
 print(is_permutation_3("str", "Str")) #false
