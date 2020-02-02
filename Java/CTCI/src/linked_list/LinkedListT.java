@@ -64,11 +64,10 @@ public class LinkedListT extends LinkedList {
 	
 	public static void main(String[] args) {
 		LinkedListT LLT1 = new LinkedListT(10);
-		LinkedListT LLT2 = new LinkedListT(7);
 		LLT1.print();
-		LLT2.print();
-		LinkedListT LLT_sum = sumLists(LLT1, LLT2);
-		LLT_sum.print();
+		LLT1.reverse_in_place();
+		LLT1.print();
+		
 	}
 
 }

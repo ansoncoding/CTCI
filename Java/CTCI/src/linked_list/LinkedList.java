@@ -18,7 +18,7 @@ public class LinkedList {
 			this.prepend(i);
 		}
 	}
-	
+
 	public void prepend(int data) {
 		Node n = new Node(data);
 		if (head == null) {
@@ -147,23 +147,56 @@ public class LinkedList {
 		n.data = temp.data;
 		n.next = temp.next;
 	}
+	public void reverse_in_place() {
+		if (head == null)
+			return;
+		int[] stack = new int[length];
+		Node temp = head;
+		int count = 0;
+		while(temp!= null) {
+			stack[count++] = temp.data;
+			temp = temp.next;
+		}
+		temp = head;
+		count--;
+		while(count >= 0) {
+			temp.data = stack[count--];
+			temp = temp.next;
+		}
+	}
+	public boolean isPalindrome() {
+		if (head == null) {
+			System.out.println("The list is empty");
+			return false;
+		}
+		int[] stack = new int[length];
+		Node temp = head;
+		int count = 0;
+		while (temp != null) {
+			stack[count++] = temp.data;
+			temp = temp.next;
+		}
+		temp = head;
+		count--;
+		while (count >= 0) { 
+			if (temp.data != stack[count--]) {
+				return false;
+			}
+			temp= temp.next;
+		}
+		return true;
+	}
 	
 	public static void main(String[] args) {
 
-		LinkedList ll = new LinkedList(10);
-		ll.print();
-		ll.remove_dups2();
-		ll.print();
-		
-		Node ret = new Node();
-		boolean answer = ll.kth_last_node(5, ret);
-		if (answer) {
-			System.out.println(ret.data);
-			remove_middle_node(ret);
-			ll.print();
-			ll.partition(4);
-			ll.print();
+		LinkedList ll = new LinkedList();
+		for (int i = 0; i < 3; i++) {
+			ll.prepend(i);
 		}
+		for (int i = 2; i >= 0; i--) {
+			ll.prepend(i);
+		}
+		ll.print();
+		System.out.println(ll.isPalindrome());
 	}
-
 }

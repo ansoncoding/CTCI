@@ -36,7 +36,7 @@ class LinkedListT(LinkedListModule.LinkedList):
             temp.next = self.head
             self.head = temp
             self.length += 1
-        self.print()
+        #self.print()
 
     def reverse(self):
         retval = LinkedListT()
@@ -93,6 +93,5 @@ for i in range(0,3):
     LT1.append(i)
 
 LT1.print()
-LT2 = LT1.reverse()
-LT2.print()
+
 print(LT1.isPalindrome())
