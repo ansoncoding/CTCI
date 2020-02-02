@@ -14,13 +14,25 @@ class LinkedListT(LinkedListModule.LinkedList):
         self.length+=1
         return
 
-    def __init__(self, list_length=None):
+
+    def __init__(self, list_length=None, circular=False, k=None):
         if list_length is not None:
             self.head = None
             self.length = 0
             self.tail = None
             for i in range(0, list_length):
                 self.append(i)
+            if circular:
+                if k is None:
+                    self.tail.next = self.head
+                if k is not None:
+                    k = k % list_length # in case the user enters k = 20 on a list that's 10 long
+                    n = self.head
+                    count = 0
+                    while(n != None and k > count):
+                        n = n.next
+                        count += 1
+                    self.tail.next = n
         else:
             LinkedListModule.LinkedList.__init__(self)
             self.tail = None
@@ -90,12 +102,35 @@ def sum_lists(LLT1, LLT2):
 #soln = sum_lists(LLT1, LLT2)
 #soln.print()
 
-LT1 = LinkedListT(10)
+#LT1 = LinkedListT(10)
 
 # for i in range(0,3):
 #     LT1.prepend(i)
 #     LT1.append(i)
 
-LT1.print()
+# LT1.print(3)
 
-print(LT1.isPalindrome())
+#print(LT1.isPalindrome())
+
+# LT = LinkedListT(10, circular=True)
+# LT.print(20)
+# isloop, node = LT.loop_detection()
+# print(isloop)
+# if isloop:
+#     print(node.data)
+
+# LT2 = LinkedListT(10, circular=False)
+# LT2.print()
+# isloop, node = LT2.loop_detection()
+# print(isloop)
+# if isloop:
+#     print(node.data)
+
+# LT3 = LinkedListT(10, circular=True, k=3)
+# LT3.print(20)
+# isloop, node = LT3.loop_detection()
+# print(isloop)
+# if isloop:
+#     print(node.data)
+
+

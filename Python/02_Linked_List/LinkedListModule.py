@@ -8,12 +8,20 @@ class Node:
 
 class LinkedList:
 
-    def print(self):
+    def print(self, length=None):
         temp = self.head
-        while(temp is not None):
-            print(str(temp.data) + " ", end='')
-            temp = temp.next
-        print("\n")
+        if length is not None:
+            count = 0
+            while(temp is not None and count < length):
+                print(str(temp.data) + " ", end='')
+                temp = temp.next
+                count += 1
+            print("\n")
+        else:
+            while(temp is not None):
+                print(str(temp.data) + " ", end='')
+                temp = temp.next
+            print("\n")
         return
 
 
@@ -121,7 +129,6 @@ class LinkedList:
                 if not passed:
                     prev = temp
                     temp = temp.next
-                    
                 else:
                     prev.next = temp.next
                     temp.next = self.head
@@ -153,11 +160,38 @@ class LinkedList:
         n2 = rev.head
         while(n1 is not None):
             if (n1.data != n2.data):
-                print("n1 : " + str(n1.data) + " n2 : " + str(n2.data))
+                #print("n1 : " + str(n1.data) + " n2 : " + str(n2.data))
                 return False
             n1 = n1.next
             n2 = n2.next
         return True
+
+    def loop_detection(self):
+        if self.head is None:
+            print("List is empty")
+            return False, None
+        n1 = self.head
+        n2 = self.head
+        passed = False
+
+        while (n1 is not None and n2 is not None):
+            if n1 == n2:
+                if not passed:
+                    passed = True
+                else: # loop detected
+                    n1 = self.head
+                    while(n1 != n2):
+                        n1 = n1.next
+                        n2 = n2.next
+                    return True, n1
+            n1 = n1.next
+            n2 = n2.next
+            if (n2 is not None):
+                n2 = n2.next
+            else:
+                return False, None # tail reached, no loop
+        return False, None # tail reached, no loop
+
 
 
 # the node given is not the first nor last node of the list
