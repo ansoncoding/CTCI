@@ -5,7 +5,7 @@ class LinkedListT(LinkedListModule.LinkedList):
     def append(self, data):
         if self.head is None:
             self.head = LinkedListModule.Node(data)
-            self.head = self.tail
+            self.tail = self.head
             self.length += 1
             return
         temp = LinkedListModule.Node(data)
@@ -20,9 +20,10 @@ class LinkedListT(LinkedListModule.LinkedList):
             self.length = 0
             self.tail = None
             for i in range(0, list_length):
+                print(str(i))
                 self.append(i)
         else:
-            LinkedListModule.LinkedList.__init__(self, list_length)
+            LinkedListModule.LinkedList.__init__(self)
             self.tail = None
             self.length = 0
 
@@ -86,11 +87,11 @@ def sum_lists(LLT1, LLT2):
 #soln = sum_lists(LLT1, LLT2)
 #soln.print()
 
-LT1 = LinkedListT()
+LT1 = LinkedListT(10)
 
-for i in range(0,3):
-    LT1.prepend(i)
-    LT1.append(i)
+# for i in range(0,3):
+#     LT1.prepend(i)
+#     LT1.append(i)
 
 LT1.print()
 

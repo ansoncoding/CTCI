@@ -128,6 +128,9 @@ class LinkedList:
         return retval
     
     def isPalindrome(self):
+        if(self.head is None):
+            print("List is empty")
+            return False
         rev = self.reverse()
         rev.print()
         n1 = self.head
