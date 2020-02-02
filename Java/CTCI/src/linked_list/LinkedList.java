@@ -43,6 +43,18 @@ public class LinkedList {
 		System.out.println();
 	}
 	
+	// to print circular lists, give option to print first <len> nodes
+	public void print(int len) {
+		Node temp = head;
+		int count = 0;
+		while(temp != null && count < len) {
+			System.out.print(temp.data + " ");
+			temp = temp.next;
+			count++;
+		}
+		System.out.println();
+	}
+	
 	public void remove_dups() {
 		if (head == null) {
 			return;
@@ -85,15 +97,15 @@ public class LinkedList {
 		}
 	}
 	
-	public boolean kth_last_node(int k, Node retval) {
+	public Node kth_last_node(int k) {
 		if (k == 0) {
 			System.out.println("K cannot be 0");
-			return false;
+			return null;
 		}
 		
 		if (head == null) {
 			System.out.println("List is empty, cannot return " + k + "th element");
-			return false;
+			return null;
 		}
 		
 		Node to_end = head;
@@ -107,15 +119,14 @@ public class LinkedList {
 		
 		if (count < k) {
 			System.out.println("List is " + count + " elements long, cannot return " + k + "th element");
-			return false;
+			return null;
 		}
 		
 		while (to_end != null) {
 			to_end = to_end.next;
 			kth_last = kth_last.next;		
 		}
-		kth_last.copy(retval);
-		return true;
+		return kth_last;
 	}
 	
 	public void partition(int k) {
@@ -141,6 +152,35 @@ public class LinkedList {
 			}
 		}
 	}
+	public Node loop_detection() {
+		Node n1 = head;
+		Node n2 = head;
+		boolean passed = false;
+		while(n1 != null && n2 != null) {
+			if (n1 == n2) {
+				if (!passed) { // we're starting at head so they're going to collide at least once
+					passed = true;
+				} else {
+					// loop detected
+					n1 = head;
+					while(n1 != n2) {
+						n1 = n1.next;
+						n2 = n2.next;
+					}
+					return n1;
+				}
+			}
+			n1 = n1.next; // n1 increment by 1
+			n2 = n2.next; // n2 increment by 2 
+			if (n2 != null) { // watch out for loop ending here, unchecked by "while"
+				n2 = n2.next; 
+			} else {
+				return null; // tail reached, no loop exists
+			}
+		}
+		return null; // tail reached, no loop exists
+	}
+	
 	// node cannot be head or last element
 	public static void remove_middle_node(Node n) {
 		Node temp = n.next;
@@ -198,5 +238,11 @@ public class LinkedList {
 		}
 		ll.print();
 		System.out.println(ll.isPalindrome());
+		Node retval = ll.kth_last_node(5);
+		if (retval == null) {
+			System.out.println("Could not find node");
+		} else {
+			System.out.println(retval.data);
+		}
 	}
 }

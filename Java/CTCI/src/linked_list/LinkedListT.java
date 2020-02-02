@@ -12,6 +12,23 @@ public class LinkedListT extends LinkedList {
 			append(i);
 		}
 	}
+	// creates circular list with k nodes in the beginning
+	public LinkedListT(int len, int circular_k) {
+		for (int i= 0 ; i < len ; i++) {
+			append(i);
+		}
+		
+		int k = circular_k % len; // in case user passes k greater than len
+		int count = 0;
+		Node temp = head;
+		
+		while(temp != null && count < k) {
+			temp = temp.next;
+			count++;
+		}
+		tail.next = temp;
+	}
+	
 	public void append(int data) {
 		if (head == null) {
 			head = new Node(data);
@@ -30,6 +47,7 @@ public class LinkedListT extends LinkedList {
 		tail = temp;
 		length++;
 	}
+	
 	public static LinkedListT sumLists(LinkedListT l1, LinkedListT l2) {
 		Node n1 = l1.head;
 		Node n2 = l2.head;
@@ -63,10 +81,24 @@ public class LinkedListT extends LinkedList {
 	}
 	
 	public static void main(String[] args) {
-		LinkedListT LLT1 = new LinkedListT(10);
-		LLT1.print();
-		LLT1.reverse_in_place();
-		LLT1.print();
+		LinkedListT LLT1 = new LinkedListT(10, 11);
+		LLT1.print(20);
+		
+		Node retval = LLT1.loop_detection();
+		if (retval == null) {
+			System.out.println("No loop found");
+		} else {
+			System.out.println("Loop found, node val is " + retval.data);
+		}
+		
+		LinkedList LL = new LinkedList(10);
+		LL.print();
+		retval = LL.loop_detection();
+		if (retval == null) {
+			System.out.println("No loop found");
+		} else {
+			System.out.println("Loop found, node val is " + retval.data);
+		}
 		
 	}
 
