@@ -38,7 +38,7 @@ int main() {
     //LinkedListT LLT_sum_r =  LLT_sum.reverse();
     //LLT_sum_r.print();
 
-    LinkedListT ll = LinkedListT();
+    /*LinkedListT ll = LinkedListT();
     for (int i = 0; i < 4; i++){
         ll.prepend(i);
         ll.append(i);
@@ -55,7 +55,23 @@ int main() {
     }
     
     ll1.print();
-    cout << ll1.is_palindrome() << endl;
+    cout << ll1.is_palindrome() << endl;*/
 
+
+    Node * retval;
+
+    LinkedListT cir = LinkedListT(10, true);
+    cir.print(20);
+    bool isloop = loop_detection(cir, &retval);
+    cout << "is loop? " << isloop << endl;
+    if (isloop)
+        cout << retval->data << endl;
+
+    LinkedList ll = LinkedList(10);
+    ll.print();
+    isloop = loop_detection(ll, &retval);
+    cout << "is loop? " << isloop << endl;
+    if (isloop)
+        cout << retval->data << endl;
     system("pause");
 }

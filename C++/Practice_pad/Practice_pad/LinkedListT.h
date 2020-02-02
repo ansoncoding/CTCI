@@ -11,12 +11,16 @@ public:
     LinkedListT(){
         LinkedList();
     }
-    LinkedListT(int len){
+    LinkedListT(int len, bool circular=false){
         for (int i = 0; i < len; i++) {
-            append(len-i);
+            append(i);
             //print();
         }
+        if (circular) {
+            tail->next = head;
+        }
     }
+    
     Node * getHead() {
         return head;
     }

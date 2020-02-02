@@ -17,8 +17,6 @@ public:
 };
 
 
-void delete_middle_node(Node * n);
-
 class LinkedList {
     
 protected:
@@ -40,6 +38,12 @@ public:
                 prepend(val);
                 
             }
+        }
+        Node * getHead() {
+            return head;
+        }
+        Node * getNext(Node * current) {
+            return current->next;
         }
         LinkedList reverse() {
             Node * temp = head;
@@ -76,6 +80,20 @@ public:
                 while (temp != NULL)  {
                     cout << temp->data << " ";
                     temp = temp->next;
+                }
+                cout << endl;
+            }
+        }
+        void print(int len) {  
+            if (head == NULL) {
+                cout << "Linked list is empty" << endl;
+            } else {
+                Node * temp = head;
+                int count = 0;
+                while (temp != NULL && count < len)  {
+                    cout << temp->data << " ";
+                    temp = temp->next;
+                    count++;
                 }
                 cout << endl;
             }
@@ -259,5 +277,10 @@ public:
             return true;
         }
 };
+
+
+bool loop_detection(LinkedList l1, Node** retval);
+bool is_intersecting(LinkedList l1, LinkedList l2);
+void delete_middle_node(Node * n);
 
 #endif
