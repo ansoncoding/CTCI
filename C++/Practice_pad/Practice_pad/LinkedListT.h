@@ -31,19 +31,16 @@ public:
         return (current == NULL);
     }
     void append(int data) {
-        //cout << "Data " << data << endl;
+        
         if (head == NULL) {
-            //cout << "1" << endl;
             head = new Node(data);
             head->next = tail;
             length++;
             return;
         }
         if (tail == NULL) {
-            //cout << "2 " << head->next << endl;
             tail = new Node(data);
             head->next = tail;
-            //cout << "2 " << head->next << endl;
             length++;
             return;
         }
@@ -78,7 +75,6 @@ public:
         }
         return retval;
     }
- 
 };
 
 LinkedListT sum_lists(LinkedListT l1, LinkedListT l2);

@@ -32,27 +32,25 @@ bool loop_detection(LinkedList l, Node ** retval) {
         
         if (p2 == p1) { 
             
-            if (!firstpass) {
+            if (!firstpass) { // because both pointers are starting at head, they gonna collide at the beginning
                 firstpass = true;
-            }
-            else {
+            } else {
                 // there is a loop 
                 p1 = l.getHead();
 
                 int count = 0;
                 while (p1 != p2) {
-                    cout << "while" << endl;
-                    p1 = l.getNext(p1);
+                    p1 = l.getNext(p1); // keep going, if they collide again it's gonna be the node that's the start of the loop
                     p2 = l.getNext(p2);
                 }
                 *retval = p1;
                 return true;
             }
         }
-        p1 = l.getNext(p1);
-        p2 = l.getNext(p2);
+        p1 = l.getNext(p1); // increment p1 by 1
+        p2 = l.getNext(p2); // increment p2 by 2
 
-        if (p2 != NULL) {
+        if (p2 != NULL) { // remember to check that p2 is not null! since we're increment by 2 at once
             p2 = l.getNext(p2);
         }
         else {
@@ -60,5 +58,4 @@ bool loop_detection(LinkedList l, Node ** retval) {
         }
     }
     return false; // if a pointer gets to tail means there's no loop
-
 }
