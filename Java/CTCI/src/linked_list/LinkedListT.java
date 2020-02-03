@@ -31,6 +31,7 @@ public class LinkedListT extends LinkedList {
 	
 	public void setTail(Node n) {
 		tail.next = n;
+		tail = tail.next;
 	}
 	
 	public void append(int data) {
@@ -101,9 +102,10 @@ public class LinkedListT extends LinkedList {
 		LinkedListT ll1 = new LinkedListT(10);
 		LinkedListT ll2 = new LinkedListT(1);
 		LinkedListT ll3 = new LinkedListT(3);
-		Node n = ll1.kth_last_node(10);
+		Node n = ll1.kth_last_node(5);
 		if (n != null) {
 			ll2.setTail(n);
+			ll2.append(13);
 			ll2.print();
 		}
 		Node ret = isIntersecting(ll1, ll2);

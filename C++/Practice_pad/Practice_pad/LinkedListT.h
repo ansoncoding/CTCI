@@ -30,6 +30,7 @@ public:
     }
     void setTailNext(Node * node) {
         tail->next = node;
+        tail = tail->next;
     }
     bool isTail(Node * current) {
         return (current == NULL);
@@ -37,14 +38,9 @@ public:
     void append(int data) {
         
         if (head == NULL) {
+            cout << "head is null" << endl;
             head = new Node(data);
-            head->next = tail;
-            length++;
-            return;
-        }
-        if (tail == NULL) {
-            tail = new Node(data);
-            head->next = tail;
+            tail = head;
             length++;
             return;
         }
@@ -57,11 +53,7 @@ public:
     void prepend(int data) {
         if (head== NULL) {
             head = new Node(data);
-            head->next = tail;
-
-        } else if (tail == NULL) {
-
-            tail = new Node(data);
+            tail = head;
 
         } else {
             Node * temp =  new Node(data); 

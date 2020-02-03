@@ -70,11 +70,13 @@ int main() {
         cout << retval->data << endl;*/
 
     LinkedListT l1 = LinkedListT(10);
-    LinkedListT l2 = LinkedListT(3);
+    LinkedListT l2 = LinkedListT(1);
     LinkedListT l3 = LinkedListT(12);
     Node * middle_node;
     if (l1.kth_last_element(1, &middle_node)){
         l2.setTailNext(middle_node);
+        //l2.prepend(3);
+        l2.append(3);
     }
     l1.print();
     l2.print();

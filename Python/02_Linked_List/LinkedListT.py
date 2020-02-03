@@ -15,6 +15,10 @@ class LinkedListT(LinkedListModule.LinkedList):
         return
 
 
+    def setTail(self, node):
+        self.tail.next = node
+        self.tail = ll2.tail.next
+
     def __init__(self, list_length=None, circular=False, k=None):
         if list_length is not None:
             self.head = None
@@ -136,12 +140,15 @@ def sum_lists(LLT1, LLT2):
 
 ll1 = LinkedListT(10)
 ll2 = LinkedListT(4)
+ll2.append(50)
 ll1.print()
 ll2.print()
 ret, node = ll1.kth_last_node(10)
 if (ret):
-    ll2.tail.next = node
+    ll2.setTail(node)
+    ll2.append(30)
     ll2.print()
+    ll1.print() # by appending 30 to the end of l1 and l2, l1 is now only 0, 30
 
 ret, node = LinkedListModule.is_intersecting(ll1, ll2)
 if (ret):

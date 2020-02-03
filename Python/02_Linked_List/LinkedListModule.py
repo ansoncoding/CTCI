@@ -220,7 +220,7 @@ def is_intersecting(l1, l2):
         len2 += 1
 
     if (t1_prev != t2_prev): # compare tails
-        return False
+        return False, None
 
     if (len1 != len2):
         len_diff = abs(len2 - len1)
@@ -237,7 +237,7 @@ def is_intersecting(l1, l2):
             return True, n1
         else:
             print("kth_last_node failed")
-            return False
+            return False, None
     else: #lengths are the same
         n1 = l1.head
         n2 = l2.head
