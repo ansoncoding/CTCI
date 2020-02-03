@@ -1,7 +1,7 @@
-#include "LinkedList.h"
-#include "LinkedListT.h"
+//#include "LinkedList.h"
+//#include "LinkedListT.h"
 
-int main() {
+//int main() {
 
     //LinkedList LL1 = LinkedList(10);
     //LL1.print();
@@ -69,30 +69,30 @@ int main() {
     if (isloop)
         cout << retval->data << endl;*/
 
-    LinkedListT l1 = LinkedListT(10);
-    LinkedListT l2 = LinkedListT(1);
-    LinkedListT l3 = LinkedListT(12);
-    Node * middle_node;
-    if (l1.kth_last_element(1, &middle_node)){
-        l2.setTailNext(middle_node);
-        //l2.prepend(3);
-        l2.append(3);
-    }
-    l1.print();
-    l2.print();
+    //LinkedListT l1 = LinkedListT(10);
+    //LinkedListT l2 = LinkedListT(1);
+    //LinkedListT l3 = LinkedListT(12);
+    //Node * middle_node;
+    //if (l1.kth_last_element(1, &middle_node)){
+    //    l2.setTailNext(middle_node);
+    //    //l2.prepend(3);
+    //    l2.append(3);
+    //}
+    //l1.print();
+    //l2.print();
 
-    Node * retval;
-    if (is_intersecting(l1, l2, &retval)) {
-        cout << "Is intersecting, the node value is " << retval->data << endl;
-    } else {
-        cout << "Is not intersecting" << endl;
-    }
+    //Node * retval;
+    //if (is_intersecting(l1, l2, &retval)) {
+    //    cout << "Is intersecting, the node value is " << retval->data << endl;
+    //} else {
+    //    cout << "Is not intersecting" << endl;
+    //}
 
-    if (is_intersecting(l1, l3, &retval)) {
-        cout << "Is intersecting, the node value is " << retval->data << endl;
-    } else {
-        cout << "Is not intersecting" << endl;
-    }
+    //if (is_intersecting(l1, l3, &retval)) {
+    //    cout << "Is intersecting, the node value is " << retval->data << endl;
+    //} else {
+    //    cout << "Is not intersecting" << endl;
+    //}
 
-    system("pause");
-}
+    //system("pause");
+//}

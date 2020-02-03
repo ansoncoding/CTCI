@@ -36,7 +36,6 @@ public:
     void append(int data) {
         
         if (head == NULL) {
-            cout << "head is null" << endl;
             head = new Node(data);
             tail = head;
             length++;

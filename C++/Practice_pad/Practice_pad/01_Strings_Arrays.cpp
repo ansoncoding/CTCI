@@ -8,9 +8,9 @@
 #include "matrix_utils.h"
 #include "zero_matrix.h"
 #include "is_string_rotation.h"
+#include "HashTable.h"
 
-
-//int main() {
+int main() {
     //string s1 = "adbdb"; // true
     //string s2 = "1b";     // false
     //string s3 = "abbb"; // false
@@ -123,7 +123,27 @@
 
     s1 = "waterbottle";
     s2 = "terbottlewa";
-    cout << is_string_rotation(s1, s2)<< endl;
+    cout << is_string_rotation(s1, s2)<< endl;*/
+
+    HashTable ht = HashTable();
+    ht.insert("hi");
+    ht.insert("hello");
+    ht.insert("good");
+    ht.insert("terrible");
+    ht.insert("computer");
+    ht.insert("oh");
+    ht.insert("science");
+    ht.insert("coding");
+    ht.insert("insomnia");
+    ht.insert("geez");
+    ht.insert("oh no!");
+    ht.insert("love");
+    ht.print();
+    ht.remove("hi");
+    ht.remove("insomnia");
+    ht.print();
+    cout << ht.contains("hi") << endl;
+    cout << ht.contains("hello") << endl;
 
     system("pause");
-}*/
+}
