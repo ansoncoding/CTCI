@@ -9,6 +9,7 @@
 #include "zero_matrix.h"
 #include "is_string_rotation.h"
 #include "HashTable.h"
+#include "ArrayList.h"
 
 int main() {
     //string s1 = "adbdb"; // true
@@ -125,7 +126,7 @@ int main() {
     s2 = "terbottlewa";
     cout << is_string_rotation(s1, s2)<< endl;*/
 
-    HashTable ht = HashTable();
+    /*HashTable ht = HashTable();
     ht.insert("hi");
     ht.insert("hello");
     ht.insert("good");
@@ -144,6 +145,19 @@ int main() {
     ht.print();
     cout << ht.contains("hi") << endl;
     cout << ht.contains("hello") << endl;
-    ht.delete_ht();
+    ht.delete_ht();*/
+
+
+    ArrayList al = ArrayList();
+    for (int i = 0; i < 20; i++){
+        al.add(i);
+    }
+    al.print();
+    cout << "Capacity: " << al.getCapacity() << " size: " << al.getSize() << endl;
+    if (al.remove(20)) {
+        al.print();
+        cout << "Capacity: " << al.getCapacity() << " size: " << al.getSize() << endl;
+    }
+
     system("pause");
 }
