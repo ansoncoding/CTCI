@@ -51,6 +51,14 @@ public:
         }
         cout << endl;
     }
+    void delete_ht() {
+        for (int i = 0; i < capacity; i++) {
+            if (!arraylist[i].isEmpty()) {
+                arraylist[i].delete_ll();
+            }
+        }
+        delete arraylist;
+    }
 }
 
 #endif

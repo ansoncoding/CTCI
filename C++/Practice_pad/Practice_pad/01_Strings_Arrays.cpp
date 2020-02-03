@@ -144,6 +144,6 @@ int main() {
     ht.print();
     cout << ht.contains("hi") << endl;
     cout << ht.contains("hello") << endl;
-
+    ht.delete_ht();
     system("pause");
 }

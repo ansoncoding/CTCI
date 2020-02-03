@@ -110,6 +110,20 @@ public:
             return (head == NULL);
         }
 
+        void delete_ll() {
+
+            if (head != NULL && head->next != NULL) {
+                Node * temp = head->next;
+                Node * prev = head;
+                while (temp != NULL) {
+                    prev->next = temp->next;
+                    delete temp;
+                    temp = prev->next;
+                }
+            }
+            if (head != NULL)
+                delete head;
+        }
 };
 
 #endif
