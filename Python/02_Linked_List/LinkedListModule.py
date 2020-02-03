@@ -202,6 +202,50 @@ def remove_middle_node(n):
     return
 
 
+def is_intersecting(l1, l2):
+    t1 = l1.head
+    t1_prev = None
+    t2 = l2.head
+    t2_prev = None
+    len1 = 0
+    len2 = 0
+    while t1 is not None:
+        t1_prev = t1
+        t1 = t1.next
+        len1+= 1
+        
+    while t2 is not None:
+        t2_prev = t2
+        t2 = t2.next
+        len2 += 1
+
+    if (t1_prev != t2_prev): # compare tails
+        return False
+
+    if (len1 != len2):
+        len_diff = abs(len2 - len1)
+        longer = l1 if len1 > len2 else l2
+        shorter = l2 if len1 > len2 else l1
+        k = (len1 if len1 > len2 else len2) - len_diff
+        ret, node = longer.kth_last_node(k)
+        if ret:
+            n1 = node
+            n2 = shorter.head
+            while n1 != n2:
+                n1 = n1.next
+                n2 = n2.next
+            return True, n1
+        else:
+            print("kth_last_node failed")
+            return False
+    else: #lengths are the same
+        n1 = l1.head
+        n2 = l2.head
+        while n1!= n2:
+            n1 = n1.next
+            n2 = n2.next
+        return True, n1
+
 #================================================================================
 
 # l1 = LinkedList(10)
@@ -228,3 +272,5 @@ def remove_middle_node(n):
 #     l1.prepend(i)
 # l1.print()
 # print(l1.isPalindrome())
+
+

@@ -134,3 +134,17 @@ def sum_lists(LLT1, LLT2):
 #     print(node.data)
 
 
+ll1 = LinkedListT(10)
+ll2 = LinkedListT(4)
+ll1.print()
+ll2.print()
+ret, node = ll1.kth_last_node(10)
+if (ret):
+    ll2.tail.next = node
+    ll2.print()
+
+ret, node = LinkedListModule.is_intersecting(ll1, ll2)
+if (ret):
+    print("Is intersecting, the intersecting node value is " + str(node.data))
+else:
+    print("Is not intersecting")
