@@ -32,9 +32,7 @@ public:
         tail->next = node;
         tail = tail->next;
     }
-    bool isTail(Node * current) {
-        return (current == NULL);
-    }
+
     void append(int data) {
         
         if (head == NULL) {
