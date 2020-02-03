@@ -204,6 +204,54 @@ public class LinkedList {
 			temp = temp.next;
 		}
 	}
+	public static Node isIntersecting(LinkedList l1, LinkedList l2) {
+		Node t1 = l1.head;
+		Node t2 = l2.head;
+		Node t1_prev = null;
+		Node t2_prev = null;
+		int len1 = 0;
+		int len2 = 0;
+		while (t1 != null) {
+			t1_prev = t1;
+			t1 = t1.next;
+			len1++;
+		}
+			
+		while(t2 != null) {
+			t2_prev = t2;
+			t2 = t2.next;
+			len2++;
+		}
+		if (t1_prev != t2_prev ) {
+			return null;
+		}
+		int len_diff = Math.abs(len1 - len2);
+		Node n1;
+		Node n2;
+		if (len_diff != 0) {
+			LinkedList longer = len1 > len2 ? l1 : l2;
+			LinkedList shorter = len1 > len2? l2 : l1;
+			int k = (len1 > len2 ? len1 : len2) - len_diff;
+			n1 = longer.kth_last_node(k);
+			if (n1 == null) {
+				System.out.println("kth_last_node failed");
+				return null;
+			} else {
+				n2 = shorter.head;
+			}
+		} else {
+			n1 = l1.head;
+			n2 = l2.head;
+		}
+		while(n1 != null && n2 != null) {
+			if (n1 == n2) {
+				return n1;
+			}
+			n1 = n1.next;
+			n2 = n2.next;
+		}
+		return null;
+	}
 	public boolean isPalindrome() {
 		if (head == null) {
 			System.out.println("The list is empty");

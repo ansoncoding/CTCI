@@ -29,19 +29,18 @@ public class LinkedListT extends LinkedList {
 		tail.next = temp;
 	}
 	
+	public void setTail(Node n) {
+		tail.next = n;
+	}
+	
 	public void append(int data) {
 		if (head == null) {
 			head = new Node(data);
-			head.next = tail;
+			tail = head;
 			length++;
 			return;
 		}
-		if (tail == null) {
-			tail = new Node(data);
-			head.next = tail;
-			length++;
-			return;
-		}
+
 		Node temp = new Node(data);
 		tail.next = temp;
 		tail = temp;
@@ -81,23 +80,44 @@ public class LinkedListT extends LinkedList {
 	}
 	
 	public static void main(String[] args) {
-		LinkedListT LLT1 = new LinkedListT(10, 11);
-		LLT1.print(20);
-		
-		Node retval = LLT1.loop_detection();
-		if (retval == null) {
-			System.out.println("No loop found");
+//		LinkedListT LLT1 = new LinkedListT(10, 11);
+//		LLT1.print(20);
+//		
+//		Node retval = LLT1.loop_detection();
+//		if (retval == null) {
+//			System.out.println("No loop found");
+//		} else {
+//			System.out.println("Loop found, node val is " + retval.data);
+//		}
+//		
+//		LinkedList LL = new LinkedList(10);
+//		LL.print();
+//		retval = LL.loop_detection();
+//		if (retval == null) {
+//			System.out.println("No loop found");
+//		} else {
+//			System.out.println("Loop found, node val is " + retval.data);
+//		}
+		LinkedListT ll1 = new LinkedListT(10);
+		LinkedListT ll2 = new LinkedListT(1);
+		LinkedListT ll3 = new LinkedListT(3);
+		Node n = ll1.kth_last_node(10);
+		if (n != null) {
+			ll2.setTail(n);
+			ll2.print();
+		}
+		Node ret = isIntersecting(ll1, ll2);
+		if (ret != null ) {
+			System.out.println("Is intersecting, intersecting node val is " + n.data);
 		} else {
-			System.out.println("Loop found, node val is " + retval.data);
+			System.out.println("Is not interesecting");
 		}
 		
-		LinkedList LL = new LinkedList(10);
-		LL.print();
-		retval = LL.loop_detection();
-		if (retval == null) {
-			System.out.println("No loop found");
+		ret = isIntersecting(ll3, ll2);
+		if (ret != null ) {
+			System.out.println("Is intersecting, intersecting node val is " + n.data);
 		} else {
-			System.out.println("Loop found, node val is " + retval.data);
+			System.out.println("Is not interesecting");
 		}
 		
 	}
