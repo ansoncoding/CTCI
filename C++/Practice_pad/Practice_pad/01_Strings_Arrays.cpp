@@ -10,6 +10,7 @@
 #include "is_string_rotation.h"
 #include "HashTable.h"
 #include "ArrayList.h"
+#include "StringBuilder.h"
 
 int main() {
     //string s1 = "adbdb"; // true
@@ -126,38 +127,46 @@ int main() {
     s2 = "terbottlewa";
     cout << is_string_rotation(s1, s2)<< endl;*/
 
-    /*HashTable ht = HashTable();
-    ht.insert("hi");
-    ht.insert("hello");
-    ht.insert("good");
-    ht.insert("terrible");
-    ht.insert("computer");
-    ht.insert("oh");
-    ht.insert("science");
-    ht.insert("coding");
-    ht.insert("insomnia");
-    ht.insert("geez");
-    ht.insert("oh no!");
-    ht.insert("love");
-    ht.print();
-    ht.remove("hi");
-    ht.remove("insomnia");
-    ht.print();
-    cout << ht.contains("hi") << endl;
-    cout << ht.contains("hello") << endl;
-    ht.delete_ht();*/
+    //HashTable ht = HashTable();
+    //ht.insert("hi");
+    //ht.insert("hello");
+    //ht.insert("good");
+    //ht.insert("terrible");
+    //ht.insert("computer");
+    //ht.insert("oh");
+    //ht.insert("science");
+    //ht.insert("coding");
+    //ht.insert("insomnia");
+    //ht.insert("geez");
+    //ht.insert("oh no!");
+    //ht.insert("love");
+    //ht.print();
+    //ht.remove("hi");
+    //ht.remove("insomnia");
+    //ht.print();
+    //cout << ht.contains("hi") << endl;
+    //cout << ht.contains("hello") << endl;
+    //ht.delete_ht();
 
 
-    ArrayList al = ArrayList();
-    for (int i = 0; i < 20; i++){
-        al.add(i);
-    }
-    al.print();
-    cout << "Capacity: " << al.getCapacity() << " size: " << al.getSize() << endl;
-    if (al.remove(20)) {
-        al.print();
-        cout << "Capacity: " << al.getCapacity() << " size: " << al.getSize() << endl;
-    }
+    //ArrayList al = ArrayList();
+    //for (int i = 0; i < 20; i++){
+    //    al.add(i);
+    //}
+    //al.print();
+    //cout << "Capacity: " << al.getCapacity() << " size: " << al.getSize() << endl;
+    //if (al.remove(20)) {
+    //    al.print();
+    //    cout << "Capacity: " << al.getCapacity() << " size: " << al.getSize() << endl;
+    //}
+
+    StringBuilder sb = StringBuilder(); 
+    sb.append("hello");
+    sb.append(" how");
+    sb.append(" are");
+    sb.append(" you");
+    cout << sb.toString() << endl;
+    sb.delete_all();
 
     system("pause");
 }

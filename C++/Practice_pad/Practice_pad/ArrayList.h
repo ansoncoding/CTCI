@@ -13,16 +13,20 @@ private:
 public:
     ArrayList() {
         arraylist = new int[initial_capacity];
+        memset(arraylist, 0, initial_capacity*sizeof(int));
     }
     
     void add(int data) {
         if (size == current_capacity) {
             int * newarraylist = new int[current_capacity * resizing_factor];
+            current_capacity *= resizing_factor;
+            memset(newarraylist, 0, current_capacity * sizeof(int));
+
             for (int i = 0; i < size; i++){
                 newarraylist[i] = arraylist[i];
             }
-            current_capacity *= resizing_factor;
-            delete arraylist;
+            
+            delete[] arraylist;
             arraylist = newarraylist;
             arraylist[size] = data;
             size++;

@@ -59,6 +59,7 @@ public:
         }
         length++;
     }
+
     LinkedListT reverse() {
         Node * temp = head;
         LinkedListT retval = LinkedListT();

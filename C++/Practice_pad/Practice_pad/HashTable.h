@@ -57,7 +57,7 @@ public:
                 arraylist[i].delete_ll();
             }
         }
-        delete arraylist;
+        delete[] arraylist;
     }
 };
 
