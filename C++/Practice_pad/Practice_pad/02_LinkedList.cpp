@@ -8,11 +8,6 @@ int main() {
     //LL1.remove_duplicates2();
     //LL1.print();
     //
-    //int ret;
-    //bool is_answer = LL1.kth_last_element2(4, ret);
-    //if (is_answer) {
-    //    cout << ret << endl;
-    //}
     //Node * retval;
     //is_answer = LL1.kth_last_node(3, &retval);
     //if (is_answer) {
@@ -58,7 +53,7 @@ int main() {
     cout << ll1.is_palindrome() << endl;*/
 
 
-    Node * retval;
+    /*Node * retval;
 
     LinkedListT cir = LinkedListT(10, true);
     cir.print(20);
@@ -72,6 +67,30 @@ int main() {
     isloop = loop_detection(ll, &retval);
     cout << "is loop? " << isloop << endl;
     if (isloop)
-        cout << retval->data << endl;
+        cout << retval->data << endl;*/
+
+    LinkedListT l1 = LinkedListT(10);
+    LinkedListT l2 = LinkedListT(3);
+    LinkedListT l3 = LinkedListT(12);
+    Node * middle_node;
+    if (l1.kth_last_element(1, &middle_node)){
+        l2.setTailNext(middle_node);
+    }
+    l1.print();
+    l2.print();
+
+    Node * retval;
+    if (is_intersecting(l1, l2, &retval)) {
+        cout << "Is intersecting, the node value is " << retval->data << endl;
+    } else {
+        cout << "Is not intersecting" << endl;
+    }
+
+    if (is_intersecting(l1, l3, &retval)) {
+        cout << "Is intersecting, the node value is " << retval->data << endl;
+    } else {
+        cout << "Is not intersecting" << endl;
+    }
+
     system("pause");
 }

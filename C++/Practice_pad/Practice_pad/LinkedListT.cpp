@@ -32,9 +32,7 @@ LinkedListT sum_lists(LinkedListT l1, LinkedListT l2) {
     }
     if (prev_quotient > 0) {
         retval.append(prev_quotient);
-    }
-
- 
+    } 
     return retval;
 }
 

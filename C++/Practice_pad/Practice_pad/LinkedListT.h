@@ -24,8 +24,12 @@ public:
     Node * getHead() {
         return head;
     }
+    
     Node * getNext(Node * current) {
         return current->next;
+    }
+    void setTailNext(Node * node) {
+        tail->next = node;
     }
     bool isTail(Node * current) {
         return (current == NULL);

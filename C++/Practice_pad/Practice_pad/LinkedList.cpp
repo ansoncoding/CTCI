@@ -9,19 +9,6 @@ void delete_middle_node(Node * n){
     return;
 }
 
-bool is_intersecting(LinkedList l1, LinkedList l2) {
-    Node * n1 = l1.getHead();
-    Node * n2 = l2.getHead();
-    for (n1; n1 != NULL; n1 = l1.getNext(n1)) {
-        for (n2; n2 != NULL; n2 = l2.getNext(n2)) {
-            if (n1 == n2) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 bool loop_detection(LinkedList l, Node ** retval) {
     
     Node * p1 = l.getHead();
@@ -59,3 +46,61 @@ bool loop_detection(LinkedList l, Node ** retval) {
     }
     return false; // if a pointer gets to tail means there's no loop
 }
+
+bool is_intersecting(LinkedList l1, LinkedList l2, Node ** retval) {
+
+    Node * t1 = l1.getHead();
+    Node * t1_prev = NULL;
+    Node * t2 = l2.getHead();
+    Node * t2_prev = NULL;
+    int len1 = 0;
+    int len2 = 0;
+
+    while (t1 != NULL) {
+        t1_prev = t1;
+        t1 = l1.getNext(t1);
+        len1++;
+    }
+    while (t2 != NULL) {
+        t2_prev = t2;
+        t2 = l2.getNext(t2);
+        len2++;
+    }
+    if (t1_prev != t2_prev) { // tails are not equivalent
+        return false;
+    }
+    
+    int len_diff = abs(len2 - len1);
+
+    Node * n1 = NULL;
+    Node * n2 = NULL;
+
+    if (len_diff != 0) {
+        Node * temp = NULL;
+        temp = (len1 > len2 ? l1.getHead() : l2.getHead());
+        LinkedList  longer = (len1 > len2 ? l1 : l2);
+        for (int i = 0; i < len_diff; i++) {
+            temp = longer.getNext(temp);
+        }
+        if (len1 > len2) {
+            n1 = temp;
+            n2 = l2.getHead();
+        } else {
+            n1 = l1.getHead();
+            n2 = temp;
+        }
+    } else { // lists are same length
+        n1 = l1.getHead();
+        n2 = l2.getHead();
+    }
+    while (n1 != NULL && n2 != NULL) {
+        if (n2 == n1) {
+            *retval = n1;
+            return true;
+        }
+        n1 = l1.getNext(n1);
+        n2 = l2.getNext(n2);
+    }
+    return false;
+}
+
