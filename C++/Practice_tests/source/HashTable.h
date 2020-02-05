@@ -12,24 +12,38 @@ class HashTable {
 private:
     int capacity = 16;
     LinkedListS * arraylist;
-public:
-    HashTable() {
-        arraylist = new LinkedListS[capacity]; 
-    }
 
-    int hash(string s) {
+    int hash(string s) const {
         int hash_val = 0;
         for (int i = 0; i < s.length(); i++) {
             hash_val += s.at(i);
         }
         return hash_val;
     }
+
+public:
+    HashTable() {
+        arraylist = new LinkedListS[capacity]; 
+    }
+
+    HashTable(const HashTable & other){
+        copy(other);
+    }
+
+    void copy(const HashTable & other) {
+        capacity = other.capacity;
+        arraylist = new LinkedListS[capacity];
+        for (int i = 0; i < capacity; i++) {
+            arraylist[i].copy(other.arraylist[i]);
+        }
+    }
+
     void insert(string s) {
         int index = hash(s) % capacity;
         arraylist[index].prepend(s);
     }
 
-    bool contains(string s) {
+    bool contains(string s) const {
         int index = hash(s) % capacity;
         return arraylist[index].contains(s);
     }
@@ -41,7 +55,7 @@ public:
         }
     }
 
-    void print() {
+    void print() const {
         for (int i = 0; i < capacity; i++) {
             
             if (!arraylist[i].isEmpty()) {
@@ -51,13 +65,14 @@ public:
         }
         cout << endl;
     }
-    void delete_ht() {
+    ~HashTable() {
         for (int i = 0; i < capacity; i++) {
             if (!arraylist[i].isEmpty()) {
-                arraylist[i].delete_ll();
+                arraylist[i].~LinkedListS();
             }
         }
         delete[] arraylist;
+        arraylist = NULL;
     }
 };
 

@@ -11,6 +11,20 @@ public:
     LinkedListT(){
         LinkedList();
     }
+    void copy(const LinkedListT& other) {
+        
+        length = other.length;
+        Node * temp = other.head;
+        while (temp != NULL){
+            append(temp->data);
+            temp = temp->next;
+        }
+    }
+    LinkedListT(const LinkedListT& other){
+        copy(other);
+    }
+
+
     LinkedListT(int len, bool circular=false){
         for (int i = 0; i < len; i++) {
             append(i);
@@ -68,6 +82,17 @@ public:
             temp = temp->next;
         }
         return retval;
+    }
+    ~LinkedListT() {
+        Node * current = head;
+        Node * next;
+        while (current != NULL) {
+            next = current->next;
+            delete current;
+            current = next;
+        }
+        head = NULL;
+        tail = NULL;
     }
 };
 

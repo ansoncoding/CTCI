@@ -30,7 +30,23 @@ public:
             length = 0;
         }
         
-        int getLength() {
+        LinkedListS(const LinkedListS & other){
+            copy(other);
+        }
+
+        void copy(const LinkedListS & other){
+            length = other.length;
+            Node * from = other.head;
+            Node * to = head;
+            while (from != NULL) {
+                to = new Node(from->data);
+                to->next = from->next;
+                from = from->next;
+                to = to->next;
+            }
+        }
+        
+        int getLength() const {
             return length;
         }
 
@@ -47,7 +63,7 @@ public:
             //print();
         }
 
-        void print() {  
+        void print() const {  
             if (head == NULL) {
                 cout << "Linked list is empty" << endl;
             } else {
@@ -59,7 +75,7 @@ public:
                 cout << endl;
             }
         }
-        void print(int len) {  
+        void print(int len) const {  
             if (head == NULL) {
                 cout << "Linked list is empty" << endl;
             } else {
@@ -74,7 +90,7 @@ public:
             }
         }
 
-        bool contains(string s) {
+        bool contains(string s) const {
             Node * temp = head;
             while (temp != NULL){
                 if (temp->data.compare(s) == 0) {
@@ -106,23 +122,23 @@ public:
                 }
             }
         }
-        bool isEmpty() {
+        bool isEmpty() const {
             return (head == NULL);
         }
 
-        void delete_ll() {
+        ~LinkedListS() {
+            if (head == NULL)
+                return;
 
-            if (head != NULL && head->next != NULL) {
-                Node * temp = head->next;
-                Node * prev = head;
-                while (temp != NULL) {
-                    prev->next = temp->next;
-                    delete temp;
-                    temp = prev->next;
-                }
-            }
-            if (head != NULL)
-                delete head;
+            Node * current = head;
+            Node * next;
+            while (current != NULL)  
+            {  
+                next = current->next;  
+                delete current;
+                current = next;  
+            }  
+            head = NULL;
         }
 };
 

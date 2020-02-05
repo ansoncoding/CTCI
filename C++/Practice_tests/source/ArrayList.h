@@ -37,13 +37,13 @@ public:
         }
     }
 
-    int getSize(){
+    int getSize() const {
         return size;
     }
-    int getCapacity() {
+    int getCapacity() const {
         return current_capacity;
     }
-    int get(int index) {
+    int get(int index) const {
         if (index < current_capacity)
             return arraylist[index];
         else {
@@ -61,13 +61,13 @@ public:
             return true;
         }
     }
-    void print(){
+    void print() const {
         for (int i = 0; i < size; i++){
             cout << arraylist[i] << " ";
         }
         cout << endl;
     }
-    bool isEmpty(){
+    bool isEmpty() const {
         return (size == 0);
     }
 
@@ -82,6 +82,9 @@ public:
             size--;
             return true;
         }
+    }
+    ~ArrayList() {
+        delete[] arraylist;
     }
 };
 

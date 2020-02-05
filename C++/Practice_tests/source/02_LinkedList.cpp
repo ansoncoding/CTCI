@@ -1,7 +1,9 @@
+#include "pch.h"
 //#include "LinkedList.h"
 //#include "LinkedListT.h"
 
 //int main() {
+    
 
     //LinkedList LL1 = LinkedList(10);
     //LL1.print();
@@ -9,7 +11,7 @@
     //LL1.print();
     //
     //Node * retval;
-    //is_answer = LL1.kth_last_node(3, &retval);
+    //bool is_answer = LL1.kth_last_node(3, &retval);
     //if (is_answer) {
     //    cout << retval->data << endl;
     //    delete_middle_node(retval);
@@ -69,30 +71,30 @@
     if (isloop)
         cout << retval->data << endl;*/
 
-    //LinkedListT l1 = LinkedListT(10);
-    //LinkedListT l2 = LinkedListT(1);
-    //LinkedListT l3 = LinkedListT(12);
-    //Node * middle_node;
-    //if (l1.kth_last_element(1, &middle_node)){
-    //    l2.setTailNext(middle_node);
-    //    //l2.prepend(3);
-    //    l2.append(3);
-    //}
-    //l1.print();
-    //l2.print();
-
-    //Node * retval;
-    //if (is_intersecting(l1, l2, &retval)) {
-    //    cout << "Is intersecting, the node value is " << retval->data << endl;
-    //} else {
-    //    cout << "Is not intersecting" << endl;
-    //}
-
-    //if (is_intersecting(l1, l3, &retval)) {
-    //    cout << "Is intersecting, the node value is " << retval->data << endl;
-    //} else {
-    //    cout << "Is not intersecting" << endl;
-    //}
-
-    //system("pause");
+//    LinkedListT l1 = LinkedListT(10);
+//    LinkedListT l2 = LinkedListT(1);
+//    LinkedListT l3 = LinkedListT(12);
+//    Node * middle_node;
+//    if (l1.kth_last_element(1, &middle_node)){
+//        l2.setTailNext(middle_node);
+//        //l2.prepend(3);
+//        l2.append(3);
+//    }
+//    l1.print();
+//    l2.print();
+//
+//    Node * retval;
+//    if (is_intersecting(l1, l2, &retval)) {
+//        cout << "Is intersecting, the node value is " << retval->data << endl;
+//    } else {
+//        cout << "Is not intersecting" << endl;
+//    }
+//
+//    if (is_intersecting(l1, l3, &retval)) {
+//        cout << "Is intersecting, the node value is " << retval->data << endl;
+//    } else {
+//        cout << "Is not intersecting" << endl;
+//    }
+//
+//    system("pause");
 //}

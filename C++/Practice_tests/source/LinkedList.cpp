@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "LinkedList.h"
 
 void delete_middle_node(Node * n){

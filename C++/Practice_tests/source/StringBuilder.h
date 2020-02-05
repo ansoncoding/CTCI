@@ -43,12 +43,13 @@ public:
             size += s.length();
         }
     }
-    string toString() {
+    string toString() const {
         return string(arraylist);
     }
 
-    void delete_all() {
+    ~StringBuilder() {
         delete[] arraylist;
+        arraylist = NULL;
     }
 };
 

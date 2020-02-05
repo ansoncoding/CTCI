@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "LinkedListT.h"
 
 LinkedListT sum_lists(LinkedListT l1, LinkedListT l2) {

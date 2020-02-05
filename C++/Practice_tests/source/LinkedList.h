@@ -39,13 +39,39 @@ public:
                 
             }
         }
-        Node * getHead() {
+        void copy(const LinkedList & other){
+            length = other.length;
+            Node * from = other.head;
+            Node * to = head;
+            while (from != NULL){
+                to = new Node(from->data);
+                to->next = from->next;
+                from = from->next;
+                to = to->next;
+            }
+        }
+
+        LinkedList(const LinkedList& other){
+            copy(other);
+        }
+
+        ~LinkedList() {
+            Node * current = head;
+            Node * next;
+            while (current != NULL) {
+                next = current->next;
+                delete current;
+                current = next;
+            }
+            head = NULL;
+        }
+        Node * getHead() const {
             return head;
         }
-        Node * getNext(Node * current) {
+        Node * getNext(Node * current) const {
             return current->next;
         }
-        LinkedList reverse() {
+        LinkedList reverse() const {
             Node * temp = head;
             LinkedList retval = LinkedList();
             while (temp != NULL) {
@@ -55,7 +81,7 @@ public:
             return retval;
         }
 
-        int getLength() {
+        int getLength() const {
             return length;
         }
 
@@ -72,7 +98,7 @@ public:
             //print();
         }
 
-        void print() {  
+        void print() const {  
             if (head == NULL) {
                 cout << "Linked list is empty" << endl;
             } else {
@@ -84,7 +110,7 @@ public:
                 cout << endl;
             }
         }
-        void print(int len) {  
+        void print(int len) const {  
             if (head == NULL) {
                 cout << "Linked list is empty" << endl;
             } else {
@@ -236,7 +262,7 @@ public:
                 }
             }
         }
-        bool is_palindrome(){
+        bool is_palindrome() const {
             LinkedList rev = reverse();
             Node * n1 = head;
             Node * n2 = rev.head;

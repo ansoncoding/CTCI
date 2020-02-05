@@ -1,9 +1,6 @@
 #ifndef IS_PERMUTATION_H // include guard
 #define IS_PERMUTATION_H
-#include <cstdio>
-#include <cstdlib>
 #include <string>
-#include <iostream>
 #include "string_utils.h"
 
 using namespace std;

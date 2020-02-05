@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "compress_string.h"
 
 string compress(string s) {

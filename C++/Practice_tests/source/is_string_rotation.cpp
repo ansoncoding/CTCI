@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "is_string_rotation.h"
 
 #include <cstdio>
