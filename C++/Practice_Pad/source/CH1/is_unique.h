@@ -1,7 +1,6 @@
 #ifndef IS_UNIQUE_H // include guard
 #define IS_UNIQUE_H
-#include <cstdio>
-#include <cstdlib>
+
 #include <string>
 
 using namespace std;

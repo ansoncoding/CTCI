@@ -1,6 +1,9 @@
 #ifndef ARRAY_LIST_H
 #define ARRAY_LIST_H
 
+#include <iostream>
+using namespace std;
+
 class ArrayList {
 
 private:
