@@ -1,10 +1,6 @@
 #include "pch.h"
 #include "is_string_rotation.h"
 
-#include <cstdio>
-#include <cstdlib>
-#include <iostream>
-
 // find out if
 bool is_substring(string src, string substr) {
     int len_src = src.length();
@@ -16,7 +12,7 @@ bool is_substring(string src, string substr) {
     
     for (int i = 0; i < len_diff+1; i++) {
         string test = src.substr(i, len_substr);
-        cout << "test " << test << endl;
+
         if (test.compare(substr) == 0)
             return true;
     }
@@ -30,6 +26,6 @@ bool is_string_rotation(string s1, string s2) {
         return false;
     }
     string r = s1 + s1;
-    cout << " R " << r << endl;
+
     return (is_substring(r, s2));
 }

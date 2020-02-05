@@ -3,24 +3,8 @@
 
 #define SPACE "%20"
 
-void urlfy(string & s, int length) {
+void urlfy(string & s, int length){
 
-    cout << "Begin " << s << endl;
-    for (int i = 0; i < length; i++) {
-        if (s.at(i) == ' ') {
-            string rest = s.substr(i + 1);
-            s.replace(i + 3, length - i-1, rest);
-            //cout << s << endl;
-            s.replace(i, 3, SPACE);
-            //cout << s << endl;
-            length += 2;
-        }
-    }
-    cout << "End " << s << endl;
-}
-
-void urlfy_2(string & s, int length){
-    cout << "Begin " << s << endl;
     int num_space = 0;
     for (int i = 0; i < length; i++) {
         if (s.at(i) == ' ') {
@@ -38,5 +22,4 @@ void urlfy_2(string & s, int length){
             end--;
         }
     }
-    cout << "End " << s << endl;
 }

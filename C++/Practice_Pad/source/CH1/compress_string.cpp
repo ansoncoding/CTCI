@@ -1,11 +1,10 @@
 #include "pch.h"
 #include "compress_string.h"
 
-string compress(string s) {
-    cout << s;
+string compress_string(string s) {
+
     int len = s.length();
     if (len <= 2) {
-        cout << " return " << s << endl;
         return s;
     }
 
@@ -25,9 +24,7 @@ string compress(string s) {
     } while (i < len);
 
     if (result.length() > len) {
-        cout << " return " << s << endl;
         return s;
     }
-    cout << " return " << result << endl;
     return result;
 }

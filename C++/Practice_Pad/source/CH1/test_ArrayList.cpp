@@ -3,6 +3,5 @@
 
 TEST(TestCaseName, TestName) {
     ArrayList al = ArrayList();
-    EXPECT_EQ(1, 1);
-    EXPECT_TRUE(true);
+    EXPECT_EQ(al.getSize(), 0);
 }
