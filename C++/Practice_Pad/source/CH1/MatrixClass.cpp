@@ -53,6 +53,7 @@ Matrix_2D::Matrix_2D(int rows, int cols, int* init_vals) {
 }
 
 Matrix_2D& Matrix_2D::operator=(const Matrix_2D& other) {
+    
     return Matrix_2D(other);
 }
 
