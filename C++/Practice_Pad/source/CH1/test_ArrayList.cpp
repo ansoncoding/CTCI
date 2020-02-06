@@ -38,11 +38,12 @@ TEST(ArrayListTests, SetElement) {
     int retval;
 
     al.add(1);
-    EXPECT_TRUE(al.contains(1, retval));
+    ASSERT_TRUE(al.contains(1, retval)); // use assert because retval needs to be initialized for next call
     al.set(retval, 11);
     EXPECT_FALSE(al.contains(1, retval));
-    EXPECT_TRUE(al.contains(11, retval));
+    ASSERT_TRUE(al.contains(11, retval)); // use assert because retval needs to be initialized for next call
     EXPECT_EQ(al.get(retval), 11);
+    EXPECT_EQ(retval, 0);
 }
 
 TEST(ArrayListTests, RemoveElements) {
@@ -98,13 +99,14 @@ TEST(ArrayListTests, CapacityTest) {
     for (int i = 0; i < 17; i++) {
         EXPECT_TRUE(al.contains(i * 10, retval));
         EXPECT_EQ(al.get(retval), i * 10);
+        EXPECT_EQ(retval, i);
     }
 }
 
 TEST(ArrayListTests, InvalidIndex) {
     ArrayList al = ArrayList();
     for (int i = 0; i < 100; i++) {
-        al.add(i << 2);
+        al.add(i * 2);
     }
     
     EXPECT_THROW(al.get(-1), OutofBoundsException);
@@ -119,4 +121,39 @@ TEST(ArrayListTests, InvalidIndex) {
     EXPECT_THROW(al.remove(-10), OutofBoundsException);
     EXPECT_THROW(al.remove(100), OutofBoundsException);
     EXPECT_THROW(al.remove(200), OutofBoundsException);
+}
+
+TEST(ArrayListTests, CopyConstructor) {
+    ArrayList al = ArrayList();
+    for (int i = 0; i < 25; i++) {
+        al.add(i * 4);
+    }
+
+    ArrayList al_copy = ArrayList(al);
+    int retval;
+    for (int i = 0; i < 25; i++) {
+        ASSERT_TRUE(al_copy.contains(i * 4, retval));
+        EXPECT_EQ(al_copy.get(retval), i * 4);
+        EXPECT_EQ(retval, i);
+    }
+
+    EXPECT_EQ(al_copy.getSize(), 25);
+    EXPECT_EQ(al_copy.getCapacity(), 32);
+}
+
+TEST(ArrayListTests, AssignmentOperator) {
+    ArrayList al = ArrayList();
+    for (int i = 0; i < 25; i++) {
+        al.add(i * 4);
+    }
+
+    ArrayList al_copy = al;
+    int retval;
+    for (int i = 0; i < 25; i++) {
+        ASSERT_TRUE(al_copy.contains(i * 4, retval));
+        EXPECT_EQ(al_copy.get(retval), i * 4);
+        EXPECT_EQ(retval, i);
+    }
+    EXPECT_EQ(al_copy.getSize(), 25);
+    EXPECT_EQ(al_copy.getCapacity(), 32);
 }

@@ -2,15 +2,11 @@
 #include "rotate_matrix.h"
 #include "matrix_utils.h"
 
-#include <string>
-#include <iostream>
-#include <iomanip>
-
 using namespace std;
 
 void rotate_cw_90(int** mat, int N){
     int num_layers = N / 2;
-    cout << "number of layers: " << num_layers << endl;
+    
     for (int li = 0; li < N / 2; li++) { //li is layer index
         int start = li;
         int end = N - li - 1;
