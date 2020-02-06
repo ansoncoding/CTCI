@@ -14,12 +14,20 @@ ArrayList::ArrayList(const ArrayList& other) {
 }
     
 ArrayList& ArrayList::operator=(const ArrayList& other) {
-    return ArrayList(other);
+    if (&other != this) {
+        cleanup();
+        copy(other);
+    }
+    return *this;
+}
+
+void ArrayList::cleanup() {
+    delete[] arraylist;
+    arraylist = nullptr;
 }
 
 ArrayList::~ArrayList() {
-    delete[] arraylist;
-    arraylist = nullptr;
+    cleanup();
 }
 
 void ArrayList::copy(const ArrayList& other) {
@@ -28,7 +36,7 @@ void ArrayList::copy(const ArrayList& other) {
     memset(arraylist, 0, current_capacity * sizeof(int));
 
     for (int i = 0; i < other.size; i++) {
-        arraylist[i] = other.arraylist[i];
+        this->arraylist[i] = other.arraylist[i];
     }
     size = other.size;
 }

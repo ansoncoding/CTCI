@@ -46,10 +46,12 @@ public:
     string toString() const {
         return string(arraylist);
     }
-
-    ~StringBuilder() {
+    void cleanup() {
         delete[] arraylist;
         arraylist = NULL;
+    }
+    ~StringBuilder() {
+        cleanup();
     }
 };
 

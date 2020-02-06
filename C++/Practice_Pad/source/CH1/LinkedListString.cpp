@@ -13,7 +13,11 @@ LinkedListS::LinkedListS(const LinkedListS & other){
 }
 
 LinkedListS& LinkedListS::operator=(const LinkedListS& other) {
-    return LinkedListS(other);
+    if (&other != this) {
+        cleanup();
+        copy(other);
+    }
+    return *this;
 }
 
 void LinkedListS::copy(const LinkedListS & other){
@@ -108,17 +112,20 @@ bool LinkedListS::isEmpty() const {
     return (head == NULL);
 }
 
-LinkedListS::~LinkedListS() {
+void LinkedListS::cleanup() {
     if (head == NULL)
         return;
 
-    Node * current = head;
-    Node * next;
-    while (current != NULL)  
-    {  
-        next = current->next;  
+    Node* current = head;
+    Node* next;
+    while (current != NULL)
+    {
+        next = current->next;
         delete current;
-        current = next;  
-    }  
+        current = next;
+    }
     head = NULL;
+}
+LinkedListS::~LinkedListS() {
+    cleanup();
 }

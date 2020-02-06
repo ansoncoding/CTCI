@@ -12,6 +12,7 @@ private:
     void initialize_mem();
     void initialize_mat(int rows, int cols);
     void copy(const Matrix_2D& other);
+    void cleanup();
 public:
     Matrix_2D(int N);
     Matrix_2D(int N, int M);

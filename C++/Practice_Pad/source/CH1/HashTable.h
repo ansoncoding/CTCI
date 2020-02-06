@@ -12,8 +12,9 @@ private:
     int capacity = 16;
     LinkedListS * arraylist;
     void copy(const HashTable& other);
+    void cleanup();
     int hash(string s) const;
-
+    
 public:
     HashTable();
     HashTable(const HashTable& other);

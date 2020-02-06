@@ -2,6 +2,7 @@
 #include "HashTable.h"
 #include <iomanip>
 #include <iostream>
+
 int HashTable::hash(string s) const {
     int hash_val = 0;
     for (int i = 0; i < s.length(); i++) {
@@ -11,11 +12,15 @@ int HashTable::hash(string s) const {
 }
 
 HashTable::HashTable() {
-        arraylist = new LinkedListS[capacity]; 
+    arraylist = new LinkedListS[capacity]; 
 }
 
 HashTable& HashTable::operator=(const HashTable& other) {
-    return HashTable(other);
+    if (&other != this) {
+        cleanup();
+        copy(other);
+    }
+    return *this;
 }
 
 HashTable::HashTable(const HashTable & other){
@@ -58,7 +63,7 @@ void HashTable::print() const {
     cout << endl;
 }
 
-HashTable::~HashTable() {
+void HashTable::cleanup() {
     for (int i = 0; i < capacity; i++) {
         if (!arraylist[i].isEmpty()) {
             arraylist[i].~LinkedListS();
@@ -66,4 +71,7 @@ HashTable::~HashTable() {
     }
     delete[] arraylist;
     arraylist = NULL;
+}
+HashTable::~HashTable() {
+    cleanup();
 }

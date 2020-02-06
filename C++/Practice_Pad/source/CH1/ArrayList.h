@@ -10,6 +10,7 @@ private:
     int size = 0;
     int * arraylist;
     void copy(const ArrayList& other);
+    void cleanup();
 public:
     ArrayList();
     ArrayList(const ArrayList& other);

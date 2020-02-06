@@ -22,6 +22,7 @@ protected:
     Node * head;
     int length; 
     void copy(const LinkedListS& other);
+    void cleanup();
 public:
     LinkedListS();
     ~LinkedListS();

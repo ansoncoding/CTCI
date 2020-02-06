@@ -53,8 +53,11 @@ Matrix_2D::Matrix_2D(int rows, int cols, int* init_vals) {
 }
 
 Matrix_2D& Matrix_2D::operator=(const Matrix_2D& other) {
-    
-    return Matrix_2D(other);
+    if (&other != this) {
+        cleanup();
+        copy(other);
+    }
+    return *this;
 }
 
 // copy constructor
@@ -255,9 +258,12 @@ void Matrix_2D::zero_matrix_2() {
     if (clear_row_0)
         clear_row(0);
 }
-Matrix_2D::~Matrix_2D() {
+void Matrix_2D::cleanup() {
     for (int i = 0; i < N; i++) {
         delete[]mat[i];
     }
     delete[] mat;
+}
+Matrix_2D::~Matrix_2D() {
+    cleanup();
 }
