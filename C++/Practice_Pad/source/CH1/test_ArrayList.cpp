@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ArrayList.h"
-
+#include "practice_exceptions.h"
 
 TEST(ArrayListTests, Initializing) {
     ArrayList al = ArrayList();
