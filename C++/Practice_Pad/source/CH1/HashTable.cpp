@@ -5,7 +5,7 @@
 
 int HashTable::hash(string s) const {
     int hash_val = 0;
-    for (int i = 0; i < s.length(); i++) {
+    for (unsigned int i = 0; i < s.length(); i++) {
         hash_val += s.at(i);
     }
     return hash_val;

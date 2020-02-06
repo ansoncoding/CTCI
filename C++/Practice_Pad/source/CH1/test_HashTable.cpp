@@ -5,11 +5,11 @@
 TEST(HashTableTests, InsertElements) {
 	HashTable ht = HashTable();
 	string d[] = { "Hi", "how", "are", "you", "?" };
-	for (int i = 0; i < d->length(); i++) {
+	for (unsigned int i = 0; i < d->length(); i++) {
 		ht.insert(d[i]);
 	}
 
-	for (int i = 0; i < d->length(); i++) {
+	for (unsigned int i = 0; i < d->length(); i++) {
 		EXPECT_TRUE(ht.contains(d[i]));
 	}
 }
@@ -24,11 +24,11 @@ TEST(HashTableTests, InsertMoreElements) {
 		"Knock!", "Knock!", "Who's", "there", "?",
 		"The", "chicken!", "Ahahah", "So.", "Not.", "Funny."
 	};
-	for (int i = 0; i < d->length(); i++) {
+	for (unsigned int i = 0; i < d->length(); i++) {
 		ht.insert(d[i]);
 	}
 
-	for (int i = 0; i < d->length(); i++) {
+	for (unsigned int i = 0; i < d->length(); i++) {
 		EXPECT_TRUE(ht.contains(d[i]));
 	}
 }

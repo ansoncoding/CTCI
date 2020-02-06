@@ -35,7 +35,7 @@ TEST(ArrayListTests, AddGetElements) {
 
 TEST(ArrayListTests, SetElement) {
     ArrayList al = ArrayList();
-    int retval;
+    int retval = 0;
 
     al.add(1);
     ASSERT_TRUE(al.contains(1, retval)); // use assert because retval needs to be initialized for next call

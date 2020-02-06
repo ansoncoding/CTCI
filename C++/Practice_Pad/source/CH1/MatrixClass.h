@@ -1,5 +1,5 @@
-#ifndef MATRIX_UTILS_H
-#define MATRIX_UTILS_H
+#ifndef MATRIX_CLASS_H
+#define MATRIX_CLASS_H
 
 using namespace std;
 

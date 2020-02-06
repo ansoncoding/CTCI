@@ -6,8 +6,8 @@
 
 //#1.1 is string made of unique characters?
 bool is_unique(string s) {
-    for (int i = 0; i < s.length(); i++){
-        for (int j = i + 1; j < s.length(); j++) {
+    for (unsigned int i = 0; i < s.length(); i++){
+        for (unsigned int j = i + 1; j < s.length(); j++) {
             if (s.at(i) == s.at(j)) {
                 return false;
             }
@@ -18,7 +18,7 @@ bool is_unique(string s) {
 
 bool is_unique_2(string s) {
     char count[26] = { 0 };
-    for (int i = 0; i < s.length(); i++){
+    for (unsigned int i = 0; i < s.length(); i++){
         unsigned int index = tolower(s.at(i)) - 'a';
 
         if (index >= 26) {
@@ -40,7 +40,7 @@ bool is_unique_2(string s) {
 // it could be anywhere from 128 to more if we're going beyond ascii but still O(1)
 bool is_unique_3(string s) {
     int counts = 0;
-    for (int i = 0; i < s.length(); i++) {
+    for (unsigned int i = 0; i < s.length(); i++) {
         unsigned int index = tolower(s.at(i)) - 'a';
         if (index >= 26) {
             cerr << "Error: Character not in range." << endl;

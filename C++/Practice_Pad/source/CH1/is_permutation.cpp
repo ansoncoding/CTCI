@@ -10,7 +10,7 @@ bool is_permutation(string s1, string s2) {
         //printf("string %s and %s: False\n", s1.c_str(), s2.c_str());
         return false;
     }
-    for (int i = 0; i < s1.length(); i++){
+    for (unsigned int i = 0; i < s1.length(); i++){
         unsigned int index = tolower(s1.at(i)) - 'a';
         // printf("index %d\n", index);
         if (index >= 26) {
@@ -19,7 +19,7 @@ bool is_permutation(string s1, string s2) {
         }
         count[index]++;
     }
-    for (int i = 0; i < s2.length(); i++) {
+    for (unsigned int i = 0; i < s2.length(); i++) {
         unsigned int index = tolower(s2.at(i)) - 'a';
         if (index >= 26) {
             cerr << "Error: Character not in range." << endl;
@@ -44,7 +44,7 @@ bool is_permutation_2(string s1, string s2) {
     }
     sortString(s1);
     sortString(s2);
-    for (int i = 0; i < s1.length(); i++) {
+    for (unsigned int i = 0; i < s1.length(); i++) {
         if (s1[i] != s2[i]) {
         //    printf("False\n");
             return false;

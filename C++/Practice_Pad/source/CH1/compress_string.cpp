@@ -3,13 +3,13 @@
 
 string compress_string(string s) {
 
-    int len = s.length();
+    unsigned int len = s.length();
     if (len <= 2) {
         return s;
     }
 
     int count = 0;
-    int i = 0;
+    unsigned int i = 0;
     string result;
     do {
         result += s.at(i);

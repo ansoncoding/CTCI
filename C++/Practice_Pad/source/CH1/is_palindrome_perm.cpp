@@ -4,7 +4,7 @@
 bool is_palindrome_perm(string s) {
 
     bool counts[128] = { false };
-    for (int i = 0; i < s.length(); i++) {
+    for (unsigned int i = 0; i < s.length(); i++) {
         int index = s.at(i);
         counts[index] = !counts[index];
     }
