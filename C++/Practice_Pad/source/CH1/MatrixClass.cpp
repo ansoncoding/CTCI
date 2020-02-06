@@ -23,8 +23,8 @@ void Matrix_2D::initialize_mem() {
 }
 void Matrix_2D::initialize_mat(int rows, int cols) {
 
-    N = rows;
-    M = cols;
+    this->N = rows;
+    this->M = cols;
 
     int count = 0;
 
@@ -38,8 +38,8 @@ void Matrix_2D::initialize_mat(int rows, int cols) {
 }
 
 Matrix_2D::Matrix_2D(int rows, int cols, int* init_vals) {
-    N = rows;
-    M = cols;
+    this->N = rows;
+    this->M = cols;
     int count = 0;
 
     initialize_mem();
@@ -67,8 +67,8 @@ Matrix_2D::Matrix_2D(const Matrix_2D& other) {
 
 void Matrix_2D::copy(const Matrix_2D& other) {
     
-    N = other.N;
-    M = other.M;
+    this->N = other.N;
+    this->M = other.M;
     initialize_mem();
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < M; j++) {

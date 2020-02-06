@@ -147,7 +147,7 @@ TEST(ArrayListTests, AssignmentOperator) {
         al.add(i * 4);
     }
 
-    ArrayList al_copy = al;
+    ArrayList al_copy(al);
     int retval;
     for (int i = 0; i < 25; i++) {
         ASSERT_TRUE(al_copy.contains(i * 4, retval));
