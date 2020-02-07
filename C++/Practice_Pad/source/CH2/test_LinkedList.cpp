@@ -4,6 +4,13 @@
 TEST(LinkedListTests, Init) {
 	LinkedList ll = LinkedList();
 	EXPECT_EQ(ll.getLength(), 0);
+
+	ll = LinkedList(10);
+
+	EXPECT_EQ(ll.getLength(), 10);
+	for (int i = 0; i < 10; i++) {
+		EXPECT_TRUE(ll.contains(i));
+	}
 }
 
 TEST(LinkedListTests, AddElements) {
@@ -87,7 +94,8 @@ TEST(LinkedListTests, PalindromeOddLength) {
 TEST(LinkedListTests, PalindromeEdgeCases) {
 	LinkedList ll_t = LinkedList();
 	LinkedList ll_f = LinkedList();
-	
+	LinkedList ll_e = LinkedList();
+
 	ll_t.prepend(1);
 
 	ll_f.prepend(1);
@@ -95,4 +103,23 @@ TEST(LinkedListTests, PalindromeEdgeCases) {
 	
 	EXPECT_TRUE(ll_t.is_palindrome());
 	EXPECT_FALSE(ll_f.is_palindrome());
+	EXPECT_FALSE(ll_e.is_palindrome());
+}
+
+TEST(LinkedListTests, KthLastElement) {
+	LinkedList ll = LinkedList();
+	for (int i = 0; i < 10; i++) {
+		ll.prepend(i);		
+	}
+	for (int i = 1; i <= 10; i++) {
+		Node* ret = ll.kth_last_node(i);
+		ASSERT_NE(ret, nullptr);
+		EXPECT_EQ(ret->data, i-1);
+	}
+}
+
+TEST(LinkedListTests, Partition) {
+	LinkedList ll = LinkedList(10);
+	ll.partition(5);
+
 }

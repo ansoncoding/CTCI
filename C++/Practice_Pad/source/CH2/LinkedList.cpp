@@ -25,15 +25,23 @@ LinkedList::LinkedList(int length) {
 }
 
 void LinkedList::copy(const LinkedList& other) {
+    if (other.head == NULL)
+        return;
+
     this->length = other.length;
-    Node* from = other.head;
-    Node* to = head;
+    head = new Node(other.head->data);
+
+    Node* from = other.head->next;
+    Node* prev = head;
+
     while (from != NULL) {
-        to = new Node(from->data);
-        to->next = from->next;
+
+        Node* temp = new Node(from->data);
+        prev->next = temp;
+        
+        prev = prev->next;
         from = from->next;
-        to = to->next;
-    }
+    }   
 }
 
 LinkedList::LinkedList(const LinkedList& other) {
@@ -41,6 +49,9 @@ LinkedList::LinkedList(const LinkedList& other) {
 }
 
 void LinkedList::cleanup() {
+    if (head == NULL) {
+        return;
+    }
     Node* current = head;
     Node* next;
     while (current != NULL) {
@@ -56,6 +67,7 @@ LinkedList::~LinkedList() {
 }
 
 LinkedList& LinkedList::operator=(const LinkedList& other) {
+
     if (&other != this) {
         cleanup();
         copy(other);
@@ -70,7 +82,6 @@ LinkedList * LinkedList::reverse() const {
         retval->prepend(temp->data);
         temp = temp->next;
     }
-    
     return retval;
 }
 
@@ -249,6 +260,8 @@ void LinkedList::partition(int k) {
     }
 }
 bool LinkedList::is_palindrome() const {
+    if (head == NULL)
+        return false;
 
     LinkedList *rev = reverse();
 
