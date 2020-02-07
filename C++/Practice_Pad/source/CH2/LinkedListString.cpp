@@ -21,14 +21,20 @@ LinkedListS& LinkedListS::operator=(const LinkedListS& other) {
 }
 
 void LinkedListS::copy(const LinkedListS & other){
+    if (other.head == NULL)
+        return;
+
     length = other.length;
-    Node * from = other.head;
-    Node * to = head;
-    while (from != NULL) {
-        to = new Node(from->data);
-        to->next = from->next;
-        from = from->next;
-        to = to->next;
+    head = new Node(other.head->data);
+
+    Node * iter = other.head->next;
+    Node * prev = head;
+
+    while (iter != NULL) {
+        prev->next = new Node(iter->data);
+        
+        prev = prev->next;
+        iter = iter->next;
     }
 }
 
@@ -125,7 +131,9 @@ void LinkedListS::cleanup() {
         current = next;
     }
     head = NULL;
+    length = 0;
 }
+
 LinkedListS::~LinkedListS() {
     cleanup();
 }

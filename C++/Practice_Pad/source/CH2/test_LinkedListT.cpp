@@ -22,7 +22,7 @@ TEST(LinkedListTTests, Init) {
 	// custom vals
 	int d[] = { 1,3,6,9,88 };
 	llt = LinkedListT(d, 5);
-	EXPECT_TRUE(llt.getLength(), 5);
+	EXPECT_EQ(llt.getLength(), 5);
 	for (int i = 0; i < 5; i++) {
 		EXPECT_TRUE(llt.contains(d[i]));
 		retval = llt.get(i);
@@ -257,23 +257,64 @@ TEST(LinkedListTTests, SumLists) {
 	sum = l1.sum_lists(l2);
 	EXPECT_TRUE(sum->compare(soln));
 }
-#if 1
-TEST(LinkedListTTests, IsIntersecting) {
+
+TEST(LinkedListTTests, IsIntersectingMid) {
 	LinkedListT l1 = LinkedListT(5);
 	LinkedListT l2 = LinkedListT(10);
-	l1.print();
-	l2.print();
+	
 	Node* middle = l2.get(5);
-	if (middle != nullptr) {
-		Node* retval;
+	Node* retval;
 
-		l1.setTailNext(middle);
-		l1.print();
-		l2.print();
-		EXPECT_TRUE(l1.is_intersecting(l2, retval));
-		/*ASSERT_NE(retval, nullptr);
-		EXPECT_EQ(retval->data, 4);*/
-	}
+	ASSERT_NE(middle, nullptr);
+	l1.setTailNext(middle);
+	EXPECT_TRUE(l1.is_intersecting(l2, retval));
+	ASSERT_NE(retval, nullptr);
+	EXPECT_EQ(retval->data, 5);
+
+	//test associativity
+	Node* retval2;
+	EXPECT_TRUE(l2.is_intersecting(l1, retval2));
+	ASSERT_NE(retval2, nullptr);
+	EXPECT_EQ(retval2->data, 5);
 }
 
-#endif
+TEST(LinkedListTTests, IsIntersectingBeg) {
+	LinkedListT l1 = LinkedListT(5);
+	LinkedListT l2 = LinkedListT(10);
+
+	Node* begin= l2.get(0);
+	Node* retval;
+
+	ASSERT_NE(begin, nullptr);
+	l1.setTailNext(begin);
+	EXPECT_TRUE(l1.is_intersecting(l2, retval));
+	ASSERT_NE(retval, nullptr);
+	EXPECT_EQ(retval->data, 0);
+
+	//test associativity
+	Node* retval2;
+	EXPECT_TRUE(l2.is_intersecting(l1, retval2));
+	ASSERT_NE(retval2, nullptr);
+	EXPECT_EQ(retval2->data, 0);
+}
+
+TEST(LinkedListTTests, IsIntersectingTail) {
+	LinkedListT l1 = LinkedListT(5);
+	LinkedListT l2 = LinkedListT(10);
+
+	Node* tail = l2.get(9);
+	Node* retval;
+
+	ASSERT_NE(tail, nullptr);
+	l1.setTailNext(tail);
+	EXPECT_TRUE(l1.is_intersecting(l2, retval));
+	ASSERT_NE(retval, nullptr);
+	EXPECT_EQ(retval->data, 9);
+
+	//test associativity
+	Node* retval2;
+	EXPECT_TRUE(l2.is_intersecting(l1, retval2));
+	ASSERT_NE(retval2, nullptr);
+	EXPECT_EQ(retval2->data, 9);
+}
+

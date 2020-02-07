@@ -70,5 +70,3 @@ TEST(RotateMatrixTest, 6x6_CW90) {
 	Matrix_2D soln = Matrix_2D(6, 6, s);
 	EXPECT_TRUE(m.compare(soln));
 }
-
-
