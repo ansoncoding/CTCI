@@ -7,7 +7,7 @@ LinkedListT::LinkedListT() {
 }
 
 LinkedListT::LinkedListT(int* init_vals, int len) {
-    length = len;
+    
     Node* temp = head;
     for (int i = 0; i < len; i++) {
         append(init_vals[i]);

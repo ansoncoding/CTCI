@@ -3,9 +3,11 @@
 #include "practice_exceptions.h"
 
 TEST(LinkedListTTests, Init) {
+	//Empty
 	LinkedListT llt = LinkedListT();
 	EXPECT_EQ(llt.getLength(), 0);
 
+	//values 0 - 10
 	llt = LinkedListT(10);
 	EXPECT_EQ(llt.getLength(), 10);
 	
@@ -17,8 +19,10 @@ TEST(LinkedListTTests, Init) {
 		EXPECT_EQ(retval->data, i);
 	}
 
+	// custom vals
 	int d[] = { 1,3,6,9,88 };
 	llt = LinkedListT(d, 5);
+	EXPECT_TRUE(llt.getLength(), 5);
 	for (int i = 0; i < 5; i++) {
 		EXPECT_TRUE(llt.contains(d[i]));
 		retval = llt.get(i);
@@ -188,6 +192,13 @@ TEST(LinkedListTTests, CircularLL) {
 }
 
 TEST(LinkedListTTests, SumLists) {
-	//LinkedListT 
+	int d1[] = { 1,2 };
+	int d2[] = { 2,3 };
+	int s[] = { 3, 5 };
+	LinkedListT l1 = LinkedListT(d1, 2);
+	LinkedListT l2 = LinkedListT(d2, 2);
+	LinkedListT soln = LinkedListT(s, 2);
+	LinkedListT * sum = l1.sum_lists(l2);
+	EXPECT_TRUE(sum->compare(soln));
 }
 #endif
