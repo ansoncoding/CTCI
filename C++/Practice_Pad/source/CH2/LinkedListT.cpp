@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "LinkedListT.h"
 
+
 LinkedListT::LinkedListT() {
     LinkedList();
 }
@@ -19,16 +20,25 @@ LinkedListT::LinkedListT(const LinkedListT& other) {
     copy(other);
 }
 
+LinkedListT& LinkedListT::operator=(const LinkedListT& other) {
+    if (&other != this) {
+        cleanup();
+        copy(other);
+    }
+    return *this;
+}
+
 LinkedListT::LinkedListT(int len, bool circular) {
     for (int i = 0; i < len; i++) {
         append(i);
         //print();
     }
-    if (circular) {
+    if (circular) { //for testing loop function only
         tail->next = head;
     }
 }
 
+// only used to create intersecting LL
 void LinkedListT::setTailNext(Node* node) {
     tail->next = node;
     tail = tail->next;
@@ -61,17 +71,17 @@ void LinkedListT::prepend(int data) {
     length++;
 }
 
-LinkedListT LinkedListT::reverse() {
+LinkedListT* LinkedListT::reverse() {
     Node* temp = head;
-    LinkedListT retval = LinkedListT();
+    LinkedListT *retval = new LinkedListT();
     while (temp != NULL) {
-        retval.prepend(temp->data);
+        retval->prepend(temp->data);
         temp = temp->next;
     }
     return retval;
 }
 
-LinkedListT::~LinkedListT() {
+void LinkedListT::cleanup() {
     Node* current = head;
     Node* next;
     while (current != NULL) {
@@ -83,8 +93,12 @@ LinkedListT::~LinkedListT() {
     tail = NULL;
 }
 
-LinkedListT LinkedListT::sum_lists(LinkedListT ll) const {
-    LinkedListT retval = LinkedListT();
+LinkedListT::~LinkedListT() {
+    cleanup();
+}
+
+LinkedListT* LinkedListT::sum_lists(const LinkedListT & ll) const {
+    LinkedListT *retval =new LinkedListT();
     Node * n1 = head;
     Node * n2 = ll.head;
 
@@ -103,7 +117,7 @@ LinkedListT LinkedListT::sum_lists(LinkedListT ll) const {
         int sum = val1 + val2 + prev_quotient;
         remainder = sum % 10;
         
-        retval.append(remainder);
+        retval->append(remainder);
 
         prev_quotient = sum / 10;
         if (n1 != NULL){
@@ -114,7 +128,7 @@ LinkedListT LinkedListT::sum_lists(LinkedListT ll) const {
         }
     }
     if (prev_quotient > 0) {
-        retval.append(prev_quotient);
+        retval->append(prev_quotient);
     } 
     return retval;
 }

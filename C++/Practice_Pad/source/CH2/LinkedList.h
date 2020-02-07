@@ -1,8 +1,6 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
-
-
 class Node {
 
 public:
@@ -17,7 +15,7 @@ public:
 class LinkedList {
     
 protected:
-    Node * head = nullptr;
+    Node * head = NULL;
     int length = 0; 
     void copy(const LinkedList& other);
     void cleanup();
@@ -25,9 +23,13 @@ public:
     LinkedList();
     LinkedList(int len);
     LinkedList(const LinkedList & other);
+    LinkedList& operator=(const LinkedList& other);
     ~LinkedList();
+    void remove(int data, bool remove_first_find = true);
     void prepend(int data);
     int getLength() const;
+    bool contains(int val) const;
+    bool compare(LinkedList l) const;
     void print() const;
     void print(int len) const;
     void remove_duplicates();
@@ -35,7 +37,7 @@ public:
     Node * kth_last_node(int k);
     void partition(int k);
     bool is_palindrome() const;
-    LinkedList LinkedList::reverse() const;
+    LinkedList * reverse() const;
     bool is_intersecting(LinkedList ll, Node** retval);
     bool contains_loop(Node** retval);
     void delete_middle_node(Node* n);

@@ -8,16 +8,18 @@ class LinkedListT : public LinkedList
 private:
     Node * tail = NULL;
     void copy(const LinkedListT& other);
+    void cleanup();
 public:
     LinkedListT();
     ~LinkedListT();
+    LinkedListT& operator=(const LinkedListT& other);
     LinkedListT(const LinkedListT& other);
     LinkedListT(int len, bool circular = false);
     void prepend(int data);
     void append(int data);
-    void setTailNext(Node* node);
-    LinkedListT LinkedListT::reverse();
-    LinkedListT sum_lists(LinkedListT l1) const;
+    void setTailNext(Node* node); // only used to create intersecting LL
+    LinkedListT* LinkedListT::reverse();
+    LinkedListT* sum_lists(const LinkedListT & l1) const;
 };
 
 #endif

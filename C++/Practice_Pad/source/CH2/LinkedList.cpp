@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <set>
+
 using namespace std;
 
 LinkedList::LinkedList() {
@@ -22,6 +23,7 @@ LinkedList::LinkedList(int length) {
         prepend(val);
     }
 }
+
 void LinkedList::copy(const LinkedList& other) {
     this->length = other.length;
     Node* from = other.head;
@@ -53,14 +55,34 @@ LinkedList::~LinkedList() {
     cleanup();
 }
 
-LinkedList LinkedList::reverse() const {
-    Node* temp = head;
-    LinkedList retval = LinkedList();
+LinkedList& LinkedList::operator=(const LinkedList& other) {
+    if (&other != this) {
+        cleanup();
+        copy(other);
+    }
+    return *this;
+}
+
+LinkedList * LinkedList::reverse() const {
+    Node* temp = this->head;
+    LinkedList * retval = new LinkedList();
     while (temp != NULL) {
-        retval.prepend(temp->data);
+        retval->prepend(temp->data);
         temp = temp->next;
     }
+    
     return retval;
+}
+
+bool LinkedList::contains(int val) const {
+    Node* temp = head;
+    while (temp != NULL) {
+        if (temp->data == val) {
+            return true;
+        }
+        temp = temp->next;
+    }
+    return false;
 }
 
 int LinkedList::getLength() const {
@@ -226,9 +248,11 @@ void LinkedList::partition(int k) {
     }
 }
 bool LinkedList::is_palindrome() const {
-    LinkedList rev = reverse();
+
+    LinkedList *rev = reverse();
+
     Node* n1 = head;
-    Node* n2 = rev.head;
+    Node* n2 = rev->head;
     while (n1 != NULL) {
         if (n1->data != n2->data) {
             return false;
@@ -246,6 +270,40 @@ void LinkedList::delete_middle_node(Node * n){
     n->next = temp->next;
     delete temp;
     return;
+}
+
+void LinkedList::remove(int val, bool remove_first_find) {
+    if (head == NULL) {
+        return;
+    }
+
+    if (head->data == val) {
+        head = head->next;
+        length--;
+        delete head;
+    }
+    else {
+
+        Node* prev = head;
+        Node* temp = head->next;
+
+        while (temp != NULL) {
+            if (temp->data == val) {
+
+                prev->next = temp->next;
+                delete temp;
+                length--;
+                if (remove_first_find) {
+                    return;
+                }
+                temp = prev->next;
+            }
+            else {
+                prev = temp;
+                temp = temp->next;
+            }
+        }
+    }
 }
 
 bool LinkedList::contains_loop(Node ** retval) {
@@ -343,3 +401,18 @@ bool LinkedList::is_intersecting(LinkedList ll, Node ** retval) {
     return false;
 }
 
+bool LinkedList::compare(LinkedList l) const {
+    if (this->length != l.length) {
+        return false;
+    }
+    Node* n1 = this->head;
+    Node* n2 = l.head;
+    while (n1 != NULL && n2 != NULL) {
+        if (n1->data != n2->data) {
+            return false;
+        }
+        n1 = n1->next;
+        n2 = n2->next;
+    }
+    return true;
+}
