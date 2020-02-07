@@ -18,6 +18,34 @@ TEST(LinkedListTests, Init) {
 	}
 }
 
+TEST(LinkedListTests, CopyConstructor) {
+	LinkedList ll = LinkedList(10);
+	LinkedList copy(ll);
+
+	Node* retval;
+	EXPECT_EQ(copy.getLength(), 10);
+	for (int i = 0; i < 10; i++) {
+		EXPECT_TRUE(copy.contains(i));
+		retval = copy.get(i);
+		ASSERT_NE(retval, nullptr);
+		EXPECT_EQ(retval->data, 10 - i - 1);
+	}
+}
+
+TEST(LinkedListTests, AssignmentOperator) {
+	LinkedList ll = LinkedList(10);
+	LinkedList copy = ll;
+
+	Node* retval;
+	EXPECT_EQ(copy.getLength(), 10);
+	for (int i = 0; i < 10; i++) {
+		EXPECT_TRUE(copy.contains(i));
+		retval = copy.get(i);
+		ASSERT_NE(retval, nullptr);
+		EXPECT_EQ(retval->data, 10 - i - 1);
+	}
+}
+
 TEST(LinkedListTests, AddElements) {
 	LinkedList ll = LinkedList();
 	Node* retval;
@@ -29,6 +57,13 @@ TEST(LinkedListTests, AddElements) {
 		ASSERT_EQ(retval->data, i);
 	}
 	EXPECT_EQ(ll.getLength(), 10);
+}
+
+TEST(LinkedListTests, RemoveElementsEmpty) {
+	LinkedList ll = LinkedList();
+	EXPECT_EQ(ll.getLength(), 0);
+	ll.remove(1);
+	EXPECT_EQ(ll.getLength(), 0);
 }
 
 TEST(LinkedListTests, RemoveElements) {
@@ -43,6 +78,15 @@ TEST(LinkedListTests, RemoveElements) {
 		EXPECT_FALSE(ll.contains(i));
 		EXPECT_EQ(ll.getLength(), 10-i-1);
 	}
+	EXPECT_EQ(ll.getLength(), 0);
+}
+
+TEST(LinkedListTests, RemoveDupsEmpty) {
+	LinkedList ll = LinkedList();
+	EXPECT_EQ(ll.getLength(), 0);
+	ll.remove_duplicates();
+	EXPECT_EQ(ll.getLength(), 0);
+	ll.remove_duplicates2();
 	EXPECT_EQ(ll.getLength(), 0);
 }
 

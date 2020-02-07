@@ -31,6 +31,34 @@ TEST(LinkedListTTests, Init) {
 	}
 }
 
+TEST(LinkedListTTests, CopyConstructor) {
+	LinkedListT ll = LinkedListT(10);
+	LinkedListT copy(ll);
+
+	Node* retval;
+	EXPECT_EQ(copy.getLength(), 10);
+	for (int i = 0; i < 10; i++) {
+		EXPECT_TRUE(copy.contains(i));
+		retval = copy.get(i);
+		ASSERT_NE(retval, nullptr);
+		EXPECT_EQ(retval->data, i);
+	}
+}
+
+TEST(LinkedListTTests, AssignmentOperator) {
+	LinkedListT ll = LinkedListT(10);
+	LinkedListT copy = ll;
+
+	Node* retval;
+	EXPECT_EQ(copy.getLength(), 10);
+	for (int i = 0; i < 10; i++) {
+		EXPECT_TRUE(copy.contains(i));
+		retval = copy.get(i);
+		ASSERT_NE(retval, nullptr);
+		EXPECT_EQ(retval->data, i);
+	}
+}
+
 TEST(LinkedListTTests, PrependElements) {
 	LinkedListT llt = LinkedListT();
 	Node* retval;
@@ -57,6 +85,13 @@ TEST(LinkedListTTests, AppendElements) {
 	EXPECT_EQ(llt.getLength(), 10);
 }
 
+TEST(LinkedListTTests, RemoveElementsEmpty) {
+	LinkedListT l = LinkedListT();
+	EXPECT_EQ(l.getLength(), 0);
+	l.remove(1);
+	EXPECT_EQ(l.getLength(), 0);
+}
+
 TEST(LinkedListTTests, RemoveElements) {
 	LinkedListT llt = LinkedListT();
 	for (int i = 0; i < 10; i++) {
@@ -70,6 +105,15 @@ TEST(LinkedListTTests, RemoveElements) {
 		EXPECT_EQ(llt.getLength(), 10 - i - 1);
 	}
 	EXPECT_EQ(llt.getLength(), 0);
+}
+
+TEST(LinkedListTTests, RemoveDupsEmpty) {
+	LinkedListT l = LinkedListT();
+	EXPECT_EQ(l.getLength(), 0);
+	l.remove_duplicates();
+	EXPECT_EQ(l.getLength(), 0);
+	l.remove_duplicates2();
+	EXPECT_EQ(l.getLength(), 0);
 }
 
 TEST(LinkedListTTests, RemoveDups) {
@@ -183,12 +227,33 @@ TEST(LinkedListTTests, DeleteMiddleNode) {
 	}
 }
 
-TEST(LinkedListTTests, CircularLL) {
+TEST(LinkedListTTests, CircularLLTrue) {
 	LinkedListT llt = LinkedListT(10, true);
 	Node* retval = nullptr;
 	EXPECT_TRUE(llt.contains_loop(retval));
 	ASSERT_NE(retval, nullptr);
 	EXPECT_EQ(retval->data, 0);
+}
+
+TEST(LinkedListTTests, CircularLLFalse) {
+	LinkedListT llt = LinkedListT();
+	LinkedListT llt2 = LinkedListT(10);
+	LinkedListT llt3 = LinkedListT();
+	llt3.append(5);
+
+	Node* retval,  *retval2, *retval3;
+	
+	EXPECT_FALSE(llt.contains_loop(retval));
+	EXPECT_FALSE(llt2.contains_loop(retval2));
+	EXPECT_FALSE(llt3.contains_loop(retval3));
+
+}
+
+TEST(LinkedListTTests, SumListsEmpty) {
+	LinkedListT llt = LinkedListT();
+	LinkedListT llt2 = LinkedListT();
+	LinkedListT *sum = llt.sum_lists(llt2);
+	EXPECT_EQ(sum->getLength(), 0);
 }
 
 TEST(LinkedListTTests, SumLists) {
@@ -256,6 +321,22 @@ TEST(LinkedListTTests, SumLists) {
 	soln = LinkedListT(b6, 5);
 	sum = l1.sum_lists(l2);
 	EXPECT_TRUE(sum->compare(soln));
+}
+
+TEST(LinkedListTTests, IsIntersectingEmpty) {
+	LinkedListT l1 = LinkedListT();
+	LinkedListT l2 = LinkedListT();
+	Node* retval;
+	EXPECT_FALSE(l1.is_intersecting(l2, retval));
+	EXPECT_FALSE(l2.is_intersecting(l1, retval));
+}
+
+TEST(LinkedListTTests, IsIntersectingFalse) {
+	LinkedListT l1 = LinkedListT(20);
+	LinkedListT l2 = LinkedListT(11);
+	Node* retval;
+	EXPECT_FALSE(l1.is_intersecting(l2, retval));
+	EXPECT_FALSE(l2.is_intersecting(l1, retval));
 }
 
 TEST(LinkedListTTests, IsIntersectingMid) {
