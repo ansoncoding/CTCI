@@ -70,8 +70,22 @@ void LinkedList::cleanup() {
         return;
     }
     // will get stuck in infinite loop if try to free circular LL
-    Node* dummy;
-    if (contains_loop(dummy)) {
+    if (bad_list) {
+        Node* current = head;
+        Node* next;
+        for (int i = 0; i < length; i++) {
+            
+            if (current != NULL) {
+                next = current->next;
+                delete current;
+                current = next;
+            }
+            else {
+                break;
+            }
+        }
+        head = NULL;
+        length = 0;
         return;
     }
 
@@ -404,7 +418,7 @@ bool LinkedList::contains_loop(Node *& retval) const {
     return false; // if a pointer gets to tail means there's no loop
 }
 
-bool LinkedList::is_intersecting(LinkedList ll, Node *& retval) const {
+bool LinkedList::is_intersecting(const LinkedList & ll, Node *& retval) const {
 
     Node* t1 = head;
     Node * t1_prev = NULL;
@@ -434,8 +448,8 @@ bool LinkedList::is_intersecting(LinkedList ll, Node *& retval) const {
 
     if (len_diff != 0) {
         Node * temp = NULL;
-        temp = (len1 > len2 ? head : ll.head);
-        LinkedList  longer = (len1 > len2 ? *this : ll);
+        temp = (len1 > len2) ? head : ll.head;
+
         for (int i = 0; i < len_diff; i++) {
             temp = temp->next;
         }

@@ -15,6 +15,7 @@ public:
 class LinkedList {
     
 protected:
+    bool bad_list = false;
     Node * head = NULL;
     int length = 0; 
     void copy(const LinkedList& other);
@@ -40,7 +41,7 @@ public:
     bool test_partition(int k) const;
     bool is_palindrome() const;
     LinkedList * reverse() const;
-    bool is_intersecting(LinkedList ll, Node*& retval) const;
+    bool is_intersecting(const LinkedList & ll, Node*& retval) const;
     bool contains_loop(Node*& retval) const;
     void delete_middle_node(Node* n);
 };

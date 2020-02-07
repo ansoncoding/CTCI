@@ -7,7 +7,7 @@ LinkedListT::LinkedListT() {
 }
 
 LinkedListT::LinkedListT(int* init_vals, int len) {
-    
+
     Node* temp = head;
     for (int i = 0; i < len; i++) {
         append(init_vals[i]);
@@ -43,6 +43,7 @@ LinkedListT::LinkedListT(int len, bool circular) {
     }
     if (circular) { //for testing loop function only
         tail->next = head;
+        bad_list = true;
     }
 }
 
@@ -50,6 +51,7 @@ LinkedListT::LinkedListT(int len, bool circular) {
 void LinkedListT::setTailNext(Node* node) {
     tail->next = node;
     tail = tail->next;
+    bad_list = true;
 }
 
 void LinkedListT::append(int data) {
@@ -93,11 +95,26 @@ void LinkedListT::cleanup() {
     if (head == nullptr) {
         return;
     }
-    Node* dummy;
-    if (contains_loop(dummy)) {
+    if (bad_list) {
+
+        Node* current = head;
+        Node* next;
+        for (int i = 0; i < length; i++) {
+
+            if (current != NULL) {
+                next = current->next;
+                delete current;
+                current = next;
+            }
+            else {
+                break;
+            }
+        }
+        tail = NULL;
+        head = NULL;
+        length = 0;
         return;
     }
-
 
     Node* current = head;
     Node* next;

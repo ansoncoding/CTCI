@@ -30,7 +30,7 @@ TEST(LinkedListTTests, Init) {
 		EXPECT_EQ(retval->data, d[i]);
 	}
 }
-#if 1
+
 TEST(LinkedListTTests, PrependElements) {
 	LinkedListT llt = LinkedListT();
 	Node* retval;
@@ -257,4 +257,23 @@ TEST(LinkedListTTests, SumLists) {
 	sum = l1.sum_lists(l2);
 	EXPECT_TRUE(sum->compare(soln));
 }
+#if 1
+TEST(LinkedListTTests, IsIntersecting) {
+	LinkedListT l1 = LinkedListT(5);
+	LinkedListT l2 = LinkedListT(10);
+	l1.print();
+	l2.print();
+	Node* middle = l2.get(5);
+	if (middle != nullptr) {
+		Node* retval;
+
+		l1.setTailNext(middle);
+		l1.print();
+		l2.print();
+		EXPECT_TRUE(l1.is_intersecting(l2, retval));
+		/*ASSERT_NE(retval, nullptr);
+		EXPECT_EQ(retval->data, 4);*/
+	}
+}
+
 #endif
