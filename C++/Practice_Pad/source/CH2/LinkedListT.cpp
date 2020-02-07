@@ -82,6 +82,15 @@ LinkedListT* LinkedListT::reverse() {
 }
 
 void LinkedListT::cleanup() {
+    if (head == nullptr) {
+        return;
+    }
+    Node* dummy;
+    if (contains_loop(dummy)) {
+        return;
+    }
+
+
     Node* current = head;
     Node* next;
     while (current != NULL) {

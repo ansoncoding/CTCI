@@ -24,6 +24,23 @@ LinkedList::LinkedList(int length) {
     }
 }
 
+bool LinkedList::test_partition(int k) const {
+    
+    Node* temp = head;
+    bool greater_or_equal_found = false;
+
+    while (temp != NULL) {
+        if (greater_or_equal_found) {
+            if (temp->data < k) {
+                return false;
+            }
+        } else if (temp->data >= k) {
+            greater_or_equal_found = true;
+        }
+        temp = temp->next;
+    }
+    return true;
+}
 void LinkedList::copy(const LinkedList& other) {
     if (other.head == NULL)
         return;
@@ -52,6 +69,12 @@ void LinkedList::cleanup() {
     if (head == NULL) {
         return;
     }
+    // will get stuck in infinite loop if try to free circular LL
+    Node* dummy;
+    if (contains_loop(dummy)) {
+        return;
+    }
+
     Node* current = head;
     Node* next;
     while (current != NULL) {
@@ -200,8 +223,8 @@ void LinkedList::remove_duplicates2() {
 }
 
 Node * LinkedList::kth_last_node(int k) {
-    if (k == 0) {
-        throw invalid_argument("K cannot be 0");
+    if (k <= 0) {
+        throw invalid_argument("K cannot be 0 or less than 0");
         return nullptr;
     }
     if (head == NULL) {
@@ -284,6 +307,7 @@ void LinkedList::delete_middle_node(Node * n){
     n->data = temp->data;
     n->next = temp->next;
     delete temp;
+    length--;
     return;
 }
 
@@ -321,7 +345,7 @@ void LinkedList::remove(int val, bool remove_first_find) {
     }
 }
 
-bool LinkedList::contains_loop(Node ** retval) {
+bool LinkedList::contains_loop(Node *& retval) const {
     
     Node * p1 = head;
     Node * p2 = head;
@@ -342,7 +366,7 @@ bool LinkedList::contains_loop(Node ** retval) {
                     p1 = p1->next; // keep going, if they collide again it's gonna be the node that's the start of the loop
                     p2 = p2->next;
                 }
-                *retval = p1;
+                retval = p1;
                 return true;
             }
         }
@@ -359,7 +383,7 @@ bool LinkedList::contains_loop(Node ** retval) {
     return false; // if a pointer gets to tail means there's no loop
 }
 
-bool LinkedList::is_intersecting(LinkedList ll, Node ** retval) {
+bool LinkedList::is_intersecting(LinkedList ll, Node *& retval) const {
 
     Node* t1 = head;
     Node * t1_prev = NULL;
@@ -407,7 +431,7 @@ bool LinkedList::is_intersecting(LinkedList ll, Node ** retval) {
     }
     while (n1 != NULL && n2 != NULL) {
         if (n2 == n1) {
-            *retval = n1;
+            retval = n1;
             return true;
         }
         n1 = n1->next;

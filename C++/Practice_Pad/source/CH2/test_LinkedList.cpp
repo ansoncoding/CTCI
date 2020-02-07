@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "LinkedList.h"
+#include "practice_exceptions.h"
+#include <exception>
 
 TEST(LinkedListTests, Init) {
 	LinkedList ll = LinkedList();
@@ -107,10 +109,7 @@ TEST(LinkedListTests, PalindromeEdgeCases) {
 }
 
 TEST(LinkedListTests, KthLastElement) {
-	LinkedList ll = LinkedList();
-	for (int i = 0; i < 10; i++) {
-		ll.prepend(i);		
-	}
+	LinkedList ll = LinkedList(10);
 	for (int i = 1; i <= 10; i++) {
 		Node* ret = ll.kth_last_node(i);
 		ASSERT_NE(ret, nullptr);
@@ -118,8 +117,34 @@ TEST(LinkedListTests, KthLastElement) {
 	}
 }
 
-TEST(LinkedListTests, Partition) {
+TEST(LinkedListTests, KthLastElementException) {
 	LinkedList ll = LinkedList(10);
-	ll.partition(5);
+	EXPECT_THROW(ll.kth_last_node(11), OutofBoundsException);
+	EXPECT_THROW(ll.kth_last_node(0), invalid_argument);
+	EXPECT_THROW(ll.kth_last_node(-1), invalid_argument);
+	EXPECT_THROW(ll.kth_last_node(12), OutofBoundsException);
+}
 
+TEST(LinkedListTests, TestPartition) {
+	LinkedList ll = LinkedList(10);
+	int k = 5;
+	ll.partition(k);
+	EXPECT_TRUE(ll.test_partition(k));
+
+	k = 6;
+	ll.partition(k);
+	EXPECT_TRUE(ll.test_partition(k));
+}
+
+TEST(LinkedListTests, DeleteMiddleNode) {
+	LinkedList ll = LinkedList(10);
+	Node * retval = ll.kth_last_node(9);
+	ASSERT_NE(retval, nullptr);
+	ll.delete_middle_node(retval);
+	EXPECT_EQ(ll.getLength(), 9);
+	EXPECT_FALSE(ll.contains(8));
+	EXPECT_TRUE(ll.contains(9));
+	for (int i = 0; i < 8; i++) {
+		EXPECT_TRUE(ll.contains(i));
+	}
 }

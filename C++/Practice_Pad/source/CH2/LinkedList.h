@@ -36,10 +36,11 @@ public:
     void remove_duplicates2();
     Node * kth_last_node(int k);
     void partition(int k);
+    bool test_partition(int k) const;
     bool is_palindrome() const;
     LinkedList * reverse() const;
-    bool is_intersecting(LinkedList ll, Node** retval);
-    bool contains_loop(Node** retval);
+    bool is_intersecting(LinkedList ll, Node*& retval) const;
+    bool contains_loop(Node*& retval) const;
     void delete_middle_node(Node* n);
 };
 
