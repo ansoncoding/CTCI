@@ -33,7 +33,7 @@ public:
     void print() const;
     void print(int len) const;
     bool contains(string s) const;
-    void remove(string s);
+    void remove(string s, bool remove_first_find=false);
     bool isEmpty() const;
 };
 

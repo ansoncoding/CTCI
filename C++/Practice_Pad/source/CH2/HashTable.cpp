@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <iostream>
 
-int HashTable::hash(string s) const {
+int HashTable::hash(const string s) const {
     int hash_val = 0;
     for (unsigned int i = 0; i < s.length(); i++) {
         hash_val += s.at(i);
@@ -28,28 +28,27 @@ HashTable::HashTable(const HashTable & other){
 }
 
 void HashTable::copy(const HashTable & other) {
-    capacity = other.capacity;
     arraylist = new LinkedListS[capacity];
     for (int i = 0; i < capacity; i++) {
-        arraylist[i] = LinkedListS(other.arraylist[i]);
+        arraylist[i] = other.arraylist[i]; //invoke assignment operator for LinkedListS
     }
 }
 
 void HashTable::insert(string s) {
     int index = hash(s) % capacity;
-    arraylist[index].prepend(s);
+    if (!arraylist[index].contains(s))
+        arraylist[index].prepend(s);
 }
 
 bool HashTable::contains(string s) const {
+
     int index = hash(s) % capacity;
     return arraylist[index].contains(s);
 }
 
 void HashTable::remove(string s) {
     int index = hash(s) % capacity;
-    if (arraylist[index].contains(s)) {
-        arraylist[index].remove(s);
-    }
+    arraylist[index].remove(s);
 }
 
 void HashTable::print() const {
@@ -72,6 +71,7 @@ void HashTable::cleanup() {
     delete[] arraylist;
     arraylist = NULL;
 }
+
 HashTable::~HashTable() {
     cleanup();
 }

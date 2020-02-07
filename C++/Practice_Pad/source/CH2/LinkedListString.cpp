@@ -93,24 +93,36 @@ bool LinkedListS::contains(string s) const {
     return false;
 }
 
-void LinkedListS::remove(string s) {
-    Node * temp = head;
-    Node * prev = head;
-    while (temp != NULL){
-        
-        if (temp->data.compare(s) == 0) {
-            if (temp == head) {
-                delete temp;
-                head = NULL;
-            } else {
+void LinkedListS::remove(string s, bool remove_first_find) {
+    if (head == NULL) {
+        return;
+    }
+
+    if (head->data.compare(s)==0) {
+        head = head->next;
+        length--;
+        delete head;
+    }
+    else {
+
+        Node* prev = head;
+        Node* temp = head->next;
+
+        while (temp != NULL) {
+            if (temp->data.compare(s) == 0) {
+
                 prev->next = temp->next;
                 delete temp;
+                length--;
+                if (remove_first_find) {
+                    return;
+                }
+                temp = prev->next;
             }
-            length--;
-            return;
-        } else {
-            prev = temp;
-            temp = temp->next;
+            else {
+                prev = temp;
+                temp = temp->next;
+            }
         }
     }
 }

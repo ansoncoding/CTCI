@@ -7,13 +7,12 @@ using namespace std;
 
 class HashTable {
 
-private:
-    int size = 0;
-    int capacity = 16;
+private:    
+    const int capacity = 16;
     LinkedListS * arraylist;
     void copy(const HashTable& other);
     void cleanup();
-    int hash(string s) const;
+    int hash(const string s) const;
     
 public:
     HashTable();
