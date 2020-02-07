@@ -35,14 +35,17 @@ void StackMin::copy(const StackMin& other) {
 }
 
 void StackMin::cleanup() {
-	if (stack != nullptr) {
+	if (stack != NULL) {
 		delete[] stack;
 		stack = nullptr;
 	}
-	if (min_stack != nullptr) {
+	if (min_stack != NULL) {
 		delete[] min_stack;
 		min_stack = nullptr;
 	}
+	
+	size = 0;
+	current_capacity = initial_capacity;
 }
 
 void StackMin::grow() {
@@ -52,8 +55,8 @@ void StackMin::grow() {
 		new_stack[i] = stack[i];
 		new_min_stack[i] = min_stack[i];
 	}
-	delete[] stack;
-	delete[] min_stack;
+	delete stack;
+	delete min_stack;
 	stack = new_stack;
 	min_stack = new_min_stack;
 	current_capacity *= resizing_factor;
@@ -75,6 +78,7 @@ void StackMin::push(int data) {
 			min_stack[size] = min_stack[size - 1];
 		}
 	}
+	size++;
 }
 
 void StackMin::pop() {

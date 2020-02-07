@@ -44,7 +44,7 @@ void TriStack::copy(const TriStack & other) {
     }
     onearray = new int[current_capacity*3];
 
-    for (int i = 0; i < max_size * 3 + 3; i++) {
+    for (int i = 0; i < max_size * 3 ; i++) {
         onearray[i] = other.onearray[i];
     }
 }

@@ -34,3 +34,6 @@ packages/
 *.config
 C++/Practice_pad/Practice_pad.sdf
 C++/Practice_pad/Practice_pad/ReadMe.txt
+*.exe
+*.pch
+*.CopyComplete
