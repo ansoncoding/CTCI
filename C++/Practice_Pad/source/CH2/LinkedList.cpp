@@ -13,12 +13,12 @@ LinkedList::LinkedList() {
     length = 0;
 }
 
-LinkedList::LinkedList(int length) {
+LinkedList::LinkedList(int len) {
     this->length = 0;
     head = NULL;
     int count = 0;
-    for (int i = 0; i < length; i++) {
-        int val = count % length;
+    for (int i = 0; i < len; i++) {
+        int val = count;
         count++;
         prepend(val);
     }
@@ -83,6 +83,7 @@ void LinkedList::cleanup() {
         current = next;
     }
     head = NULL;
+    length = 0;
 }
 
 LinkedList::~LinkedList() {
@@ -220,6 +221,26 @@ void LinkedList::remove_duplicates2() {
         }
         val_node = val_node->next;
     }
+}
+Node* LinkedList::get(int k) {
+    if (k < 0) {
+        throw invalid_argument("K cannot be less than 0");
+        return nullptr;
+    }
+    if (k >= length || head == NULL) {
+        cerr << "Cannot get " << k << "th last element. List is too small" << endl;
+        throw OutofBoundsException();
+        return nullptr;
+    }
+
+    int count = 0;
+    Node* temp = head;
+    while (temp != nullptr && count < k) {
+        count++;
+        temp = temp->next;
+    }
+    return temp;
+        
 }
 
 Node * LinkedList::kth_last_node(int k) {

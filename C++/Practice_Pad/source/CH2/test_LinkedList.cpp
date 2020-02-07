@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "LinkedList.h"
 #include "practice_exceptions.h"
-#include <exception>
 
 TEST(LinkedListTests, Init) {
 	LinkedList ll = LinkedList();
@@ -9,17 +8,25 @@ TEST(LinkedListTests, Init) {
 
 	ll = LinkedList(10);
 
+	Node* retval;
 	EXPECT_EQ(ll.getLength(), 10);
 	for (int i = 0; i < 10; i++) {
 		EXPECT_TRUE(ll.contains(i));
+		retval = ll.get(i);
+		ASSERT_NE(retval, nullptr);
+		EXPECT_EQ(retval->data, 10 - i - 1);
 	}
 }
 
 TEST(LinkedListTests, AddElements) {
 	LinkedList ll = LinkedList();
+	Node* retval;
 	for (int i = 0; i < 10; i++) {
 		ll.prepend(i);
-		EXPECT_EQ(ll.getLength(), i+1);
+		retval = ll.get(0); //front of list is always the most recently prepended val
+		EXPECT_EQ(ll.getLength(), i + 1);
+		ASSERT_NE(retval, nullptr);
+		ASSERT_EQ(retval->data, i);
 	}
 	EXPECT_EQ(ll.getLength(), 10);
 }

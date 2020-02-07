@@ -1,14 +1,21 @@
 #include "pch.h"
 #include "LinkedListT.h"
-
+#include <iostream>
 
 LinkedListT::LinkedListT() {
     LinkedList();
 }
 
-void LinkedListT::copy(const LinkedListT& other) {
+LinkedListT::LinkedListT(int* init_vals, int len) {
+    length = len;
+    Node* temp = head;
+    for (int i = 0; i < len; i++) {
+        append(init_vals[i]);
+    }
+}
 
-    length = other.length;
+void LinkedListT::copy(const LinkedListT& other) {
+    
     Node* temp = other.head;
     while (temp != NULL) {
         append(temp->data);
@@ -21,6 +28,7 @@ LinkedListT::LinkedListT(const LinkedListT& other) {
 }
 
 LinkedListT& LinkedListT::operator=(const LinkedListT& other) {
+
     if (&other != this) {
         cleanup();
         copy(other);
@@ -29,9 +37,9 @@ LinkedListT& LinkedListT::operator=(const LinkedListT& other) {
 }
 
 LinkedListT::LinkedListT(int len, bool circular) {
+
     for (int i = 0; i < len; i++) {
         append(i);
-        //print();
     }
     if (circular) { //for testing loop function only
         tail->next = head;
@@ -98,6 +106,7 @@ void LinkedListT::cleanup() {
         delete current;
         current = next;
     }
+    length = 0;
     head = NULL;
     tail = NULL;
 }

@@ -12,6 +12,7 @@ private:
 public:
     LinkedListT();
     ~LinkedListT();
+    LinkedListT(int* init_vals, int len);
     LinkedListT& operator=(const LinkedListT& other);
     LinkedListT(const LinkedListT& other);
     LinkedListT(int len, bool circular = false);
