@@ -116,6 +116,7 @@ void LinkedList::print() const {
         cout << endl;
     }
 }
+
 void LinkedList::print(int len) const {
     if (head == NULL) {
         cout << "Linked list is empty" << endl;
@@ -260,6 +261,7 @@ bool LinkedList::is_palindrome() const {
         n1 = n1->next;
         n2 = n2->next;
     }
+    delete rev;
     return true;
 }
 
