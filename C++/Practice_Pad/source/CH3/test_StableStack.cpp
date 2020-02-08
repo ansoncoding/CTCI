@@ -70,7 +70,7 @@ TEST(StableStackTests, CopyConstructor) {
 		copy.pop();
 	}
 }
-#if 1
+
 TEST(StableStackTests, AssignmentOperator) {
 	StableStack ss = StableStack();
 	for (int i = 0; i < 8; i++) {
@@ -83,6 +83,3 @@ TEST(StableStackTests, AssignmentOperator) {
 		copy.pop();
 	}
 }
-
-
-#endif
