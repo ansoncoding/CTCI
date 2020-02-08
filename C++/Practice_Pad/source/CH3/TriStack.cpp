@@ -2,8 +2,6 @@
 #include "TriStack.h"
 #include "practice_exceptions.h"
 
-#include <iostream>
-
 using namespace std;
 
 TriStack::TriStack(){

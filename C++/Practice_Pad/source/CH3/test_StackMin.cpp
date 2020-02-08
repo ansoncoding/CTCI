@@ -5,7 +5,7 @@
 TEST(StackMinTests, PushAndPeek) {
 	StackMin sm = StackMin();
 	EXPECT_TRUE(sm.isEmpty());
-	
+
 	for (int i = 0; i < 8; i++) {
 		sm.push(i);
 		EXPECT_EQ(sm.peek(), i);
@@ -53,30 +53,30 @@ TEST(StackMinTests, ResizeManyTimes) {
 	StackMin sm = StackMin();
 
 	for (int i = 0; i < 256; i++) {
-		sm.push( i * 10);
+		sm.push(i * 10);
 		EXPECT_EQ(sm.peek(), i * 10);
 		EXPECT_EQ(sm.getMin(), 0);
-	}	
+	}
 }
 
 TEST(StackMinTests, CopyConstructor) {
 	StackMin sm = StackMin();
 	for (int i = 0; i < 8; i++) {
-		sm.push( i * 10);
+		sm.push(i * 10);
 	}
-	
+
 	StackMin copy(sm);
 
 	for (int i = 7; i >= 0; i--) {
 		EXPECT_EQ(copy.peek(), i * 10);
 		copy.pop();
-	}	
+	}
 }
 
 TEST(StackMinTests, AssignmentOperator) {
 	StackMin sm = StackMin();
 	for (int i = 0; i < 8; i++) {
-		sm.push( i * 10);
+		sm.push(i * 10);
 	}
 
 	StackMin copy = sm;
@@ -87,7 +87,7 @@ TEST(StackMinTests, AssignmentOperator) {
 }
 
 TEST(StackMinTests, GetMinDecrease) {
-	
+
 	StackMin sm = StackMin();
 	sm.push(100);
 	EXPECT_EQ(sm.getMin(), 100);
