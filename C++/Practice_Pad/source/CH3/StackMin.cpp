@@ -102,3 +102,52 @@ int StackMin::getMin() const {
 	else
 		return min_stack[size - 1];
 }
+
+void StackMin::print() {
+
+	for (int i = size - 1; i >= 0; i--) {
+		cout << stack[i] << endl;
+	}
+}
+
+//#3.3
+//smallest on top, don't use min_stack but you can use a temp stack
+void StackMin::sort() {
+	if (size == 0) {
+		return;
+	}
+	StackMin temp = StackMin();
+	
+	while (!isEmpty()) {
+		int current = peek();
+		pop();
+		if (temp.isEmpty()) {
+			temp.push(current);
+		}
+		else {
+			while (!temp.isEmpty() && (temp.peek() < current)) {
+				push(temp.peek());
+				temp.pop();
+			}
+			temp.push(current);
+			while (!isEmpty() && (peek() < current)) {
+				temp.push(peek());
+				pop();
+			}
+		}
+	}
+	cleanup();
+	copy(temp);
+}
+
+bool StackMin::compare(const StackMin& other) {
+	if (size != other.size) {
+		return false;
+	}
+	for (int i = 0; i < size; i++) {
+		if (other.stack[i] != stack[i]) {
+			return false;
+		}
+	}
+	return true;
+}

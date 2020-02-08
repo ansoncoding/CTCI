@@ -23,6 +23,9 @@ public:
 	int peek() const;
 	bool isEmpty() const;
 	int getMin() const;
+	void sort(); //smallest on top
+	void print();
+	bool compare(const StackMin& other);
 };
 
 #endif

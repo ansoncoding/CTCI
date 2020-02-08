@@ -140,3 +140,14 @@ TEST(StackMinTests, GetMinAfterPopDec) {
 	EXPECT_EQ(sm.getMin(), 100);
 	sm.pop();
 }
+
+TEST(StackMinTests, Sort) {
+	StackMin sm = StackMin();
+	StackMin soln = StackMin();
+	for (int i = 0; i < 8; i++) {
+		sm.push(i * 10);
+		soln.push((8 - 1 - i) * 10);
+	}
+	sm.sort();
+	EXPECT_TRUE(sm.compare(soln));
+}

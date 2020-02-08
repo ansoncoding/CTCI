@@ -6,20 +6,20 @@
 class DSQueue {
 
 private:
-	unsigned int size = 0;
+	const int newest = 0;
+	const int oldest = 1;
 	StackMin stacks[2];
 	void copy(const DSQueue& other);
-	void turn_over_stack();
-	bool stack_ind = 0;
+	void update_oldest_stack();
 
 public:
 	DSQueue();
 	~DSQueue();
 	DSQueue& operator=(const DSQueue& other);
 	DSQueue(const DSQueue & other);
-	int peek(bool pop_after = false); //since we're doing dual stack queue, we can given the option to save some moves
+	int peek(); //since we're doing dual stack queue, we can given the option to save some moves
 	void add(int data);
-	void remove(int count=1);
+	void remove();
 	bool isEmpty() const;
 };
 

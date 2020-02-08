@@ -3,23 +3,21 @@
 #include "practice_exceptions.h"
 
 void DSQueue::copy(const DSQueue& other) {
-	size = other.size;
 	stacks[0] = other.stacks[0];
 	stacks[1] = other.stacks[1];
-	stack_ind = other.stack_ind;
 }
 
-void DSQueue::turn_over_stack() {
-	for (int i = 0; i < size; i++) {
-		stacks[!stack_ind].push(stacks[stack_ind].peek());
-		stacks[stack_ind].pop();
+void DSQueue::update_oldest_stack() {
+	if (stacks[oldest].isEmpty()) {
+		while (!stacks[newest].isEmpty()) {
+			stacks[oldest].push(stacks[newest].peek());
+			stacks[newest].pop();
+		}
 	}
-	stack_ind = !stack_ind;
 }
 
 DSQueue::DSQueue() {
-	size = 0;
-	stack_ind = 0;
+
 }
 
 DSQueue::~DSQueue() {
@@ -37,35 +35,27 @@ DSQueue& DSQueue::operator=(const DSQueue& other) {
 	return *this;
 }
 
-int DSQueue::peek(bool pop_after) {
-	if (size == 0) {
+int DSQueue::peek() {
+	if (stacks[newest].isEmpty() && stacks[oldest].isEmpty()) {
 		throw OutofBoundsException();
 	}
-	turn_over_stack();
+	update_oldest_stack();
 
-	int retval = stacks[stack_ind].peek();
-	if (pop_after) {
-		stacks[stack_ind].pop();
-		size--;
-	}
-	turn_over_stack();
-	return retval;
+	return stacks[oldest].peek();
 }
 
 void DSQueue::add(int data) {
-	stacks[stack_ind].push(data);
-	size++;
+	stacks[newest].push(data);
 }
 
-void DSQueue::remove(int count) {
-	turn_over_stack();
-	for (int i = 0; i < count; i++) {
-		stacks[stack_ind].pop();
-		size--;
+void DSQueue::remove() {
+	if (stacks[newest].isEmpty() && stacks[oldest].isEmpty()) {
+		throw OutofBoundsException();
 	}
-	turn_over_stack();
+	update_oldest_stack();
+	stacks[oldest].pop();
 }
 
 bool DSQueue::isEmpty() const {
-	return size == 0;
+	return stacks[newest].isEmpty() && stacks[oldest].isEmpty();
 }
