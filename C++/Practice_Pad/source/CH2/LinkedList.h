@@ -8,7 +8,7 @@ public:
         this->data = data;
     }
     int data;
-    Node * next = NULL;
+    Node* next = NULL;
 };
 
 
