@@ -1,6 +1,8 @@
 #ifndef LINKED_LIST_GENERIC_H
 #define LINKED_LIST_GENERIC_H
 
+#include "practice_exceptions.h"
+
 template <typename T>
 
 class NodeG {
