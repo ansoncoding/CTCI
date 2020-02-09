@@ -7,6 +7,7 @@ using namespace std;
 void AnimalShelter::copy(const AnimalShelter& other) {
 	cats = other.cats;
 	dogs = other.dogs;
+	nextID = other.nextID;
 }
 
 AnimalShelter::AnimalShelter() {
@@ -26,8 +27,8 @@ AnimalShelter& AnimalShelter::operator=(const AnimalShelter& other) {
 }
 
 void AnimalShelter::enqueue(AnimalType t) {
-	currentID++;
-	Animal a = Animal(t, currentID);
+
+	Animal a = Animal(t, nextID);
 	
 	if (t == dog) {
 		dogs.append(a);
@@ -35,12 +36,12 @@ void AnimalShelter::enqueue(AnimalType t) {
 	else {
 		cats.append(a);
 	}
+	nextID++;
 }
 
 Animal* AnimalShelter::dequeueAny() {
 	if (cats.isEmpty() && dogs.isEmpty()) {
-		cerr << "No animals in animal shelter" << endl;
-		return nullptr;
+		throw OutofAnimalsException("No more animals");
 	}
 	else if (cats.isEmpty()) {
 		Animal *retval = new Animal(dogs.peek()); // make a copy before returning.
@@ -68,8 +69,7 @@ Animal* AnimalShelter::dequeueAny() {
 }
 Animal* AnimalShelter::dequeueDog() {
 	if (dogs.isEmpty()) {
-		cerr << "No more dogs at shelter" << endl;
-		return nullptr;
+		throw OutofAnimalsException("No more dogs");
 	}
 	Animal* retval = new Animal(dogs.peek());
 	dogs.remove();
@@ -78,8 +78,7 @@ Animal* AnimalShelter::dequeueDog() {
 
 Animal* AnimalShelter::dequeueCat() {
 	if (cats.isEmpty()) {
-		cerr << "No more cats at shelter" << endl;
-		return nullptr;
+		throw OutofAnimalsException("No more cats");
 	}
 	Animal* retval = new Animal(cats.peek());
 	cats.remove();
