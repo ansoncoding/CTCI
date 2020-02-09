@@ -69,9 +69,9 @@ public:
 	AnimalShelter(const AnimalShelter & other);
 	AnimalShelter& operator=(const AnimalShelter& other);
 	void enqueue(AnimalType a);
-	Animal * dequeueAny();
-	Animal * dequeueDog();
-	Animal * dequeueCat();
+	Animal dequeueAny();
+	Animal dequeueDog();
+	Animal dequeueCat();
 };
 
 #endif

@@ -81,11 +81,11 @@ void LinkedListT::prepend(int data) {
     length++;
 }
 
-LinkedListT* LinkedListT::reverse() {
+LinkedListT LinkedListT::reverse() {
     Node* temp = head;
-    LinkedListT *retval = new LinkedListT();
+    LinkedListT retval = LinkedListT();
     while (temp != NULL) {
-        retval->prepend(temp->data);
+        retval.prepend(temp->data);
         temp = temp->next;
     }
     return retval;
@@ -131,9 +131,9 @@ void LinkedListT::cleanup() {
 LinkedListT::~LinkedListT() {
     cleanup();
 }
+LinkedListT LinkedListT::sum_lists(const LinkedListT& ll) const {
 
-LinkedListT* LinkedListT::sum_lists(const LinkedListT & ll) const {
-    LinkedListT *retval =new LinkedListT();
+    LinkedListT retval = LinkedListT();
     Node * n1 = head;
     Node * n2 = ll.head;
 
@@ -152,7 +152,7 @@ LinkedListT* LinkedListT::sum_lists(const LinkedListT & ll) const {
         int sum = val1 + val2 + prev_quotient;
         remainder = sum % 10;
         
-        retval->append(remainder);
+        retval.append(remainder);
 
         prev_quotient = sum / 10;
         if (n1 != NULL){
@@ -163,7 +163,7 @@ LinkedListT* LinkedListT::sum_lists(const LinkedListT & ll) const {
         }
     }
     if (prev_quotient > 0) {
-        retval->append(prev_quotient);
+        retval.append(prev_quotient);
     } 
     return retval;
 }

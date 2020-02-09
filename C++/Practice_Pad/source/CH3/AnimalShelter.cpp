@@ -13,12 +13,15 @@ void AnimalShelter::copy(const AnimalShelter& other) {
 AnimalShelter::AnimalShelter() {
 
 }
+
 AnimalShelter::~AnimalShelter() {
 
 }
+
 AnimalShelter::AnimalShelter(const AnimalShelter& other) {
 	copy(other);
 }
+
 AnimalShelter& AnimalShelter::operator=(const AnimalShelter& other) {
 	if (&other != this) {
 		copy(other);
@@ -39,17 +42,17 @@ void AnimalShelter::enqueue(AnimalType t) {
 	nextID++;
 }
 
-Animal* AnimalShelter::dequeueAny() {
+Animal AnimalShelter::dequeueAny() {
 	if (cats.isEmpty() && dogs.isEmpty()) {
 		throw OutofAnimalsException("No more animals");
 	}
 	else if (cats.isEmpty()) {
-		Animal *retval = new Animal(dogs.peek()); // make a copy before returning.
+		Animal retval = Animal(dogs.peek()); // make a copy before returning.
 		dogs.remove();
 		return retval;
 	}
 	else if (dogs.isEmpty()) {
-		Animal* retval = new Animal(cats.peek());
+		Animal retval = Animal(cats.peek());
 		cats.remove();
 		return retval;
 	}
@@ -57,7 +60,7 @@ Animal* AnimalShelter::dequeueAny() {
 		
 		Animal cat = cats.peek();
 		Animal dog = dogs.peek();
-		Animal *retval = cat.isOlderThan(dog) ? new Animal(cat) : new Animal(dog);
+		Animal retval = cat.isOlderThan(dog) ? Animal(cat) : Animal(dog);
 		if (cat.ID < dog.ID) {
 			cats.remove();
 		}
@@ -67,20 +70,21 @@ Animal* AnimalShelter::dequeueAny() {
 		return retval;
 	}
 }
-Animal* AnimalShelter::dequeueDog() {
+
+Animal AnimalShelter::dequeueDog() {
 	if (dogs.isEmpty()) {
 		throw OutofAnimalsException("No more dogs");
 	}
-	Animal* retval = new Animal(dogs.peek());
+	Animal retval = Animal(dogs.peek());
 	dogs.remove();
 	return retval;
 }
 
-Animal* AnimalShelter::dequeueCat() {
+Animal AnimalShelter::dequeueCat() {
 	if (cats.isEmpty()) {
 		throw OutofAnimalsException("No more cats");
 	}
-	Animal* retval = new Animal(cats.peek());
+	Animal retval = Animal(cats.peek());
 	cats.remove();
 	return retval;
 }

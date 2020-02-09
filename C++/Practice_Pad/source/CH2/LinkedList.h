@@ -35,12 +35,12 @@ public:
     void print(int len) const;
     void remove_duplicates();
     void remove_duplicates2();
-    Node* get(int k);
+    Node * get(int k);
     Node * kth_last_node(int k);
     void partition(int k);
     bool test_partition(int k) const;
     bool is_palindrome() const;
-    LinkedList * reverse() const;
+    LinkedList reverse() const;
     bool is_intersecting(const LinkedList & ll, Node*& retval) const;
     bool contains_loop(Node*& retval) const;
     void delete_middle_node(Node* n);

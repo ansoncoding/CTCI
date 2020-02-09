@@ -252,8 +252,8 @@ TEST(LinkedListTTests, CircularLLFalse) {
 TEST(LinkedListTTests, SumListsEmpty) {
 	LinkedListT llt = LinkedListT();
 	LinkedListT llt2 = LinkedListT();
-	LinkedListT *sum = llt.sum_lists(llt2);
-	EXPECT_EQ(sum->getLength(), 0);
+	LinkedListT sum = llt.sum_lists(llt2);
+	EXPECT_EQ(sum.getLength(), 0);
 }
 
 TEST(LinkedListTTests, SumLists) {
@@ -264,8 +264,8 @@ TEST(LinkedListTTests, SumLists) {
 	LinkedListT l1 = LinkedListT(a1, 2);
 	LinkedListT l2 = LinkedListT(b1, 2);
 	LinkedListT soln = LinkedListT(s1, 2);
-	LinkedListT * sum = l1.sum_lists(l2);
-	EXPECT_TRUE(sum->compare(soln));
+	LinkedListT sum = l1.sum_lists(l2);
+	EXPECT_TRUE(sum.compare(soln));
 
 
 	// 3 digits
@@ -277,7 +277,7 @@ TEST(LinkedListTTests, SumLists) {
 	l2 = LinkedListT(b2, 3);
 	soln = LinkedListT(s2, 3);
 	sum = l1.sum_lists(l2);
-	EXPECT_TRUE(sum->compare(soln));
+	EXPECT_TRUE(sum.compare(soln));
 
 	// with carry
 	int a3[] = { 9, 2, 4 };
@@ -288,7 +288,7 @@ TEST(LinkedListTTests, SumLists) {
 	l2 = LinkedListT(b3, 3);
 	soln = LinkedListT(s3, 4);
 	sum = l1.sum_lists(l2);
-	EXPECT_TRUE(sum->compare(soln));
+	EXPECT_TRUE(sum.compare(soln));
 
 	//addends are not the same lengths
 	int a4[] = { 9, 2, 4, 2, 5, 7 };
@@ -299,7 +299,7 @@ TEST(LinkedListTTests, SumLists) {
 	l2 = LinkedListT(b4, 3);
 	soln = LinkedListT(s4, 6);
 	sum = l1.sum_lists(l2);
-	EXPECT_TRUE(sum->compare(soln));
+	EXPECT_TRUE(sum.compare(soln));
 
 	//addends are not the same lengths swapped 
 	int a5[] = { 9, 2, 4, 2 };
@@ -310,7 +310,7 @@ TEST(LinkedListTTests, SumLists) {
 	l2 = LinkedListT(b5, 6);
 	soln = LinkedListT(s5, 6);
 	sum = l1.sum_lists(l2);
-	EXPECT_TRUE(sum->compare(soln));
+	EXPECT_TRUE(sum.compare(soln));
 
 	//zeros
 	int a6[] = { 0, 0, 0 };
@@ -320,7 +320,7 @@ TEST(LinkedListTTests, SumLists) {
 	l2 = LinkedListT(b6, 5);
 	soln = LinkedListT(b6, 5);
 	sum = l1.sum_lists(l2);
-	EXPECT_TRUE(sum->compare(soln));
+	EXPECT_TRUE(sum.compare(soln));
 }
 
 TEST(LinkedListTTests, IsIntersectingEmpty) {

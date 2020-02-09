@@ -19,8 +19,8 @@ public:
     void prepend(int data);
     void append(int data);
     void setTailNext(Node* node); // only used to create intersecting LL
-    LinkedListT* LinkedListT::reverse();
-    LinkedListT* sum_lists(const LinkedListT & l1) const;
+    LinkedListT LinkedListT::reverse();
+    LinkedListT sum_lists(const LinkedListT & l1) const;
 };
 
 #endif

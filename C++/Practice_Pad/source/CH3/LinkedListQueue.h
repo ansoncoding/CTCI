@@ -37,10 +37,6 @@ public:
 	T peek() const;
 };
 
-//#include "pch.h"
-//#include "practice_exceptions.h"
-//#include "LinkedListQueue.h"
-//Node<T>* temp = new Node<T>;
 
 template<typename T>
 LinkedListQ<T>::LinkedListQ() {

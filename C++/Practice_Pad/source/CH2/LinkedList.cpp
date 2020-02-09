@@ -113,11 +113,11 @@ LinkedList& LinkedList::operator=(const LinkedList& other) {
     return *this;
 }
 
-LinkedList * LinkedList::reverse() const {
+LinkedList LinkedList::reverse() const {
     Node* temp = this->head;
-    LinkedList * retval = new LinkedList();
+    LinkedList retval = LinkedList();
     while (temp != NULL) {
-        retval->prepend(temp->data);
+        retval.prepend(temp->data);
         temp = temp->next;
     }
     return retval;
@@ -321,10 +321,10 @@ bool LinkedList::is_palindrome() const {
     if (head == NULL)
         return false;
 
-    LinkedList *rev = reverse();
+    LinkedList rev = reverse();
 
     Node* n1 = head;
-    Node* n2 = rev->head;
+    Node* n2 = rev.head;
     while (n1 != NULL) {
         if (n1->data != n2->data) {
             return false;
@@ -332,7 +332,6 @@ bool LinkedList::is_palindrome() const {
         n1 = n1->next;
         n2 = n2->next;
     }
-    delete rev;
     return true;
 }
 
