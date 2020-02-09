@@ -62,6 +62,7 @@ TEST(LinkedListQ_StringTests, AddRemoveElements) {
 	for (int i = 0; i < 12; i++) {
 		EXPECT_STREQ(ll.peek().c_str(), d12[i].c_str());
 		ll.remove();
+		EXPECT_EQ(ll.getSize(), 12 - i - 1);
 	}
 }
 
@@ -78,6 +79,7 @@ TEST(LinkedListQ_StringTests, AddRemoveMoreElements) {
 	for (int i = 0; i < 33; i++) {
 		EXPECT_STREQ(ll.peek().c_str(), d33[i].c_str());
 		ll.remove();
+		EXPECT_EQ(ll.getSize(), 33 - i - 1);
 	}
 }
 
@@ -91,6 +93,7 @@ TEST(LinkedListQ_StringTests, RemoveElementsEmpty) {
 	}
 	for (int i = 0; i < 12; i++) {
 		l.remove();
+		EXPECT_EQ(l.getSize(), 12 - i - 1);
 	}
 	EXPECT_THROW(l.remove(), OutofBoundsException);
 }
