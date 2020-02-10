@@ -24,6 +24,15 @@ class LinkedList:
             print("\n")
         return
 
+    def contains(self, data):
+        if self.head == None:
+            return False
+        temp = self.head
+        while temp is not None:
+            if temp.data == data:
+                return True
+            temp = temp.next
+        return False
 
     def prepend(self, data):
         if self.head == None:
@@ -37,18 +46,37 @@ class LinkedList:
         return
 
 
-    def __init__(self, list_length=None):
+    def __init__(self, list_length=None, duplicate=False):
         if list_length is not None:
             self.head = None
             self.length = 0
             for i in range(0, list_length):
                 self.prepend(i)
-                self.prepend(i)
+                if duplicate:
+                    self.prepend(i)
         else:
             self.head = None
             self.length = 0
         return
 
+    def remove(self, val, remove_all=False):
+        if self.head is None:
+            return
+        if self.head.data == val:
+            self.head = self.head.next
+            self.length -= 1
+        else:
+            temp = self.head.next
+            prev = self.head
+            while temp is not None:
+                if temp.data == val:
+                    prev.next = temp.next
+                    self.length-=1
+                    if not remove_all:
+                        return
+                prev = temp
+                temp = temp.next
+        return
 
     def remove_duplicates(self):
         if self.head is None:
@@ -140,6 +168,17 @@ class LinkedList:
                 temp = temp.next
         return
 
+    def compare(self, other):
+        if self.length != other.length:
+            return False
+        temp1 = self.head
+        temp2 = other.head
+        while(temp1 is not None and temp2 is not None):
+            if temp1.data != temp2.data:
+                return False
+            temp1 = temp1.next
+            temp2 = temp2.next
+        return True
 
     def reverse(self):
         retval = LinkedList()
@@ -155,7 +194,7 @@ class LinkedList:
             print("List is empty")
             return False
         rev = self.reverse()
-        rev.print()
+        #rev.print()
         n1 = self.head
         n2 = rev.head
         while(n1 is not None):
@@ -164,6 +203,20 @@ class LinkedList:
                 return False
             n1 = n1.next
             n2 = n2.next
+        return True
+
+    def test_partition(self, k):
+        if self.head is None:
+            return False # our list is empty, doesn't even include any elements
+        temp = self.head
+        pass_ge_k = False #passed any values greater or equal to k?
+        while temp is not None:
+            if temp.data < k:
+                if pass_ge_k:
+                    return False
+            else:
+                pass_ge_k = True
+            temp = temp.next
         return True
 
     def loop_detection(self):
@@ -245,32 +298,3 @@ def is_intersecting(l1, l2):
             n1 = n1.next
             n2 = n2.next
         return True, n1
-
-#================================================================================
-
-# l1 = LinkedList(10)
-# l1.print()
-# l1.remove_duplicates2()
-# l1.print()
-# is_answer, node = l1.kth_last_node(5)
-# if is_answer:
-#     print("answer is " + str(node.data))
-#     remove_middle_node(node)
-#     l1.print()
-#     l1.partition(4)
-#     l1.print()
-
-# l1 = LinkedList(10)
-# l1.print()
-# l2 = l1.reverse()
-# l2 = l2.print()
-
-# l1 = LinkedList()
-# for i in range(0,3):
-#     l1.prepend(i)
-# for i in range(2, 0, -1):
-#     l1.prepend(i)
-# l1.print()
-# print(l1.isPalindrome())
-
-
