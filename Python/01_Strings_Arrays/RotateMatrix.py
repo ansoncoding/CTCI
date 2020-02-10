@@ -46,13 +46,12 @@ def rotate_180(mat, N):
     return mat
 
 
-def rotate_180(mat, N, M):
+def rotate_180_rect(mat, N, M):
     for i in range (0, N//2):
         for j in range(0, M):
             matrix_utils.swap(mat, i, j, N-i-1, M-j-1)
     if (N % 2):
         row = N//2
-        print("row " + str(row))
         for c in range(0, M//2):
             matrix_utils.swap(mat,row, c, row, M-c-1)
 

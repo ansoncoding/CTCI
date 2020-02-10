@@ -19,7 +19,7 @@ def print_matrix(mat, N, M):
 
 
 def init_matrix(N, M):
-    mat = [[i+N*j for i in range(M)] for j in range(N)]
+    mat = [[i+M*j for i in range(M)] for j in range(N)]
     return mat
 
 def init_matrix_with_list(N, M, li):
