@@ -36,7 +36,3 @@ def is_unique_3(string):
             counts = (counts | (1 << index))
     return True
 
-#================================================================================
-print(is_unique_3("str")) # true
-print(is_unique_3("strr")) # false
-print(is_unique_3("abcd")) # true

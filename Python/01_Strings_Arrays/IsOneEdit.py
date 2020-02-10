@@ -31,11 +31,3 @@ def is_one_edit(s1, s2):
                 j+=1
                 i+=1
         return True
-
-#================================================================================
-print(is_one_edit("a", "ab")) #true
-print(is_one_edit("a", "abc")) #false
-print(is_one_edit("ac", "ab")) #true
-print(is_one_edit("acee", "ab")) #false
-print(is_one_edit("ab", "abc")) #true
-print(is_one_edit("aee", "aecc")) #false

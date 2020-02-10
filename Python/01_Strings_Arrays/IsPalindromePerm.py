@@ -15,11 +15,3 @@ def is_palindrome_perm(string):
 
     return True
 
-#================================================================================
-print(is_palindrome_perm("abba")) #true
-print(is_palindrome_perm("abcba")) # true
-print(is_palindrome_perm("abbac"))#true
-print(is_palindrome_perm("ab")) #false
-print(is_palindrome_perm("a")) #true
-print(is_palindrome_perm("abcde")) #false
-print(is_palindrome_perm("abcda")) #false

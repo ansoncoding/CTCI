@@ -55,11 +55,3 @@ def is_permutation_3(str1, str2):
             return False
     return True
 
-
-#================================================================================
-print(is_permutation_3("str", "")) #false
-print(is_permutation_3("str", "st")) #false
-print(is_permutation_3("str", "Str")) #false
-print(is_permutation_3("str", "srt")) #true
-print(is_permutation_3("strr", "rtrt")) #false
-print(is_permutation_3("abcdd", "dbcad")) #true

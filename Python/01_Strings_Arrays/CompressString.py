@@ -46,16 +46,3 @@ def compress_efficient(string):
         return string
 
     return result
-
-#================================================================================
-
-print(compress_efficient("abb")) #abb
-print(compress_efficient("abc")) #abc
-print(compress_efficient("aabb")) #a2b2
-print(compress_efficient("ab")) #ab
-print(compress_efficient("aaaabb")) #a4b2
-print(compress_efficient("aaaab")) #a4b1
-print(compress_efficient("aab")) #aab
-print(compress_efficient("aabbcc")) #a2b2c2
-print(compress_efficient("aabbcccdddd")) #a2b2c3d4
-print(compress_efficient("abcabdaca")) #abcabdaca))
