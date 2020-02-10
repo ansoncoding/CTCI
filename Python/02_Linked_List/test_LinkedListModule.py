@@ -82,7 +82,14 @@ class TestLinkedListModule(unittest.TestCase):
             ll.prepend(i)
         self.assertTrue(ll.isPalindrome())
 
+    def test_remove_middle_node(self):
 
+        ll = LinkedList(3)
+        ret, node = ll.kth_last_node(2)
+        self.assertTrue(ret)
+        self.assertEqual(node.data, 1)
+        remove_middle_node(node)
+        self.assertFalse(ll.contains(1))
 
 if __name__ == '__main__':
     unittest.main()

@@ -17,7 +17,7 @@ class LinkedListT(LinkedListModule.LinkedList):
 
     def setTail(self, node):
         self.tail.next = node
-        self.tail = ll2.tail.next
+        self.tail = self.tail.next
 
     def __init__(self, list_length=None, circular=False, k=None):
         if list_length is not None:
@@ -93,65 +93,23 @@ def sum_lists(LLT1, LLT2):
     return retval
 
 #================================================================================
-# LLT1 = LinkedListT(7)
-# LLT1.print()
-# LLT2 = LinkedListT(4)
-# LLT2.print()
-# LLT2.prepend(8)
-# LLT2.print()
-# LLT3 = LLT2.reverse()
-# LLT3.print()
-# LLT3.prepend(2)
-# LLT3.print()
-#soln = sum_lists(LLT1, LLT2)
-#soln.print()
-
-#LT1 = LinkedListT(10)
-
-# for i in range(0,3):
-#     LT1.prepend(i)
-#     LT1.append(i)
-
-# LT1.print(3)
-
-#print(LT1.isPalindrome())
-
-# LT = LinkedListT(10, circular=True)
-# LT.print(20)
-# isloop, node = LT.loop_detection()
-# print(isloop)
-# if isloop:
-#     print(node.data)
-
-# LT2 = LinkedListT(10, circular=False)
-# LT2.print()
-# isloop, node = LT2.loop_detection()
-# print(isloop)
-# if isloop:
-#     print(node.data)
-
-# LT3 = LinkedListT(10, circular=True, k=3)
-# LT3.print(20)
-# isloop, node = LT3.loop_detection()
-# print(isloop)
-# if isloop:
-#     print(node.data)
 
 
-ll1 = LinkedListT(10)
-ll2 = LinkedListT(4)
-ll2.append(50)
-ll1.print()
-ll2.print()
-ret, node = ll1.kth_last_node(10)
-if (ret):
-    ll2.setTail(node)
-    ll2.append(30)
-    ll2.print()
-    ll1.print() # by appending 30 to the end of l1 and l2, l1 is now only 0, 30
 
-ret, node = LinkedListModule.is_intersecting(ll1, ll2)
-if (ret):
-    print("Is intersecting, the intersecting node value is " + str(node.data))
-else:
-    print("Is not intersecting")
+# ll1 = LinkedListT(10)
+# ll2 = LinkedListT(4)
+# ll2.append(50)
+# ll1.print()
+# ll2.print()
+# ret, node = ll1.kth_last_node(10)
+# if (ret):
+#     ll2.setTail(node)
+#     ll2.append(30)
+#     ll2.print()
+#     ll1.print() # by appending 30 to the end of l1 and l2, l1 is now only 0, 30
+
+# ret, node = LinkedListModule.is_intersecting(ll1, ll2)
+# if (ret):
+#     print("Is intersecting, the intersecting node value is " + str(node.data))
+# else:
+#     print("Is not intersecting")
