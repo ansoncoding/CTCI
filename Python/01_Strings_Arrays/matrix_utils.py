@@ -18,6 +18,10 @@ def print_matrix(mat, N, M):
     return
 
 
+def init_zero_matrix(N, M):
+    mat = [[0 for i in range(M)] for j in range(N)]
+    return mat
+
 def init_matrix(N, M):
     mat = [[i+M*j for i in range(M)] for j in range(N)]
     return mat
