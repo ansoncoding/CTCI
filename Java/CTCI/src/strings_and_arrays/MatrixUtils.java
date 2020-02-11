@@ -2,6 +2,7 @@ package strings_and_arrays;
 import java.util.Random; 
 
 public class MatrixUtils {
+	
 	public static int[][] init_matrix(int N, int M) {
 		int[][] mat = new int[N][M];
 		int count = 0;
@@ -12,7 +13,16 @@ public class MatrixUtils {
 		}
 		return mat;
 	}
-	
+	public static boolean compare(int[][] mat1, int[][] mat2, int N, int M) {
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				if (mat1[i][j] != mat2[i][j]) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 	public static int[][] init_matrix(int N) {
 		return init_matrix(N, N);
 	}
