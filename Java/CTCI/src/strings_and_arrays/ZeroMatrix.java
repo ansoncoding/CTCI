@@ -74,15 +74,5 @@ public class ZeroMatrix {
 			clear_row(mat, N, M, 0);
 		}
 	}
-	
-	public static void main(String[] args) {
 
-		int N = 5; 
-		int M = 7;
-		int [][] mat = MatrixUtils.init_rand_matrix(N, M);
-		MatrixUtils.print_matrix(mat, N, M);
-		zero_matrix_2(mat, N, M);
-		MatrixUtils.print_matrix(mat, N, M);
-		
-	}
 }

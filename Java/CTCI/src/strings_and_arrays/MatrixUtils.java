@@ -3,6 +3,17 @@ import java.util.Random;
 
 public class MatrixUtils {
 	
+	public static int[][] init_matrix(int N, int M, int[] vals) {
+		int[][] mat = new int[N][M];
+		int count = 0;
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				mat[i][j] = vals[count++];
+			}
+		}
+		return mat;
+	}
+	
 	public static int[][] init_matrix(int N, int M) {
 		int[][] mat = new int[N][M];
 		int count = 0;

@@ -72,32 +72,4 @@ public class RotateMatrix {
 			}
 		}
 	}
-	
-	public static void main(String[] args) {
-		
-//		int[][] mat;
-//		int N = 8;
-//		mat = MatrixUtils.init_matrix(N);
-//		MatrixUtils.print_matrix(mat, N);
-//		rotate_ccw_90(mat, N);
-//		MatrixUtils.print_matrix(mat, N);
-		
-//		int [][] mat;
-//		int N = 4; 
-//		int M = 5;
-//		mat = MatrixUtils.init_matrix(N, M);
-//		MatrixUtils.print_matrix(mat, N, M);
-//		flip_180(mat, N, M);
-//		MatrixUtils.print_matrix(mat, N, M);
-		
-		int[][] mat;
-		int N = 5;
-		int M = 3;
-		mat = MatrixUtils.init_matrix(N, M);
-		MatrixUtils.print_matrix(mat, N, M);
-		rotate_180(mat, N, M);
-		MatrixUtils.print_matrix(mat, N, M);
-		
-	}
-
 }
