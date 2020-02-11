@@ -74,5 +74,4 @@ public class ZeroMatrix {
 			clear_row(mat, N, M, 0);
 		}
 	}
-
 }

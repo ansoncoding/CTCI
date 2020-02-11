@@ -14,6 +14,17 @@ public class MatrixUtils {
 		return mat;
 	}
 	
+	public static int[][] init_zero_matrix(int N, int M) {
+		int[][] mat = new int[N][M];
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				mat[i][j] = 0;
+			}
+		}
+		return mat;
+	}
+	
 	public static int[][] init_matrix(int N, int M) {
 		int[][] mat = new int[N][M];
 		int count = 0;
@@ -24,6 +35,7 @@ public class MatrixUtils {
 		}
 		return mat;
 	}
+	
 	public static boolean compare(int[][] mat1, int[][] mat2, int N, int M) {
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < M; j++) {
