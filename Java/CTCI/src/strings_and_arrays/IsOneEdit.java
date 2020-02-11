@@ -49,14 +49,7 @@ public class IsOneEdit {
 		}
 	}
 	public static void main(String[] args) {
-	    is_one_edit("abc", "abcd"); // true
-	    is_one_edit("abc", "ab"); //true
-	    is_one_edit("abc", "abb"); // true
-	    is_one_edit("abc", "bbc"); //true
-	    is_one_edit("abc", "abdd"); //false
-	    is_one_edit("abc", "a"); //false
-	    is_one_edit("abc", "add"); //false
-	    is_one_edit("aaaaa", "bcd"); //false
+
 
 	}
 

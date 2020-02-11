@@ -1,7 +1,6 @@
 package strings_and_arrays;
 
 
-
 public class URLfy {
 	
 	public static String URLify(String s, int length) {
@@ -34,7 +33,11 @@ public class URLfy {
 			}
 		}
 		
+		if (num_space == 0)
+			return;
+		
 		int end = length + (num_space << 1);
+		
 		System.out.println(end);
 		charArray[end-1] = '\0';
 		end--;
@@ -42,27 +45,10 @@ public class URLfy {
 			if (charArray[i]== ' ') {
 				System.arraycopy(SPACE, 0, charArray, end-2, 3);
 				end-=3;
-			}else {
+			} else {
 				charArray[end] = charArray[i];
 				end--;
 			}
-		}
+		}		
 	}
-
-	public static void main(String[] args) {
-		char s1[] = "a b  ".toCharArray();
-		char s2[] = "a  b    ".toCharArray();
-		char s3[] = "a  b c      ".toCharArray();
-		char s4[] = "a  b cd      ".toCharArray();
-		URLify_3(s1, 3);
-		System.out.println(s1);
-		URLify_3(s2, 4);
-		System.out.println(s2);
-		URLify_3(s3, 6);
-		System.out.println(s3);
-		URLify_3(s4, 7);
-		System.out.println(s4);
-
-	}
-
 }

@@ -47,20 +47,10 @@ public class CompressString {
 			}
 			result.append(Integer.toString(count));
 		}
+		if (result.length() > len) {
+			return s;
+		}
 		return result.toString();
-	}
-	public static void main(String[] args) {
-	    System.out.println(compress("abb")); //abb
-	    System.out.println(compress("abc")); //abc
-	    System.out.println(compress("aabb")); //a2b2
-	    System.out.println(compress("ab")); //ab
-	    System.out.println(compress("aaaabb")); //a4b2
-	    System.out.println(compress("aaaab")); //a4b1
-	    System.out.println(compress("aab")); //aab
-	    System.out.println(compress("aabbcc")); //a2b2c2
-	    System.out.println(compress("aabbcccdddd")); //a2b2c3d4
-	    System.out.println(compress("abcabdaca")); //abcabdaca
-
 	}
 
 }

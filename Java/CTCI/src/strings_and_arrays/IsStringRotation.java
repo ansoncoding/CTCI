@@ -23,17 +23,5 @@ public class IsStringRotation {
 		
 		return is_substring(test, s2);
 	}
-		
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		System.out.println(is_string_rotation("abc", "cba"));
-		System.out.println(is_string_rotation("abc", "abc"));
-		System.out.println(is_string_rotation("abc", "cab"));
-		System.out.println(is_string_rotation("abc", "cabc"));
-		System.out.println(is_string_rotation("abc", "c"));
-		System.out.println(is_string_rotation("c", "c"));
-		System.out.println(is_string_rotation("c", "cd"));
-		System.out.println(is_string_rotation("asdfasdfc", "casdfasdfd"));
-	}
 
 }
