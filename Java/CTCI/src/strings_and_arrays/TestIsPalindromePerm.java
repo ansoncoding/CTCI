@@ -12,6 +12,5 @@ public class TestIsPalindromePerm {
 		assertTrue(IsPalindromePerm.is_palindrome_perm("a"));   // True
 		assertTrue(IsPalindromePerm.is_palindrome_perm("aba")); // True
 		assertTrue(IsPalindromePerm.is_palindrome_perm("abcba")); //True
-		 
 	}
 }

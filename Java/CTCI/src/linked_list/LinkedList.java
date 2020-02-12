@@ -12,11 +12,48 @@ public class LinkedList {
 		length = 0;
 		head = null;
 	}
+	
+	public boolean compare(LinkedList other) {
+		if (length != other.length) {
+			return false;
+		}
+		Node n1 = head;
+		Node n2 = other.head;
+		while(n1 != null && n2 != null) {
+			if (n1.data != n2.data) {
+				return false;
+			}
+			n1 = n1.next;
+			n2 = n2.next;
+		}
+		return true;
+	}
+	public LinkedList(int len, boolean duplicate) {
+		for (int i= 0; i < len ;i++) {
+			this.prepend(i);
+			if (duplicate)
+				this.prepend(i);
+		}
+	}
+	
 	public LinkedList(int len) {
 		for (int i= 0; i < len ;i++) {
 			this.prepend(i);
-			this.prepend(i);
 		}
+	}
+	
+	public boolean contains(int data) {
+		if (head == null) {
+			return false;
+		}
+		Node temp = head; 
+		while(temp != null) {
+			if (temp.data == data) {
+				return true;
+			}
+			temp = temp.next;
+		}
+		return false;
 	}
 
 	public void prepend(int data) {
@@ -97,15 +134,13 @@ public class LinkedList {
 		}
 	}
 	
-	public Node kth_last_node(int k) {
-		if (k == 0) {
-			System.out.println("K cannot be 0");
-			return null;
+	public Node kth_last_node(int k) throws IndexOutOfBoundsException, IllegalArgumentException {
+		if (k <= 0) {
+			throw new IllegalArgumentException("k cannot be less than or equal to zero");
 		}
 		
 		if (head == null) {
-			System.out.println("List is empty, cannot return " + k + "th element");
-			return null;
+			throw new IndexOutOfBoundsException("List is empty, cannot return " + k + "th element");
 		}
 		
 		Node to_end = head;
@@ -118,8 +153,7 @@ public class LinkedList {
 		}
 		
 		if (count < k) {
-			System.out.println("List is " + count + " elements long, cannot return " + k + "th element");
-			return null;
+			throw new IndexOutOfBoundsException("List is " + count + " elements long, cannot return " + k + "th element");
 		}
 		
 		while (to_end != null) {
@@ -187,6 +221,7 @@ public class LinkedList {
 		n.data = temp.data;
 		n.next = temp.next;
 	}
+	
 	public void reverse_in_place() {
 		if (head == null)
 			return;
@@ -273,24 +308,5 @@ public class LinkedList {
 			temp= temp.next;
 		}
 		return true;
-	}
-	
-	public static void main(String[] args) {
-
-		LinkedList ll = new LinkedList();
-		for (int i = 0; i < 3; i++) {
-			ll.prepend(i);
-		}
-		for (int i = 2; i >= 0; i--) {
-			ll.prepend(i);
-		}
-		ll.print();
-		System.out.println(ll.isPalindrome());
-		Node retval = ll.kth_last_node(5);
-		if (retval == null) {
-			System.out.println("Could not find node");
-		} else {
-			System.out.println(retval.data);
-		}
 	}
 }
