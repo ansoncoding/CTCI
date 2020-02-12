@@ -56,6 +56,24 @@ public class LinkedList {
 		return false;
 	}
 
+	public int get(int index) throws IndexOutOfBoundsException, IllegalArgumentException {
+		if (index < 0) {
+			throw new IllegalArgumentException("k cannot be less than or equal to zero");
+		}
+		
+		if (head == null || index >= length) {
+			throw new IndexOutOfBoundsException("List has " + length + " elements, cannot return " + index + "th element");
+		}
+		
+		Node temp = head;
+		int count = 0;
+		while (count < index) {
+			temp = temp.next;
+			count++;
+		}
+		return temp.data;
+	}
+	
 	public void prepend(int data) {
 		Node n = new Node(data);
 		if (head == null) {
