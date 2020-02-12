@@ -2,7 +2,7 @@
 #define TREE_H
 
 #include <iostream>
-
+#include <random>
 
 using namespace std;
 
@@ -18,7 +18,55 @@ public:
 	}
 	
 	void print() const {
-		cout << data << '\t';
+		cout << data << endl;
+		if (left != nullptr) {
+			left->print();
+		} 
+		if (right != nullptr) {
+			right->print();
+		}
+	}
+
+	bool find(T data) {
+		if (this->data == data) {
+			return true;
+		}
+		else {
+			bool retval = false;
+			if (left != nullptr) {
+				retval = left->find(data);
+			}
+			if (!retval && (right != nullptr)) {
+				retval = right->find(data);
+			}
+			return retval;
+		}
+	}
+
+	void insert(T data) {
+		int randint = rand();
+		if (randint % 2) {
+			if (left == nullptr) {
+				left = new Node(data);
+			}
+			else if (right == nullptr) {
+				right = new Node(data);
+			}
+			else {
+				left.insert(data);
+			}
+		}
+		else {
+			if (right == nullptr) {
+				right = new Node(data);
+			}
+			else if (left == nullptr) {
+				left = new Node(data);
+			}
+			else {
+				right.insert(data);
+			}
+		}
 	}
 };
 
@@ -34,8 +82,6 @@ public:
 	~BinaryTree();
 	BinaryTree(const BinaryTree& other);
 	BinaryTree& operator=(const BinaryTree& other);
-	BinaryTree<T> get_left_subtree() const;
-	BinaryTree<T> get_right_subtree() const;
 	bool find(T data);
 	void insert(T data);
 	void remove(T data);
@@ -72,20 +118,8 @@ BinaryTree<T>::~BinaryTree() {
 }
 
 template <typename T>
-BinaryTree<T> BinaryTree<T>::get_left_subtree() const {
-	return BinaryTree<T>(root->left);
-}
-
-template <typename T>
-BinaryTree<T> BinaryTree<T>::get_right_subtree() const {
-	return BinaryTree<T>(root->right);
-}
-
-template <typename T>
 bool BinaryTree<T>::isNull() const {
-	if (root == nullptr)
-		return true;
-	return false;
+	return (root == nullptr)
 }
 
 template <typename T>
@@ -112,7 +146,7 @@ template <typename T>
 bool BinaryTree<T>::find(T data) {
 	if (root == nullptr)
 		return false;
-	return root->left->find(data) || root->right->find(data);
+	return root->find(data);
 }
 
 template <typename T>
