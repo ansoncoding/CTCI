@@ -19,24 +19,28 @@ class LinkedListT(LinkedListModule.LinkedList):
         self.tail.next = node
         self.tail = self.tail.next
 
-    def __init__(self, list_length=None, circular=False, k=None):
+    def __init__(self, list_length=None, circular=False, k=None, init_vals=None):
         if list_length is not None:
             self.head = None
             self.length = 0
             self.tail = None
-            for i in range(0, list_length):
-                self.append(i)
-            if circular:
-                if k is None:
-                    self.tail.next = self.head
-                if k is not None:
-                    k = k % list_length # in case the user enters k = 20 on a list that's 10 long
-                    n = self.head
-                    count = 0
-                    while(n != None and k > count):
-                        n = n.next
-                        count += 1
-                    self.tail.next = n
+            if init_vals is not None:
+                for i in range(0, list_length):
+                    self.append(init_vals[i])
+            else:
+                for i in range(0, list_length):
+                    self.append(i)
+                if circular:
+                    if k is None:
+                        self.tail.next = self.head
+                    if k is not None:
+                        k = k % list_length # in case the user enters k = 20 on a list that's 10 long
+                        n = self.head
+                        count = 0
+                        while(n != None and k > count):
+                            n = n.next
+                            count += 1
+                        self.tail.next = n
         else:
             LinkedListModule.LinkedList.__init__(self)
             self.tail = None
@@ -90,26 +94,7 @@ def sum_lists(LLT1, LLT2):
         if n2 is not None:
             n2 = n2.next
 
+    if previous_quotient > 0:
+        retval.append(previous_quotient)
+
     return retval
-
-#================================================================================
-
-
-
-# ll1 = LinkedListT(10)
-# ll2 = LinkedListT(4)
-# ll2.append(50)
-# ll1.print()
-# ll2.print()
-# ret, node = ll1.kth_last_node(10)
-# if (ret):
-#     ll2.setTail(node)
-#     ll2.append(30)
-#     ll2.print()
-#     ll1.print() # by appending 30 to the end of l1 and l2, l1 is now only 0, 30
-
-# ret, node = LinkedListModule.is_intersecting(ll1, ll2)
-# if (ret):
-#     print("Is intersecting, the intersecting node value is " + str(node.data))
-# else:
-#     print("Is not intersecting")

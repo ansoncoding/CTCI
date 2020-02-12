@@ -117,6 +117,13 @@ class TestLinkedListTModule(unittest.TestCase):
         lt_sum = sum_lists(LLT1, LLT2)
         self.assertTrue(lt_sum.compare(soln))
 
+    def test_sum_lists2(self):
+        LLT1 = LinkedListT(list_length=3, init_vals=[6, 6, 6]) #
+        LLT2 = LinkedListT(list_length=3, init_vals=[3, 5, 7]) # 
+        soln = LinkedListT(list_length=4, init_vals=[9, 1, 4, 1])  # 0 2 4 3
+        lt_sum = sum_lists(LLT1, LLT2)
+        self.assertTrue(lt_sum.compare(soln))
+
     def test_sum_lists_carry(self):
         LLT1 = LinkedListT(8) 
         rev = LLT1.reverse()  # 7 6 5 4 3 2 1 0

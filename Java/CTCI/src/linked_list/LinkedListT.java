@@ -7,6 +7,21 @@ public class LinkedListT extends LinkedList {
 	public LinkedListT() {
 		super();
 	}
+	
+	public LinkedListT(int len, boolean duplicate) {
+		for (int i= 0 ; i < len ; i++) {
+			append(i);
+			if (duplicate)
+				prepend(i);
+		}
+	}
+	
+	public LinkedListT(int len, int[] vals) {
+		for (int i= 0 ; i < len ; i++) {
+			append(vals[i]);
+		}
+	}
+	
 	public LinkedListT(int len) {
 		for (int i= 0 ; i < len ; i++) {
 			append(i);
@@ -77,51 +92,11 @@ public class LinkedListT extends LinkedList {
 				n2 = n2.next;
 			}
 		}
+		
+		if (prev_quotient > 0) {
+			retval.append(prev_quotient);
+		}
+			
 		return retval;
 	}
-	
-	public static void main(String[] args) {
-//		LinkedListT LLT1 = new LinkedListT(10, 11);
-//		LLT1.print(20);
-//		
-//		Node retval = LLT1.loop_detection();
-//		if (retval == null) {
-//			System.out.println("No loop found");
-//		} else {
-//			System.out.println("Loop found, node val is " + retval.data);
-//		}
-//		
-//		LinkedList LL = new LinkedList(10);
-//		LL.print();
-//		retval = LL.loop_detection();
-//		if (retval == null) {
-//			System.out.println("No loop found");
-//		} else {
-//			System.out.println("Loop found, node val is " + retval.data);
-//		}
-		LinkedListT ll1 = new LinkedListT(10);
-		LinkedListT ll2 = new LinkedListT(1);
-		LinkedListT ll3 = new LinkedListT(3);
-		Node n = ll1.kth_last_node(5);
-		if (n != null) {
-			ll2.setTail(n);
-			ll2.append(13);
-			ll2.print();
-		}
-		Node ret = isIntersecting(ll1, ll2);
-		if (ret != null ) {
-			System.out.println("Is intersecting, intersecting node val is " + n.data);
-		} else {
-			System.out.println("Is not interesecting");
-		}
-		
-		ret = isIntersecting(ll3, ll2);
-		if (ret != null ) {
-			System.out.println("Is intersecting, intersecting node val is " + n.data);
-		} else {
-			System.out.println("Is not interesecting");
-		}
-		
-	}
-
 }

@@ -110,6 +110,23 @@ public class LinkedList {
 		System.out.println();
 	}
 	
+	public boolean containsDuplicate() {
+		if (head == null) {
+			return false;
+		}
+		boolean[] vals = new boolean[length];
+		Node iter = head;
+		while(iter != null) {
+			if (vals[iter.data]) {
+				return true;
+			} else {
+				vals[iter.data] = true;
+			}
+			iter = iter.next;
+		}
+		return false;
+	}
+	
 	public void remove_dups() {
 		if (head == null) {
 			return;
@@ -234,10 +251,11 @@ public class LinkedList {
 	}
 	
 	// node cannot be head or last element
-	public static void remove_middle_node(Node n) {
+	public void remove_middle_node(Node n) {
 		Node temp = n.next;
 		n.data = temp.data;
 		n.next = temp.next;
+		length--;
 	}
 	
 	public void reverse_in_place() {

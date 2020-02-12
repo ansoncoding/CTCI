@@ -15,6 +15,7 @@ public class TestLinkedList {
 		LinkedList ll = new LinkedList();
 		for (int i = 0; i < 20; i++) {
 			ll.prepend(i);
+			assertEquals(ll.getLength(), i+1);
 		}
 		for (int i = 0; i < 20; i++) {
 			assertTrue(ll.contains(i));
@@ -102,8 +103,10 @@ public class TestLinkedList {
 	@Test
 	public void testLinkedListRemoveDup2() {
 		LinkedList ll = new LinkedList(10, true);
+		assertEquals(ll.getLength(), 20);
 		LinkedList soln = new LinkedList(10);
 		ll.remove_dups2();
+		assertEquals(ll.getLength(), 10);
 		assertTrue(ll.compare(soln));
 	}
 	
@@ -118,19 +121,22 @@ public class TestLinkedList {
 	@Test
 	public void testLinkedListPartitionNoChange() {
 		LinkedList ll = new LinkedList(10);
+		assertEquals(ll.getLength(), 10);
 		LinkedList soln = ll;
 		ll.partition(20);
+		assertEquals(ll.getLength(), 10);
 		assertTrue(ll.compare(soln));
 	}
 	
 	@Test
 	public void testLinkedListPartition() {
 		LinkedList ll = new LinkedList(10);
+		assertEquals(ll.getLength(), 10);
 		int k = 5;
 		ll.partition(5);
+		assertEquals(ll.getLength(), 10);
 		
 		boolean partition_found = false;
-		
 		int val;
 		for (int i = 0; i < ll.getLength(); i++) {
 			
@@ -146,6 +152,7 @@ public class TestLinkedList {
 			}
 		}
 	}
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void testLinkedListGetIllegalArg() throws IllegalArgumentException {
 		LinkedList ll = new LinkedList(10);
