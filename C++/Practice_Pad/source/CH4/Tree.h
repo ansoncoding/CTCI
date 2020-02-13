@@ -2,31 +2,24 @@
 #define TREE_H
 
 #include <iostream>
+#include <iomanip>
 #include <random>
 
 using namespace std;
 
 template <typename T>
 class BTNode {
-private:
+public:
+	const int COUNT = 10;
 	T data;
 	BTNode<T>* left = nullptr;
 	BTNode<T>* right = nullptr;
-public:
+
 	BTNode(T data) {
-		data = data;
+		this->data = data;
 	}
 	
-	void print() const {
-		cout << data << endl;
-		if (left != nullptr) {
-			left->print();
-		} 
-		if (right != nullptr) {
-			right->print();
-		}
-	}
-
+	
 	bool find(T data) {
 		if (this->data == data) {
 			return true;
@@ -42,38 +35,65 @@ public:
 			return retval;
 		}
 	}
-
+	bool isLeaf() const {
+		return (right == nullptr) && (left == nullptr);
+	}
 	void insert(T data) {
 		int randint = rand();
 		if (randint % 2) {
 			if (left == nullptr) {
-				left = new Node(data);
+				left = new BTNode<T>(data);
 			}
 			else if (right == nullptr) {
-				right = new Node(data);
+				right = new BTNode<T>(data);
 			}
 			else {
-				left.insert(data);
+				left->insert(data);
 			}
 		}
 		else {
 			if (right == nullptr) {
-				right = new Node(data);
+				right = new BTNode<T>(data);
 			}
 			else if (left == nullptr) {
-				left = new Node(data);
+				left = new BTNode<T>(data);
 			}
 			else {
-				right.insert(data);
+				right->insert(data);
 			}
 		}
 	}
+	// Function to print binary tree in 2D  
+// It does reverse inorder traversal  
+	void print2DUtil(int space)
+	{
+		// Base case  
+		
+		// Increase distance between levels  
+		space += COUNT;
+
+		// Process right child first  
+		if (right != nullptr)
+			right->print2DUtil(space);
+
+		// Print current node after space  
+		// count  
+		cout << endl;
+		for (int i = COUNT; i < space; i++)
+			cout << " ";
+		cout << data << "\n";
+
+		// Process left child  
+		if (left != nullptr)
+			left->print2DUtil(space);
+	}
+
 };
 
 template <typename T>
 class BinaryTree {
 private:
-	BTNode * root = nullptr;
+	BTNode<T> * root = nullptr;
 	void copy(const BinaryTree& other);
 	void cleanup();
 public:
@@ -105,6 +125,7 @@ template <typename T>
 BinaryTree<T>::BinaryTree() {
 }
 
+
 template <typename T>
 BinaryTree<T>::BinaryTree(int size, T* vals) {
 	for (int i = 0; i < size; i++) {
@@ -126,7 +147,7 @@ template <typename T>
 bool BinaryTree<T>::isLeaf() const {
 	if (root == nullptr)
 		return true;
-	return (root->right == nullptr) && (root->right == nullptr);
+	return (root->right == nullptr) && (root->left == nullptr);
 }
 template <typename T>
 BinaryTree<T>::BinaryTree(const BinaryTree& other) {
@@ -152,10 +173,10 @@ bool BinaryTree<T>::find(T data) {
 template <typename T>
 void BinaryTree<T>::insert(T data) {
 	if (root == nullptr) {
-		root = new Node(data);
+		root = new BTNode<T>(data);
 	}
 	else {
-		root.insert(data);
+		root->insert(data);
 	}
 }
 
@@ -170,10 +191,11 @@ void BinaryTree<T>::sort() {
 }
 
 template <typename T>
-void BinaryTree<T>::print() const {
-	if (root != nullptr) {
-		root.print();
-	}
+void BinaryTree<T>::print()const
+{
+	// Pass initial space count as 0  
+	if (root != nullptr)
+		root->print2DUtil(0);
 }
 
 
