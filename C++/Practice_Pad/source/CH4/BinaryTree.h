@@ -16,16 +16,78 @@ public:
 	BTNode<T>* left = nullptr;
 	BTNode<T>* right = nullptr;
 
-	BTNode(T data) {
-		this->data = data;
-	}
-	bool find(T data);
+	BTNode<T>(T data);
+	BTNode<T>(const BTNode& other);
+	BTNode<T>& operator=(const BTNode& other);
+	void copy(const BTNode& other);
+	bool find(T data) const;
 	bool isLeaf() const;
 	bool remove(T data);
 	void insert(T data);
 	void print(int space);
 	T find_leaf_remove();
+	void cleanup();
 };
+
+template <typename T>
+BTNode<T>::BTNode(T data) {
+	this->data = data;
+}
+
+template <typename T>
+BTNode<T>& BTNode<T>::operator=(const BTNode<T>& other) {
+	if (&other != this) {
+		cleanup();
+		copy(other);
+	}
+	return* this;
+}
+
+template <typename T>
+BTNode<T>::BTNode(const BTNode<T>& other) {
+	copy(other);
+}
+
+template <typename T>
+void BTNode<T>::copy(const BTNode<T>& other) {
+	this->data = other.data;
+	left = nullptr;
+	right = nullptr;
+	if (other.left != nullptr) {
+		this->left = new BTNode<T>(*other.left);
+	}
+	if (other.right != nullptr) {
+		this->right = new BTNode<T>(*other.right);
+	}
+}
+
+template <typename T>
+void BTNode<T>::cleanup() {
+	if (left != nullptr) {
+		
+		if (left->isLeaf()) {
+			delete left;
+			left = nullptr;
+		}
+		else {
+			left->cleanup();
+			delete left;
+			left = nullptr;
+		}
+	}
+	if (right != nullptr) {
+
+		if (right->isLeaf()) {
+			delete right;
+			right = nullptr;
+		}
+		else {
+			right->cleanup();
+			delete right;
+			right = nullptr;
+		}
+	}
+}
 
 template <typename T>
 bool BTNode<T>::remove(T data) {
@@ -138,7 +200,7 @@ void BTNode<T>::insert(T data) {
 }
 
 template <typename T>
-bool BTNode<T>::find(T data) {
+bool BTNode<T>::find(T data) const {
 	if (this->data == data) {
 		return true;
 	}
@@ -164,26 +226,28 @@ void BTNode<T>::print(int space) {
 		right->print(space);
 
 	// Print current node after space count  
-	cout << endl << setw(space - COUNT) << data << "\n";
+	cout << endl << setw(space - COUNT) << data << endl;
 
 	// Process left child  
 	if (left != nullptr)
 		left->print(space);
 }
+//=================================================================
+//=================================================================
 
 template <typename T>
 class BinaryTree {
 private:
 	BTNode<T> * root = nullptr;
-	void copy(const BinaryTree& other);
+	void copy(const BinaryTree<T>& other);
 	void cleanup();
 	
 public:
 	BinaryTree();
 	BinaryTree(int size, T* data);
 	~BinaryTree();
-	BinaryTree(const BinaryTree& other);
-	BinaryTree& operator=(const BinaryTree& other);
+	BinaryTree(const BinaryTree<T>& other);
+	BinaryTree<T>& operator=(const BinaryTree<T>& other);
 	bool find(T data);
 	void insert(T data);
 	bool remove(T data);
@@ -194,13 +258,31 @@ public:
 };
 
 template <typename T>
-void BinaryTree<T>::copy(const BinaryTree& other) {
-
+void BinaryTree<T>::copy(const BinaryTree<T>& other) {
+	if (other.root != nullptr)
+		root = new BTNode<T>(*other.root);
+	/*if (other->left != nullptr) {
+		root->left = other->root->left;
+	}
+	if (other->right != nullptr) {
+		root->right = other->root->right;
+	}*/
 }
 
 template <typename T>
 void BinaryTree<T>::cleanup() {
-
+	if (root == nullptr) {
+		return;
+	}
+	if (root->isLeaf()) {
+		delete root;
+		root = nullptr;
+	}
+	else {
+		root->cleanup();
+		delete root;
+		root = nullptr;
+	}
 }
 
 template <typename T>
@@ -217,7 +299,7 @@ BinaryTree<T>::BinaryTree(int size, T* vals) {
 
 template <typename T>
 BinaryTree<T>::~BinaryTree() {
-
+	cleanup();
 }
 
 template <typename T>
@@ -231,19 +313,23 @@ bool BinaryTree<T>::isLeaf() const {
 		return true;
 	return (root->right == nullptr) && (root->left == nullptr);
 }
-template <typename T>
-BinaryTree<T>::BinaryTree(const BinaryTree& other) {
 
-}
 
 template <typename T>
-BinaryTree<T>& BinaryTree<T>::operator=(const BinaryTree& other) {
+BinaryTree<T>& BinaryTree<T>::operator=(const BinaryTree<T>& other) {
 	if (&other != this) {
 		cleanup();
 		copy(other);
 	}
 	return *this;
 }
+
+
+template <typename T>
+BinaryTree<T>::BinaryTree(const BinaryTree<T>& other) {
+	copy(other);
+}
+
 
 template <typename T>
 bool BinaryTree<T>::find(T data) {
