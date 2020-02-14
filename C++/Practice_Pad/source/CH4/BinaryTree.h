@@ -25,12 +25,6 @@ public:
 	void insert(T data);
 	void print(int space);
 	T find_leaf_remove();
-	void copy_data(BTNode* n1) {
-		this->data = n1->data;
-	}
-	
-
-	
 };
 
 template <typename T>
@@ -48,7 +42,6 @@ T BTNode<T>::find_leaf_remove() {
 	if (isLeaf()) {
 		throw std::invalid_argument("Node is already a leaf");
 	}
-
 	if (left != nullptr) {
 		if (left->isLeaf()) {
 			T retval = T(left->data);
