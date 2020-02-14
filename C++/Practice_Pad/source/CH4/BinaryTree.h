@@ -21,15 +21,48 @@ public:
 	}
 	bool find(T data);
 	bool isLeaf() const;
-	void remove(T data);
+	bool remove(T data);
 	void insert(T data);
 	void print(int space);
 	T find_leaf_remove();
 };
 
 template <typename T>
-void BTNode<T>::remove(T data) {
-
+bool BTNode<T>::remove(T data) {
+	bool retval = false;
+	if (left != nullptr) {
+		if (left->data == data) {
+			if (left->isLeaf()) {
+				delete left;
+				left = nullptr;
+			}
+			else {
+				T leaf_val = left->find_leaf_remove();
+				left->data = leaf_val;
+			}
+			retval = true;
+		}
+	}
+	if (right != nullptr) {
+		if (right->data == data) {
+			if (right->isLeaf()) {
+				delete right;
+				right = nullptr;
+			}
+			else {
+				T leaf_val = right->find_leaf_remove();
+				right->data = leaf_val;
+			}
+			retval = true;
+		}
+	}
+	if (left != nullptr) {
+		retval |= left->remove(data);
+	}
+	if (right != nullptr) {
+		retval |= right->remove(data);
+	}
+	return retval;
 }
 
 template <typename T>
@@ -153,7 +186,7 @@ public:
 	BinaryTree& operator=(const BinaryTree& other);
 	bool find(T data);
 	void insert(T data);
-	void remove(T data);
+	bool remove(T data);
 	void sort();
 	void print() const;
 	bool isLeaf() const;
@@ -189,7 +222,7 @@ BinaryTree<T>::~BinaryTree() {
 
 template <typename T>
 bool BinaryTree<T>::isNull() const {
-	return (root == nullptr)
+	return (root == nullptr);
 }
 
 template <typename T>
@@ -231,9 +264,10 @@ void BinaryTree<T>::insert(T data) {
 
 
 template <typename T>
-void BinaryTree<T>::remove(T data) {
+bool BinaryTree<T>::remove(T data) {
+	bool retval = false;
 	if (root == nullptr) {
-		return;
+		return false;
 	}
 	if (root->data == data) {
 		if (isLeaf()) {
@@ -244,10 +278,13 @@ void BinaryTree<T>::remove(T data) {
 			T leaf_val = root->find_leaf_remove();
 			root->data = leaf_val;
 		}
+		retval = true;
 	}
-	else {
-		root->remove(data);
+	if (!isNull()) {
+		retval |= root->remove(data);
 	}
+	return retval;
+	
 }
 
 template <typename T>
@@ -258,9 +295,12 @@ void BinaryTree<T>::sort() {
 template <typename T>
 void BinaryTree<T>::print()const
 {
-	// Pass initial space count as 0  
-	if (root != nullptr)
+	if (isNull()) {
+		cout << "Tree is Empty" << endl;
+	}
+	else {
 		root->print(0);
+	}
 }
 
 

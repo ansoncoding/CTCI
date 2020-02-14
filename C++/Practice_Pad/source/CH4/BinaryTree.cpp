@@ -16,8 +16,10 @@ int main() {
 	cout << "==================================" << endl;
 
 	for (int i = 0; i < 6; i++) {
-		bt.remove(i);
+		cout << bt.remove(i) << endl;
 	}
+
+	cout << "==================================" << endl;
 	
 	bt.print();
 }
