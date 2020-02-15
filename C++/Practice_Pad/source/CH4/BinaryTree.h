@@ -22,7 +22,6 @@ template <typename T>
 class BinaryTree {
 protected:
 	void cleanup();
-	
 	BTNode<T> * copy_helper(const BTNode<T>*other);
 	virtual bool find_helper(T data, const BTNode<T>* n) const;
 	bool remove_helper(T data, BTNode<T>*& n);
@@ -32,6 +31,7 @@ protected:
 	void deleteNode(BTNode<T>*& n);
 	void print_helper(int space, const BTNode<T>* n) const;
 	void inorder_helper(const BTNode<T>* n) const;
+	void inorder_helper(const BTNode<T>* n, T* output, int &index) const; //for testing purposes only
 	void preorder_helper(const BTNode<T>* n) const;
 	void postorder_helper(const BTNode<T>* n) const;
 
@@ -53,7 +53,8 @@ public:
 	void print() const;
 	void inorder() const;
 	void preorder() const;
-	void postorder() const;
+	void postorder() const; 
+	void inorder(T* output) const;
 };
 
 
@@ -359,4 +360,29 @@ void BinaryTree<T>::postorder() const {
 	cout << endl;
 }
 
+//for testing purposes only
+template <typename T>
+void BinaryTree<T>::inorder_helper(const BTNode<T>* n, T* output, int& index) const {
+	if (n->left != nullptr) {
+		inorder_helper(n->left, output, index);
+	}
+
+	output[index] = n->data;
+	index++;
+
+	if (n->right != nullptr) {
+		inorder_helper(n->right, output, index);
+	}
+}
+//for testing purposes only
+template <typename T>
+void BinaryTree<T>::inorder(T* output) const {
+	if (root == nullptr) {
+		cout << "Tree is empty" << endl;
+		return;
+	}
+	int index = 0;
+	inorder_helper(root, output, index);
+	cout << endl;
+}
 #endif

@@ -4,7 +4,7 @@
 
 #if 1
 int d2[] = { 8, 12, 3, 7, 2, 10, 6, 77, 1, 5, 4, 19, 14, 0, 49 };
-
+int io[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 19, 49, 77 };
 int N2 = 15;
 
 TEST(TestBinarySearchTree, InsertFindRemove) {
@@ -68,4 +68,17 @@ TEST(TestBinarySearchTree, AssignmentOperator) {
 	EXPECT_TRUE(bt.isNull());
 	EXPECT_TRUE(copy.isNull());
 }
+
+TEST(TestBinarySearchTree, Order) {
+	BinarySearchTree<int> bt = BinarySearchTree<int>();
+	for (int i = 0; i < N2; i++) {
+		bt.insert(d2[i]);
+	}
+	int* output = new int[N2];
+	bt.inorder(output);
+	for (int i = 0; i < N2; i++) {
+		EXPECT_EQ(output[i], io[i]);
+	}
+}
+
 #endif
