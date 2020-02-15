@@ -23,7 +23,7 @@ class BinaryTree {
 protected:
 	void cleanup();
 	
-	BTNode<T> * copy_helper(const BTNode<T>& other);
+	BTNode<T> * copy_helper(const BTNode<T>*other);
 	bool find_helper(T data, const BTNode<T>* n) const;
 	bool remove_helper(T data, BTNode<T>*& n);
 	void insert_helper(T data, BTNode<T>* n);
@@ -52,18 +52,18 @@ public:
 
 
 template <typename T>
-BTNode<T> * BinaryTree<T>::copy_helper(const BTNode<T>& other) {
+BTNode<T> * BinaryTree<T>::copy_helper(const BTNode<T>* other) {
 	
 	BTNode<T>* retval = nullptr;
 
 	if (other != nullptr) {
-		BTNode<T>* retval = new BTNode<T>(other.data);
+		retval = new BTNode<T>(other->data);
 	}
-	if (other.left != nullptr) {
-		retval->left = copy(other.left);
+	if (other->left != nullptr) {
+		retval->left = copy_helper(other->left);
 	}
-	if (other.right != nullptr) {
-		retval->right = copy(other.right);
+	if (other->right != nullptr) {
+		retval->right = copy_helper(other->right);
 	}
 	return retval;
 }
