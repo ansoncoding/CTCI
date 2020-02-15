@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "BinarySearchTree.h"
-#include <iostream>
 
-#if 1
 int d2[] = { 8, 12, 3, 7, 2, 10, 6, 77, 1, 5, 4, 19, 14, 0, 49 };
 int io[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 19, 49, 77 };
 int N2 = 15;
@@ -80,5 +78,3 @@ TEST(TestBinarySearchTree, Order) {
 		EXPECT_EQ(output[i], io[i]);
 	}
 }
-
-#endif
