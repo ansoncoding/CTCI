@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "BinaryTree.h"
 #include <iostream>
+
 int d[] = { 8, 12, 3, 7, 2 , 10, 6, 77, 1, 5, 4, 19, 14, 0, 49 };
 int N = 15;
+
 TEST(TestBinaryTree, InsertFindRemove) {
 	BinaryTree<int> bt = BinaryTree<int>();
 	EXPECT_TRUE(bt.isNull());

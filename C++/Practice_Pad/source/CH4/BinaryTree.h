@@ -24,9 +24,9 @@ protected:
 	void cleanup();
 	
 	BTNode<T> * copy_helper(const BTNode<T>*other);
-	bool find_helper(T data, const BTNode<T>* n) const;
+	virtual bool find_helper(T data, const BTNode<T>* n) const;
 	bool remove_helper(T data, BTNode<T>*& n);
-	void insert_helper(T data, BTNode<T>* n);
+	virtual void insert_helper(T data, BTNode<T>* n);
 	T find_leaf_remove(BTNode<T> *& n);
 	void copy(const BinaryTree& other);
 	void deleteNode(BTNode<T>*& n);
@@ -165,7 +165,6 @@ bool BinaryTree<T>::remove_helper(T data, BTNode<T> * & n) {
 		if (isLeaf(n)) {
 			delete n;
 			n = nullptr;
-			//deleteNode(n);
 		}
 		else {
 			n->data = find_leaf_remove(n);
@@ -279,6 +278,10 @@ void BinaryTree<T>::print_helper(int space, const BTNode<T> * n) const {
 
 template <typename T>
 void BinaryTree<T>::print() const {
+	if (root == nullptr) {
+		cout << "Tree is empty" << endl;
+		return;
+	}
 	print_helper(0, root);
 }
 
