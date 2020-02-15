@@ -31,6 +31,9 @@ protected:
 	void copy(const BinaryTree& other);
 	void deleteNode(BTNode<T>*& n);
 	void print_helper(int space, const BTNode<T>* n) const;
+	void inorder_helper(const BTNode<T>* n) const;
+	void preorder_helper(const BTNode<T>* n) const;
+	void postorder_helper(const BTNode<T>* n) const;
 
 	const int COUNT = 10;
 	BTNode<T>* root;
@@ -48,6 +51,9 @@ public:
 	void insert(T data);
 	bool find(T data) const;
 	void print() const;
+	void inorder() const;
+	void preorder() const;
+	void postorder() const;
 };
 
 
@@ -285,5 +291,72 @@ void BinaryTree<T>::print() const {
 	print_helper(0, root);
 }
 
+template <typename T>
+void BinaryTree<T>::inorder_helper(const BTNode<T>* n) const {
+	if (n->left != nullptr) {
+		inorder_helper(n->left);
+	}
+	cout << n->data << " ";
+	if (n->right != nullptr) {
+		inorder_helper(n->right);
+	}
+}
+
+template <typename T>
+void BinaryTree<T>::inorder() const {
+	if (root == nullptr) {
+		cout << "Tree is empty" << endl;
+		return;
+	}
+	inorder_helper(root);
+	cout << endl;
+}
+
+template <typename T>
+void BinaryTree<T>::preorder_helper(const BTNode<T>* n) const {
+	
+	cout << n->data << " ";
+
+	if (n->left != nullptr) {
+		preorder_helper(n->left);
+	}
+
+	if (n->right != nullptr) {
+		preorder_helper(n->right);
+	}
+}
+
+template <typename T>
+void BinaryTree<T>::preorder() const {
+	if (root == nullptr) {
+		cout << "Tree is empty" << endl;
+		return;
+	}
+	preorder_helper(root);
+	cout << endl;
+}
+
+template <typename T>
+void BinaryTree<T>::postorder_helper(const BTNode<T>* n) const {
+
+	if (n->left != nullptr) {
+		postorder_helper(n->left);
+	}
+
+	if (n->right != nullptr) {
+		postorder_helper(n->right);
+	}
+	cout << n->data << " ";
+}
+
+template <typename T>
+void BinaryTree<T>::postorder() const {
+	if (root == nullptr) {
+		cout << "Tree is empty" << endl;
+		return;
+	}
+	postorder_helper(root);
+	cout << endl;
+}
 
 #endif

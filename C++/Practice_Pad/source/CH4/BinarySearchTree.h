@@ -167,6 +167,7 @@ BTNode<T>* BinarySearchTree<T>::remove_helper(T data, BTNode<T>*& n) {
 		n->right = remove_helper(data, n->right);
 		return n;
 	}
+	return n;
 }
 
 template <typename T>

@@ -3,7 +3,8 @@
 #include <iostream>
 
 #if 1
-int d2[] = { 8, 12, 3, 7, 2 , 10, 6, 77, 1, 5, 4, 19, 14, 0, 49 };
+int d2[] = { 8, 12, 3, 7, 2, 10, 6, 77, 1, 5, 4, 19, 14, 0, 49 };
+
 int N2 = 15;
 
 TEST(TestBinarySearchTree, InsertFindRemove) {
