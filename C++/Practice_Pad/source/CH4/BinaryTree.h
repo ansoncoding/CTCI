@@ -9,33 +9,96 @@
 using namespace std;
 
 template <typename T>
-class BTNode {
-public:
-	const int COUNT = 10;
-	T data;
-	BTNode<T>* left = nullptr;
-	BTNode<T>* right = nullptr;
-
-	BTNode<T>(T data);
-	BTNode<T>(const BTNode& other);
-	BTNode<T>& operator=(const BTNode& other);
-	void copy(const BTNode& other);
-	bool find(T data) const;
-	bool isLeaf() const;
-	bool remove(T data);
-	void insert(T data);
-	void print(int space);
-	T find_leaf_remove();
-	void cleanup();
+struct BTNode {
+	BTNode* left = nullptr; 
+	BTNode* right = nullptr;
+	T data = 0;
+	BTNode(T data) {
+		this->data = data;
+	}
 };
 
 template <typename T>
-BTNode<T>::BTNode(T data) {
-	this->data = data;
+class BinaryTree {
+protected:
+	void cleanup();
+	
+	BTNode<T> * copy_helper(const BTNode<T>& other);
+	bool find_helper(T data, const BTNode<T>* n) const;
+	bool remove_helper(T data, BTNode<T>*& n);
+	void insert_helper(T data, BTNode<T>* n);
+	T find_leaf_remove(BTNode<T> *& n);
+	void copy(const BinaryTree& other);
+	void deleteNode(BTNode<T>*& n);
+	void print_helper(int space, const BTNode<T>* n) const;
+
+	const int COUNT = 10;
+	BTNode<T>* root;
+
+public:
+	
+	BinaryTree<T>();
+	BinaryTree<T>(T * data, int size);
+	BinaryTree<T>(const BinaryTree& other);
+	BinaryTree<T>& operator=(const BinaryTree& other);
+	
+	bool isLeaf(const BTNode<T> * n) const;
+	bool isNull() const;
+	bool remove(T data);
+	void insert(T data);
+	bool find(T data) const;
+	void print() const;
+};
+
+
+template <typename T>
+BTNode<T> * BinaryTree<T>::copy_helper(const BTNode<T>& other) {
+	
+	BTNode<T>* retval = nullptr;
+
+	if (other != nullptr) {
+		BTNode<T>* retval = new BTNode<T>(other.data);
+	}
+	if (other.left != nullptr) {
+		retval->left = copy(other.left);
+	}
+	if (other.right != nullptr) {
+		retval->right = copy(other.right);
+	}
+	return retval;
 }
 
 template <typename T>
-BTNode<T>& BTNode<T>::operator=(const BTNode<T>& other) {
+void BinaryTree<T>::copy(const BinaryTree<T>& other) {
+	root = copy_helper(other.root);
+}
+
+template <typename T>
+void BinaryTree<T>::deleteNode(BTNode<T>*& n) {
+	if (n->left != nullptr) {
+		deleteNode(n->left);
+		n->left = nullptr;
+	}
+	if (right != nullptr) {
+		deleteNode(n->right);
+		n->right = nullptr;
+	}
+	delete n;
+	n = nullptr;
+}
+
+template <typename T>
+void BinaryTree<T>::cleanup() {
+	deleteNode(root);
+}
+
+template <typename T>
+BinaryTree<T>::BinaryTree() {
+	root = nullptr;
+}
+
+template <typename T>
+BinaryTree<T>& BinaryTree<T>::operator=(const BinaryTree<T>& other) {
 	if (&other != this) {
 		cleanup();
 		copy(other);
@@ -44,262 +107,91 @@ BTNode<T>& BTNode<T>::operator=(const BTNode<T>& other) {
 }
 
 template <typename T>
-BTNode<T>::BTNode(const BTNode<T>& other) {
+BinaryTree<T>::BinaryTree(const BinaryTree<T>& other) {
 	copy(other);
 }
 
 template <typename T>
-void BTNode<T>::copy(const BTNode<T>& other) {
-	this->data = other.data;
-	left = nullptr;
-	right = nullptr;
-	if (other.left != nullptr) {
-		this->left = new BTNode<T>(*other.left);
-	}
-	if (other.right != nullptr) {
-		this->right = new BTNode<T>(*other.right);
+BinaryTree<T>::BinaryTree(T* vals, int size) {
+	for (int i = 0; i < size; i++) {
+		insert(vals[i]);
 	}
 }
 
 template <typename T>
-void BTNode<T>::cleanup() {
-	if (left != nullptr) {
-		
-		if (left->isLeaf()) {
-			delete left;
-			left = nullptr;
-		}
-		else {
-			left->cleanup();
-			delete left;
-			left = nullptr;
+T BinaryTree<T>::find_leaf_remove(BTNode<T>*& n) {
+	if (isLeaf(n)) {
+		throw std::invalid_argument("Node is already a leaf");
+	}
+	if (n->left != nullptr) {
+		if (isLeaf(n->left)) {
+			T retval = T(n->left->data);
+			delete n->left;
+			n->left = nullptr;
+			return retval;
 		}
 	}
-	if (right != nullptr) {
-
-		if (right->isLeaf()) {
-			delete right;
-			right = nullptr;
+	if (n->right != nullptr) {
+		if (isLeaf(n->right)) {
+			T retval = T(n->right->data);
+			delete n->right;
+			n->right = nullptr;
+			return retval;
+		}
+	}
+	int randint = rand();
+	if (randint % 2) {
+		if (n->left != nullptr) {
+			return find_leaf_remove(n->left);
 		}
 		else {
-			right->cleanup();
-			delete right;
-			right = nullptr;
+			return find_leaf_remove(n->right);
+		}
+	}
+	else {
+		if (n->right != nullptr) {
+			return find_leaf_remove(n->right);
+		}
+		else {
+			return find_leaf_remove(n->left);
 		}
 	}
 }
 
 template <typename T>
-bool BTNode<T>::remove(T data) {
+bool BinaryTree<T>::remove_helper(T data, BTNode<T> * & n) {
 	bool retval = false;
-	if (left != nullptr) {
-		if (left->data == data) {
-			if (left->isLeaf()) {
-				delete left;
-				left = nullptr;
-			}
-			else {
-				T leaf_val = left->find_leaf_remove();
-				left->data = leaf_val;
-			}
-			retval = true;
+	if (n->data == data) {
+		if (isLeaf(n)) {
+			delete n;
+			n = nullptr;
+			//deleteNode(n);
 		}
-	}
-	if (right != nullptr) {
-		if (right->data == data) {
-			if (right->isLeaf()) {
-				delete right;
-				right = nullptr;
-			}
-			else {
-				T leaf_val = right->find_leaf_remove();
-				right->data = leaf_val;
-			}
-			retval = true;
+		else {
+			n->data = find_leaf_remove(n);
 		}
+		retval = true;
 	}
-	if (left != nullptr) {
-		retval |= left->remove(data);
+	if (n != nullptr && n->left != nullptr){// && (data < n->data)) {
+		retval |= remove_helper(data, n->left);
 	}
-	if (right != nullptr) {
-		retval |= right->remove(data);
+	if (n != nullptr && n->right != nullptr){// && (data > n->data)) {
+		retval |= remove_helper(data, n->right);
 	}
 	return retval;
 }
 
 template <typename T>
-bool BTNode<T>::isLeaf() const {
-	return (right == nullptr) && (left == nullptr);
-}
-
-template <typename T>
-T BTNode<T>::find_leaf_remove() {
-	if (isLeaf()) {
-		throw std::invalid_argument("Node is already a leaf");
-	}
-	if (left != nullptr) {
-		if (left->isLeaf()) {
-			T retval = T(left->data);
-			delete left;
-			left = nullptr;
-			return retval;
-		}
-	}
-	if (right != nullptr) {
-		if (right->isLeaf()) {
-			T retval = T(right->data);
-			delete right;
-			right = nullptr;
-			return retval;
-		}
-	}
-	int randint = rand();
-	if (randint % 2) {
-		if (left != nullptr) {
-			return left->find_leaf_remove();
-		}
-		else {
-			return right->find_leaf_remove();
-		}
-	}
-	else {
-		if (right != nullptr) {
-			return right->find_leaf_remove();
-		}
-		else {
-			return left->find_leaf_remove();
-		}
-	}
-}
-
-template <typename T>
-void BTNode<T>::insert(T data) {
-	int randint = rand();
-	if (randint % 2) {
-		if (left == nullptr) {
-			left = new BTNode<T>(data);
-		}
-		else if (right == nullptr) {
-			right = new BTNode<T>(data);
-		}
-		else {
-			left->insert(data);
-		}
-	}
-	else {
-		if (right == nullptr) {
-			right = new BTNode<T>(data);
-		}
-		else if (left == nullptr) {
-			left = new BTNode<T>(data);
-		}
-		else {
-			right->insert(data);
-		}
-	}
-}
-
-template <typename T>
-bool BTNode<T>::find(T data) const {
-	if (this->data == data) {
-		return true;
-	}
-	else {
-		bool retval = false;
-		if (left != nullptr) {
-			retval = left->find(data);
-		}
-		if (!retval && (right != nullptr)) {
-			retval = right->find(data);
-		}
-		return retval;
-	}
-}
-
-template <typename T>
-void BTNode<T>::print(int space) {
-	// Increase distance between levels  
-	space += COUNT;
-
-	// Process right child first  
-	if (right != nullptr)
-		right->print(space);
-
-	// Print current node after space count  
-	cout << endl << setw(space - COUNT) << data << endl;
-
-	// Process left child  
-	if (left != nullptr)
-		left->print(space);
-}
-//=================================================================
-//=================================================================
-
-template <typename T>
-class BinaryTree {
-private:
-	BTNode<T> * root = nullptr;
-	void copy(const BinaryTree<T>& other);
-	void cleanup();
-	
-public:
-	BinaryTree();
-	BinaryTree(int size, T* data);
-	~BinaryTree();
-	BinaryTree(const BinaryTree<T>& other);
-	BinaryTree<T>& operator=(const BinaryTree<T>& other);
-	bool find(T data);
-	void insert(T data);
-	bool remove(T data);
-	void sort();
-	void print() const;
-	bool isLeaf() const;
-	bool isNull() const; //empty tree
-};
-
-template <typename T>
-void BinaryTree<T>::copy(const BinaryTree<T>& other) {
-	if (other.root != nullptr)
-		root = new BTNode<T>(*other.root);
-	/*if (other->left != nullptr) {
-		root->left = other->root->left;
-	}
-	if (other->right != nullptr) {
-		root->right = other->root->right;
-	}*/
-}
-
-template <typename T>
-void BinaryTree<T>::cleanup() {
+bool BinaryTree<T>::remove(T data) {
 	if (root == nullptr) {
-		return;
+		return false;
 	}
-	if (root->isLeaf()) {
-		delete root;
-		root = nullptr;
-	}
-	else {
-		root->cleanup();
-		delete root;
-		root = nullptr;
-	}
+	return remove_helper(data, root);
 }
 
 template <typename T>
-BinaryTree<T>::BinaryTree() {
-}
-
-
-template <typename T>
-BinaryTree<T>::BinaryTree(int size, T* vals) {
-	for (int i = 0; i < size; i++) {
-		insert(vals[i]);
-	}	
-}
-
-template <typename T>
-BinaryTree<T>::~BinaryTree() {
-	cleanup();
+bool BinaryTree<T>::isLeaf(const BTNode<T> * n) const {
+	return (n->right == nullptr) && (n->left == nullptr);
 }
 
 template <typename T>
@@ -308,34 +200,30 @@ bool BinaryTree<T>::isNull() const {
 }
 
 template <typename T>
-bool BinaryTree<T>::isLeaf() const {
-	if (root == nullptr)
-		return true;
-	return (root->right == nullptr) && (root->left == nullptr);
-}
-
-
-template <typename T>
-BinaryTree<T>& BinaryTree<T>::operator=(const BinaryTree<T>& other) {
-	if (&other != this) {
-		cleanup();
-		copy(other);
+void BinaryTree<T>::insert_helper(T data, BTNode<T> * n) {
+	int randint = rand();
+	if (randint % 2) {
+		if (n->left == nullptr) {
+			n->left = new BTNode<T>(data);
+		}
+		else if (n->right == nullptr) {
+			n->right = new BTNode<T>(data);
+		}
+		else {
+			insert_helper(data, n->left);
+		}
 	}
-	return *this;
-}
-
-
-template <typename T>
-BinaryTree<T>::BinaryTree(const BinaryTree<T>& other) {
-	copy(other);
-}
-
-
-template <typename T>
-bool BinaryTree<T>::find(T data) {
-	if (root == nullptr)
-		return false;
-	return root->find(data);
+	else {
+		if (n->right == nullptr) {
+			n->right = new BTNode<T>(data);
+		}
+		else if (n->left == nullptr) {
+			n->left = new BTNode<T>(data);
+		}
+		else {
+			insert_helper(data, n->right);
+		}
+	}
 }
 
 template <typename T>
@@ -344,49 +232,54 @@ void BinaryTree<T>::insert(T data) {
 		root = new BTNode<T>(data);
 	}
 	else {
-		root->insert(data);
+		insert_helper(data, root);
 	}
 }
 
+template <typename T>
+bool BinaryTree<T>::find_helper(T data, const BTNode<T>* n) const {
+	bool retval = false;
+	if (n->data == data) {
+		return true;
+	}
+	else {
+		if (n->left != nullptr) {
+			retval = find_helper(data, n->left);
+		}
+		if (!retval && (n->right != nullptr)) {
+			retval = find_helper(data, n->right);
+		}
+		return retval;
+	}
+}
 
 template <typename T>
-bool BinaryTree<T>::remove(T data) {
-	bool retval = false;
+bool BinaryTree<T>::find(T data) const {
 	if (root == nullptr) {
 		return false;
 	}
-	if (root->data == data) {
-		if (isLeaf()) {
-			delete root;
-			root = nullptr;
-		}
-		else {
-			T leaf_val = root->find_leaf_remove();
-			root->data = leaf_val;
-		}
-		retval = true;
-	}
-	if (!isNull()) {
-		retval |= root->remove(data);
-	}
-	return retval;
-	
+	return find_helper(data, root);
 }
 
 template <typename T>
-void BinaryTree<T>::sort() {
+void BinaryTree<T>::print_helper(int space, const BTNode<T> * n) const {
+	space += COUNT;
 
+	// Process right child first  
+	if (n->right != nullptr)
+		print_helper(space, n->right);
+
+	// Print current node after space count  
+	cout << endl << setw(space - COUNT) << n->data << endl;
+
+	// Process left child  
+	if (n->left != nullptr)
+		print_helper(space, n->left);
 }
 
 template <typename T>
-void BinaryTree<T>::print()const
-{
-	if (isNull()) {
-		cout << "Tree is Empty" << endl;
-	}
-	else {
-		root->print(0);
-	}
+void BinaryTree<T>::print() const {
+	print_helper(0, root);
 }
 
 
