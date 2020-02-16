@@ -11,7 +11,7 @@ template <typename T>
 struct BTNode {
 	BTNode* left = nullptr; 
 	BTNode* right = nullptr;
-	T data = 0;
+	T data;
 	BTNode(T data) {
 		this->data = data;
 	}
