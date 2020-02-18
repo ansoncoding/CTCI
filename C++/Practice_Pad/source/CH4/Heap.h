@@ -5,279 +5,197 @@
 #include <iomanip>
 #include <random>
 #include "practice_exceptions.h"
-#include "LinkedListQueue.h"
+#include "ArrayList.h"
 
 using namespace std;
 
 template <typename T>
-struct HNode {
-	HNode<T>* left = nullptr;
-	HNode<T>* right = nullptr;
-	HNode<T>* parent = nullptr;
-	T data = 0;
-	HNode(T data) {
-		this->data = data;
-	}
-};
 
-template <typename T>
-class MinHeap {
-protected:
-	void cleanup();
-	HNode<T>* copy_helper(const HNode<T>* other);
-	bool remove_helper(LinkedListQ<HNode<T>*> &q);
-	void insert_helper(T data, LinkedListQ<HNode<T>*> &q);
-
-	void copy(const MinHeap& other);
-	void deleteNode(HNode<T>*& n);
-	void print_helper(int space, const HNode<T>* n) const;
-
-	const int COUNT = 10;
-	HNode<T>* root;
-	HNode<T>* parent_of_next_insert = nullptr;
-	HNode<T>* parent_of_last = nullptr;
-
+class MinHeap : public ArrayList {
+private:
+	void swap(int ind1, int ind2);
+	void swapParent();
+	void swapChildren();
+	bool hasLeftChild(int k) const;
+	bool hasRightChild(int k) const;
+	unsigned int getLeftArrayIndex(unsigned int k) const;
+	unsigned int getRightArrayIndex(unsigned int k) const;
+	unsigned int getParentArrayIndex(unsigned int k) const;
 public:
-
-	MinHeap<T>();
-	MinHeap<T>(T* data, int size);
-	MinHeap<T>(const MinHeap& other);
-	MinHeap<T>& operator=(const MinHeap& other);
-
-	bool isLeaf(const HNode<T>* n) const;
-	bool isNull() const;
-	bool removeMin();
+	
+	void removeMin();
 	void insert(T data);
 	T getMin() const;
 	void print() const;
 };
 
-
 template <typename T>
-HNode<T>* MinHeap<T>::copy_helper(const HNode<T>* other) {
-
-	HNode<T>* retval = nullptr;
-
-	if (other != nullptr) {
-		retval = new HNode<T>(other->data);
-	}
-	if (other->left != nullptr) {
-		retval->left = copy_helper(other->left);
-	}
-	if (other->right != nullptr) {
-		retval->right = copy_helper(other->right);
-	}
-	return retval;
+unsigned int MinHeap<T>::getLeftArrayIndex(unsigned int k) const {
+	return 2 * k;
 }
 
 template <typename T>
-void MinHeap<T>::copy(const MinHeap<T>& other) {
-	root = copy_helper(other.root);
+unsigned int MinHeap<T>::getRightArrayIndex(unsigned int k) const {
+	return 2 * k + 1;
 }
 
 template <typename T>
-void MinHeap<T>::deleteNode(HNode<T>*& n) {
-	if (n->left != nullptr) {
-		deleteNode(n->left);
-		n->left = nullptr;
-	}
-	if (right != nullptr) {
-		deleteNode(n->right);
-		n->right = nullptr;
-	}
-	delete n;
-	n = nullptr;
+unsigned int MinHeap<T>::getParentArrayIndex(unsigned int k) const {
+	return k / 2;
 }
 
 template <typename T>
-void MinHeap<T>::cleanup() {
-	deleteNode(root);
+void MinHeap<T>::swap(int ind1, int ind2) {
+	T temp = arraylist[ind1];
+	arraylist[ind1] = arraylist[ind2];
+	arraylist[ind2] = temp;
 }
 
 template <typename T>
-MinHeap<T>::MinHeap() {
-	root = nullptr;
-}
-
-template <typename T>
-MinHeap<T>& MinHeap<T>::operator=(const MinHeap<T>& other) {
-	if (&other != this) {
-		cleanup();
-		copy(other);
-	}
-	return*this;
-}
-
-template <typename T>
-MinHeap<T>::MinHeap(const MinHeap<T>& other) {
-	copy(other);
-}
-
-template <typename T>
-MinHeap<T>::MinHeap(T* vals, int size) {
-	for (int i = 0; i < size; i++) {
-		insert(vals[i]);
-	}
-}
-
-template <typename T>
-bool MinHeap<T>::remove_helper(LinkedListQ<HNode<T>*> &q) {
-	if (q.isEmpty())
-		throw new std::invalid_argument("queue is empty");
-
-	HNode<T>* temp;
-	bool removed = false;
-	while (!q.isEmpty() && !removed) {
-		temp = q.peek();
-		if (isLeaf(temp))
-			throw new std::invalid_argument("nodes in queue cannot be leaves");
-
-		
-		if (temp->right == nullptr && temp->left != nullptr) {
-			n->data = temp->left->data;
-			delete temp->left;
-			temp->left = nullptr
-		} else 
-		if (temp->left == nullptr) {
-			temp->left = new HNode<T>(data);
-			temp->left->parent = temp;
-			inserted = true;
-			if (data < temp->data) {
-				swap_parent(temp->left);
-			}
-		}
-		if (temp->right != nullptr) {
-			q.append(temp->right);
-		}
-		if (temp->left != nullptr) {
-			q.append(temp->left);
-		}
-		
-		q.remove();
-	}
-}
-
-template <typename T>
-bool MinHeap<T>::removeMin() {
-	if (root == nullptr) {
-		return false;
-	}
+void MinHeap<T>::swapParent() {
+	int currentInd = size;
+	int k = size;
+	int parentInd = getParentArrayIndex(k);
 	
-	if (isLeaf(root)) {
-		delete root;
-		root = nullptr;
-		return true;
-	}
-	else {
-		LinkedListQ<HNode<T>*> q = LinkedListQ<HNode<T>*>();
-		q.append(root);
-		remove_helper(q);
-		return true;
-	}
-}
+	T parentVal = arraylist[parentInd];
+	T currentVal = arraylist[currentInd];
 
-template <typename T>
-bool MinHeap<T>::isLeaf(const HNode<T>* n) const {
-	return (n->right == nullptr) && (n->left == nullptr);
-}
 
-template <typename T>
-bool MinHeap<T>::isNull() const {
-	return (root == nullptr);
-}
+	while (parentInd != 0 && parentVal > currentVal) {
+		
+		arraylist[currentInd] = parentVal;
+		arraylist[parentInd] = currentVal;
 
-template <typename T>
-T MinHeap<T>::getMin() const {
-	if (root != nullptr)
-		return root->data;
-	throw new OutofBoundsException();
-}
-template <typename T>
-
-void swap_parent(HNode<T> * n) {
-	HNode<T>* current = n;
-	while (current->parent != nullptr) {
-		if (current->data < current->parent->data) {
-			T temp = current->parent->data;
-			current->parent->data = current->data;
-			current->data = temp;
+		currentInd = parentInd;
+		parentInd = getParentArrayIndex(parentInd);
+		if (parentInd == 0) {
+			break;
 		}
-		current = current->parent;
+		parentVal = arraylist[parentInd];
+		currentVal = arraylist[currentInd];
 	}
 }
+
 template <typename T>
-void MinHeap<T>::insert_helper(T data, LinkedListQ<HNode<T>*>& q) {
-	if (q.isEmpty())
-		throw new std::invalid_argument("queue is empty");
+bool MinHeap<T>::hasLeftChild(int k) const {
+	return getLeftArrayIndex(k) <= size;
+}
 
-	HNode<T>* temp;
-	bool inserted = false;
-	while (!q.isEmpty() && !inserted) {
-		temp = q.peek();
-		if (temp->left != nullptr) {
-			q.append(temp->left);
-		}
-		if (temp->right != nullptr) {
-			q.append(temp->right);
-		}
+template <typename T>
+bool MinHeap<T>::hasRightChild(int k) const {
+	return getRightArrayIndex(k) <= size;
+}
 
-		if (temp->left == nullptr) {
-			temp->left = new HNode<T>(data);
-			temp->left->parent = temp;
-			inserted = true;
-			if (data < temp->data) {
-				swap_parent(temp->left);
+template <typename T>
+void MinHeap<T>::swapChildren() {
+	int currentInd = 1; //root
+	
+	
+	while (currentInd < size) {
+		
+		T currentVal = arraylist[currentInd];
+		int leftInd = getLeftArrayIndex(currentInd);
+		int rightInd = getRightArrayIndex(currentInd);
+
+		// has both children
+		if (hasRightChild(currentInd) && hasLeftChild(currentInd)) {
+			T leftVal = arraylist[leftInd];
+			T rightVal = arraylist[rightInd];
+
+			//both children are smaller than parent, swap with smaller child
+			if (leftVal < currentVal && rightVal < currentVal) {
+
+				if (leftVal < rightVal) {
+					//swap parent with left val
+					swap(leftInd, currentInd);
+					currentInd = leftInd;
+				}
+				else {
+					//swap parent with right val
+					swap(rightInd, currentInd);
+					currentInd = rightInd;
+				}
+			}
+			else if (leftVal < currentVal) {
+				//swap parent with left val
+				swap(leftInd, currentInd);
+				currentInd = leftInd;
+			}
+			else if (rightVal < currentVal) {
+				//swap parent with right val
+				swap(rightInd, currentInd);
+				currentInd = rightInd;
+			}
+			else {
+				break; // both children are greater than the parent, we're done
 			}
 		}
-		else if (temp->right == nullptr) {
-			temp->right = new HNode<T>(data);
-			temp->right->parent = temp;
-			inserted = true;
-			if (data < temp->data) {
-				swap_parent(temp->right);
+		else if (hasLeftChild(currentInd)) {
+			T leftVal = arraylist[leftInd]; 
+			if (leftVal < currentVal) {
+				//swap parent with left val
+				swap(leftInd, currentInd);
+				currentInd = leftInd;
+			}
+			else {
+				break; // we're done, the only child it has is greater
 			}
 		}
-		q.remove();
+		else if (hasRightChild(currentInd)){
+			T rightVal = arraylist[rightInd];
+			if (rightVal < currentVal) {
+				//swap parent with right val
+				swap(rightInd, currentInd);
+				currentInd = rightInd;
+			}
+			else {
+				break; // we're done, the only child it has is greater
+			}
+		}
 	}
+}
+
+template <typename T>
+void MinHeap<T>::removeMin() {
+	if (size == 0) {
+		throw OutofBoundsException();
+	}
+	if (size == 1) {
+		size--;
+		return;
+	}
+	T temp = arraylist[size];
+	arraylist[1] = temp;
+	size--;
+	swapChildren();
 }
 
 template <typename T>
 void MinHeap<T>::insert(T data) {
-	if (root == nullptr) {
-		root = new HNode<T>(data);
-		root->parent = nullptr;
-	}
-	else {
-		LinkedListQ<HNode<T>*> q = LinkedListQ<HNode<T>*>();
-		q.append(root);
-		insert_helper(data, q);
-	}
+	
+	size++;
+	arraylist[size] = data;
+	swapParent();	
 }
 
 template <typename T>
-void MinHeap<T>::print_helper(int space, const HNode<T>* n) const {
-	space += COUNT;
-
-	// Process right child first  
-	if (n->right != nullptr)
-		print_helper(space, n->right);
-
-	// Print current node after space count  
-	cout << endl << setw(space - COUNT) << n->data << endl;
-
-	// Process left child  
-	if (n->left != nullptr)
-		print_helper(space, n->left);
+T MinHeap<T>::getMin() const {
+	if (size == 0) {
+		throw OutofBoundsException();
+	}
+	return arraylist[1];
 }
 
 template <typename T>
 void MinHeap<T>::print() const {
-	if (root == nullptr) {
-		cout << "Heap is empty" << endl;
+	if (size == 0) {
+		cout << "The heap is empty" << endl;
 		return;
 	}
-	print_helper(0, root);
+	for (int i = 1; i < size+1; i++) {
+		cout << arraylist[i] << " ";
+	}
+	cout << endl;
 }
-
 
 #endif

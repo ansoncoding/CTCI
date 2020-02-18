@@ -7,7 +7,7 @@ int N3 = 15;
 
 TEST(TestMinHeap, InsertFindRemove) {
 	MinHeap<int> mh = MinHeap<int>();
-	EXPECT_TRUE(mh.isNull());
+	EXPECT_TRUE(mh.isEmpty());
 	
 	for (int i = 0; i < N3; i++) {
 		mh.insert(d3[i]);

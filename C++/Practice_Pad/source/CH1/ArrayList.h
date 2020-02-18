@@ -3,7 +3,7 @@
 
 class ArrayList {
 
-private:
+protected:
     const int initial_capacity = 8;
     const int resizing_factor = 2;
     int current_capacity = 8;
