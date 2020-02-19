@@ -22,12 +22,20 @@ private:
 	unsigned int getRightArrayIndex(unsigned int k) const;
 	unsigned int getParentArrayIndex(unsigned int k) const;
 public:
-	
+	MinHeap();
 	void removeMin();
 	void insert(T data);
 	T getMin() const;
 	void print() const;
+	bool isEmpty() const;
 };
+
+template <typename T>
+MinHeap<T>::MinHeap() {
+	arraylist = new T[initial_capacity];
+	memset(arraylist, 0, initial_capacity * sizeof(int));
+	count = 1; //start at index 1
+}
 
 template <typename T>
 unsigned int MinHeap<T>::getLeftArrayIndex(unsigned int k) const {
@@ -53,8 +61,8 @@ void MinHeap<T>::swap(int ind1, int ind2) {
 
 template <typename T>
 void MinHeap<T>::swapParent() {
-	int currentInd = size;
-	int k = size;
+	int currentInd = count;
+	int k = count;
 	int parentInd = getParentArrayIndex(k);
 	
 	T parentVal = arraylist[parentInd];
@@ -78,12 +86,12 @@ void MinHeap<T>::swapParent() {
 
 template <typename T>
 bool MinHeap<T>::hasLeftChild(int k) const {
-	return getLeftArrayIndex(k) <= size;
+	return getLeftArrayIndex(k) < count;
 }
 
 template <typename T>
 bool MinHeap<T>::hasRightChild(int k) const {
-	return getRightArrayIndex(k) <= size;
+	return getRightArrayIndex(k) < count;
 }
 
 template <typename T>
@@ -157,33 +165,40 @@ void MinHeap<T>::swapChildren(int k) {
 
 template <typename T>
 void MinHeap<T>::removeMin() {
-	if (size == 0) {
+	if (count <= 1) {
 		throw OutofBoundsException();
 	}
-	if (size == 1) {
-		size--;
+	if (count == 2) {
+		count--;
 		return;
 	}
-	T temp = arraylist[size];
+	T temp = arraylist[count-1]; //this is the last element in the heap
 	arraylist[1] = temp;
-	size--;
 	swapChildren(1);
+	count--;
 }
 
 template <typename T>
 void MinHeap<T>::insert(T data) {
-	
-	size++;
-	if (size == current_capacity) {
+
+	if (count == current_capacity) {
 		grow();
 	}
-	arraylist[size] = data;
+	arraylist[count] = data;
 	swapParent();	
+	count++;
 }
+
+
+template <typename T>
+bool MinHeap<T>::isEmpty() const {
+	return (count == 1);
+}
+
 
 template <typename T>
 T MinHeap<T>::getMin() const {
-	if (size == 0) {
+	if (count <= 1) {
 		throw OutofBoundsException();
 	}
 	return arraylist[1];
@@ -191,11 +206,11 @@ T MinHeap<T>::getMin() const {
 
 template <typename T>
 void MinHeap<T>::print() const {
-	if (size == 0) {
+	if (count <= 1) {
 		cout << "The heap is empty" << endl;
 		return;
 	}
-	for (int i = 1; i < size+1; i++) {
+	for (int i = 1; i < count; i++) {
 		cout << arraylist[i] << " ";
 	}
 	cout << endl;

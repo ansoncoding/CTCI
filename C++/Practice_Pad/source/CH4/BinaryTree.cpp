@@ -17,10 +17,13 @@ int main() {
 	cout << "==================================" << endl;
 	mh.print();
 	
+	
 	cout << "==================================" << endl;
-	for (int i = 0; i < N; i++) {
+	MinHeap<int> copy(mh);
+	copy.print();
+	/*for (int i = 0; i < N; i++) {
 		mh.removeMin();
 		mh.print();
-	}
+	}*/
 }
 #endif
