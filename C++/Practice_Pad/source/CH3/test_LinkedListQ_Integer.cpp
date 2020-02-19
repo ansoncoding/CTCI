@@ -13,6 +13,7 @@ TEST(LinkedListQ_IntegerTests, CopyConstructor) {
 	for (int i = 0; i < 10; i++) {
 		ll.append(i);
 		EXPECT_EQ(ll.peek(), 0);
+		EXPECT_TRUE(ll.contains(i));
 	}
 	
 	LinkedListQ<int> copy(ll);
@@ -21,6 +22,7 @@ TEST(LinkedListQ_IntegerTests, CopyConstructor) {
 	for (int i = 0; i < 10; i++) {
 		EXPECT_EQ(ll.peek(), i);
 		ll.remove();
+		EXPECT_FALSE(ll.contains(i));
 	}
 }
 
@@ -35,6 +37,7 @@ TEST(LinkedListQ_IntegerTests, AssignmentOperator) {
 
 	EXPECT_EQ(copy.getSize(), 10);
 	for (int i = 0; i < 10; i++) {
+		EXPECT_TRUE(ll.contains(i));
 		EXPECT_EQ(ll.peek(), i);
 		ll.remove();
 	}
@@ -87,4 +90,18 @@ TEST(LinkedListQ_IntegerTests, RemoveElementsEmpty) {
 		EXPECT_EQ(l.getSize(), 10-i-1);
 	}
 	EXPECT_THROW(l.remove(), OutofBoundsException);
+}
+
+TEST(LinkedListQ_IntegerTests, Iterator) {
+
+	LinkedListQ<int> ll = LinkedListQ<int>();
+	for (int i = 0; i < 20; i++) {
+		ll.append(i);
+	}
+
+	int count = 0;
+	for (LinkedListQ<int>::Iterator iter = ll.begin(); iter != ll.end(); iter++) {
+		EXPECT_EQ(*iter, count);
+		count++;
+	}
 }

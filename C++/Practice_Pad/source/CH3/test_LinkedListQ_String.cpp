@@ -97,3 +97,17 @@ TEST(LinkedListQ_StringTests, RemoveElementsEmpty) {
 	}
 	EXPECT_THROW(l.remove(), OutofBoundsException);
 }
+
+TEST(LinkedListQ_StringTests, Iterator) {
+
+	LinkedListQ<string> ll = LinkedListQ<string>();
+	for (int i = 0; i < 33; i++) {
+		ll.append(d33[i]);
+	}
+
+	int count = 0;
+	for (LinkedListQ<string>::Iterator iter = ll.begin(); iter != ll.end(); iter++) {
+		EXPECT_EQ(*iter, d33[count].c_str());
+		count++;
+	}
+}

@@ -34,9 +34,75 @@ public:
 	unsigned int getSize() const;
 	void remove();
 	bool isEmpty() const;
+	bool contains(T data) const;
 	T peek() const;
+	void print() const;
+
+
+	// Forward declaration must be done in the same access scope 
+	class Iterator;
+
+	// Root of LinkedList wrapped in Iterator type 
+	Iterator begin() {
+		return Iterator(head);
+	}
+
+	// End of LinkedList wrapped in Iterator type 
+	Iterator end() {
+		return Iterator(nullptr);
+	}
+
+	class Iterator {
+	public:
+		Iterator() noexcept :
+			current(head) { }
+
+		Iterator(const NodeG<T>* pNode) noexcept :
+			current(pNode) { }
+
+		Iterator& operator=(NodeG<T>* pNode) {
+			this->current = pNode;
+			return *this;
+		}
+
+		// Prefix ++ overload 
+		Iterator& operator++() {
+			if (current)
+				current = current->next;
+			return *this;
+		}
+
+		// Postfix ++ overload 
+		Iterator operator++(int) {
+			Iterator iterator = *this;
+			++* this;
+			return iterator;
+		}
+
+		bool operator!=(const Iterator& iterator) {
+			return current != iterator.current;
+		}
+
+		T operator*() {
+			return current->data;
+		}
+
+	private:
+		const NodeG<T>* current;
+	};
 };
 
+template<typename T>
+bool LinkedListQ<T>::contains(T data) const {
+	NodeG<T>* temp = head;
+	while (temp != nullptr) {
+		if (temp->data == data) {
+			return true;
+		}
+		temp = temp->next;
+	}
+	return false;
+}
 
 template<typename T>
 LinkedListQ<T>::LinkedListQ() {
@@ -135,4 +201,19 @@ bool LinkedListQ<T>::isEmpty() const {
 	return size == 0;
 }
 
+template<typename T>
+void LinkedListQ<T>::print() const {
+	if (head == nullptr) {
+		cout << "List is empty" << endl;
+	}
+	else {
+		NodeG<T>* temp = head;
+		while (temp != nullptr) {
+			
+			cout << temp->data << " ";
+			temp = temp->next;
+		}
+		cout << endl;
+	}
+}
 #endif

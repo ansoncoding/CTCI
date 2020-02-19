@@ -21,12 +21,12 @@ public:
     ArrayList(const ArrayList& other);
     ArrayList& operator=(const ArrayList& other);
     ~ArrayList();
-    void add(int data);
+    void add(T data);
     int getSize() const ;
     int getCapacity() const;
-    int get(int index) const;
-    bool contains(int value, int& retval_ind);
-    void set(int index, int data);
+    T get(int index) const;
+    bool contains(T value, int& retval_ind);
+    void set(int index, T data);
     void print() const;
     virtual bool isEmpty() const;
     void remove(int index);
@@ -93,7 +93,7 @@ void ArrayList<T>::grow() {
 }
 
 template <typename T>
-void ArrayList<T>::add(int data) {
+void ArrayList<T>::add(T data) {
     if (count == current_capacity) {
         grow();
         arraylist[count] = data;
@@ -116,17 +116,16 @@ int ArrayList<T>::getCapacity() const {
 }
 
 template <typename T>
-int ArrayList<T>::get(int index) const {
+T ArrayList<T>::get(int index) const {
     if (index < count && index >= 0)
         return arraylist[index];
     else {
         throw OutofBoundsException();
-        return -1;
     }
 }
 
 template <typename T>
-bool ArrayList<T>::contains(int value, int& retval_ind) {
+bool ArrayList<T>::contains(T value, int& retval_ind) {
     for (int i = 0; i < count; i++) {
         if (arraylist[i] == value) {
             retval_ind = i;
@@ -137,7 +136,7 @@ bool ArrayList<T>::contains(int value, int& retval_ind) {
 }
 
 template <typename T>
-void ArrayList<T>::set(int index, int data) {
+void ArrayList<T>::set(int index, T data) {
     if (index < 0 || index >= count) {
         throw OutofBoundsException();
     }
