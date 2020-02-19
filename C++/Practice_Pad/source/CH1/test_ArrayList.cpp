@@ -3,7 +3,7 @@
 #include "practice_exceptions.h"
 
 TEST(ArrayListTests, Initializing) {
-    ArrayList al = ArrayList();
+    ArrayList<int> al = ArrayList<int>();
     EXPECT_EQ(al.getSize(), 0);
     EXPECT_EQ(al.getCapacity(), 8);
     EXPECT_TRUE(al.isEmpty());
@@ -11,7 +11,7 @@ TEST(ArrayListTests, Initializing) {
 
 TEST(ArrayListTests, AddGetElements) {
     
-    ArrayList al = ArrayList();
+    ArrayList<int> al = ArrayList<int>();
     int retval;
 
     al.add(1);
@@ -34,7 +34,7 @@ TEST(ArrayListTests, AddGetElements) {
 }
 
 TEST(ArrayListTests, SetElement) {
-    ArrayList al = ArrayList();
+    ArrayList<int> al = ArrayList<int>();
     int retval = 0;
 
     al.add(1);
@@ -48,7 +48,7 @@ TEST(ArrayListTests, SetElement) {
 
 TEST(ArrayListTests, RemoveElements) {
 
-    ArrayList al = ArrayList();
+    ArrayList<int> al = ArrayList<int>();
     int retval;
 
     al.add(1);
@@ -63,7 +63,7 @@ TEST(ArrayListTests, RemoveElements) {
 
 TEST(ArrayListTests, CapacityTest) {
 
-    ArrayList al = ArrayList();
+    ArrayList<int> al = ArrayList<int>();
     for (int i = 0; i < 8; i++) {
         al.add(i * 10);
     }
@@ -104,7 +104,7 @@ TEST(ArrayListTests, CapacityTest) {
 }
 
 TEST(ArrayListTests, InvalidIndex) {
-    ArrayList al = ArrayList();
+    ArrayList<int> al = ArrayList<int>();
     for (int i = 0; i < 100; i++) {
         al.add(i * 2);
     }
@@ -124,12 +124,12 @@ TEST(ArrayListTests, InvalidIndex) {
 }
 
 TEST(ArrayListTests, CopyConstructor) {
-    ArrayList al = ArrayList();
+    ArrayList<int> al = ArrayList<int>();
     for (int i = 0; i < 25; i++) {
         al.add(i * 4);
     }
 
-    ArrayList al_copy = ArrayList(al);
+    ArrayList<int> al_copy = ArrayList<int>(al);
     int retval;
     for (int i = 0; i < 25; i++) {
         ASSERT_TRUE(al_copy.contains(i * 4, retval));
@@ -142,12 +142,12 @@ TEST(ArrayListTests, CopyConstructor) {
 }
 
 TEST(ArrayListTests, AssignmentOperator) {
-    ArrayList al = ArrayList();
+    ArrayList<int> al = ArrayList<int>();
     for (int i = 0; i < 25; i++) {
         al.add(i * 4);
     }
 
-    ArrayList al_copy(al);
+    ArrayList<int> al_copy(al);
     int retval;
     for (int i = 0; i < 25; i++) {
         ASSERT_TRUE(al_copy.contains(i * 4, retval));

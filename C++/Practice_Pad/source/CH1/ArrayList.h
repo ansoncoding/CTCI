@@ -1,6 +1,10 @@
 #ifndef ARRAY_LIST_H
 #define ARRAY_LIST_H
 
+#include "practice_exceptions.h"
+using namespace std;
+
+template <typename T>
 class ArrayList {
 
 protected:
@@ -8,9 +12,10 @@ protected:
     const int resizing_factor = 2;
     int current_capacity = 8;
     int size = 0;
-    int * arraylist;
+    T * arraylist;
     void copy(const ArrayList& other);
     void cleanup();
+    void grow();
 public:
     ArrayList();
     ArrayList(const ArrayList& other);
@@ -26,5 +31,146 @@ public:
     bool isEmpty() const;
     void remove(int index);
 };
+
+
+
+
+template <typename T>
+ArrayList<T>::ArrayList() {
+    arraylist = new T[initial_capacity];
+    memset(arraylist, 0, initial_capacity * sizeof(int));
+}
+
+template <typename T>
+ArrayList<T>::ArrayList(const ArrayList& other) {
+    copy(other);
+}
+
+template <typename T>
+ArrayList<T>& ArrayList<T>::operator=(const ArrayList& other) {
+    if (&other != this) {
+        cleanup();
+        copy(other);
+    }
+    return *this;
+}
+
+template <typename T>
+void ArrayList<T>::cleanup() {
+    delete[] arraylist;
+    arraylist = nullptr;
+}
+
+template <typename T>
+ArrayList<T>::~ArrayList() {
+    cleanup();
+}
+
+template <typename T>
+void ArrayList<T>::copy(const ArrayList& other) {
+    current_capacity = other.current_capacity;
+    arraylist = new int[current_capacity];
+    memset(arraylist, 0, current_capacity * sizeof(int));
+
+    for (int i = 0; i < other.size; i++) {
+        this->arraylist[i] = other.arraylist[i];
+    }
+    size = other.size;
+}
+
+template <typename T>
+void ArrayList<T>::grow() {
+    T* newarraylist = new T[current_capacity * resizing_factor];
+    current_capacity *= resizing_factor;
+    memset(newarraylist, 0, current_capacity * sizeof(int));
+
+    for (int i = 0; i < size; i++) {
+        newarraylist[i] = arraylist[i];
+    }
+
+    delete[] arraylist;
+    arraylist = newarraylist;
+}
+
+template <typename T>
+void ArrayList<T>::add(int data) {
+    if (size == current_capacity) {
+        grow();
+        arraylist[size] = data;
+        size++;
+    }
+    else {
+        arraylist[size] = data;
+        size++;
+    }
+}
+
+template <typename T>
+int ArrayList<T>::getSize() const {
+    return size;
+}
+
+template <typename T>
+int ArrayList<T>::getCapacity() const {
+    return current_capacity;
+}
+
+template <typename T>
+int ArrayList<T>::get(int index) const {
+    if (index < size && index >= 0)
+        return arraylist[index];
+    else {
+        throw OutofBoundsException();
+        return -1;
+    }
+}
+
+template <typename T>
+bool ArrayList<T>::contains(int value, int& retval_ind) {
+    for (int i = 0; i < size; i++) {
+        if (arraylist[i] == value) {
+            retval_ind = i;
+            return true;
+        }
+    }
+    return false;
+}
+
+template <typename T>
+void ArrayList<T>::set(int index, int data) {
+    if (index < 0 || index >= size) {
+        throw OutofBoundsException();
+    }
+    else {
+        arraylist[index] = data;
+    }
+}
+
+template <typename T>
+void ArrayList<T>::print() const {
+    for (int i = 0; i < size; i++) {
+        cout << arraylist[i] << " ";
+    }
+    cout << endl;
+}
+
+template <typename T>
+bool ArrayList<T>::isEmpty() const {
+    return (size == 0);
+}
+
+template <typename T>
+void ArrayList<T>::remove(int index) {
+    if (index < 0 || index >= size) {
+        throw OutofBoundsException();
+    }
+    else {
+        for (int i = index; i < size - 1; i++) {
+            arraylist[i] = arraylist[i + 1];
+        }
+        size--;
+    }
+}
+
 
 #endif

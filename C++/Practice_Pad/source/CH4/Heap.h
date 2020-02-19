@@ -11,11 +11,11 @@ using namespace std;
 
 template <typename T>
 
-class MinHeap : public ArrayList {
+class MinHeap : public ArrayList<T> {
 private:
 	void swap(int ind1, int ind2);
 	void swapParent();
-	void swapChildren();
+	void swapChildren(int currentInd);
 	bool hasLeftChild(int k) const;
 	bool hasRightChild(int k) const;
 	unsigned int getLeftArrayIndex(unsigned int k) const;
@@ -87,72 +87,72 @@ bool MinHeap<T>::hasRightChild(int k) const {
 }
 
 template <typename T>
-void MinHeap<T>::swapChildren() {
-	int currentInd = 1; //root
+void MinHeap<T>::swapChildren(int k) {
 	
-	
-	while (currentInd < size) {
-		
-		T currentVal = arraylist[currentInd];
-		int leftInd = getLeftArrayIndex(currentInd);
-		int rightInd = getRightArrayIndex(currentInd);
+	int currentInd = k;
+	T currentVal = arraylist[currentInd];
+	int leftInd = getLeftArrayIndex(currentInd);
+	int rightInd = getRightArrayIndex(currentInd);
 
-		// has both children
-		if (hasRightChild(currentInd) && hasLeftChild(currentInd)) {
-			T leftVal = arraylist[leftInd];
-			T rightVal = arraylist[rightInd];
+	// has both children
+	if (hasRightChild(currentInd) && hasLeftChild(currentInd)) {
+		T leftVal = arraylist[leftInd];
+		T rightVal = arraylist[rightInd];
 
-			//both children are smaller than parent, swap with smaller child
-			if (leftVal < currentVal && rightVal < currentVal) {
+		//both children are smaller than parent, swap with smaller child
+		if (leftVal < currentVal && rightVal < currentVal) {
 
-				if (leftVal < rightVal) {
-					//swap parent with left val
-					swap(leftInd, currentInd);
-					currentInd = leftInd;
-				}
-				else {
-					//swap parent with right val
-					swap(rightInd, currentInd);
-					currentInd = rightInd;
-				}
-			}
-			else if (leftVal < currentVal) {
-				//swap parent with left val
-				swap(leftInd, currentInd);
-				currentInd = leftInd;
-			}
-			else if (rightVal < currentVal) {
-				//swap parent with right val
-				swap(rightInd, currentInd);
-				currentInd = rightInd;
-			}
-			else {
-				break; // both children are greater than the parent, we're done
-			}
-		}
-		else if (hasLeftChild(currentInd)) {
-			T leftVal = arraylist[leftInd]; 
-			if (leftVal < currentVal) {
+			if (leftVal < rightVal) {
 				//swap parent with left val
 				swap(leftInd, currentInd);
 				currentInd = leftInd;
 			}
 			else {
-				break; // we're done, the only child it has is greater
-			}
-		}
-		else if (hasRightChild(currentInd)){
-			T rightVal = arraylist[rightInd];
-			if (rightVal < currentVal) {
 				//swap parent with right val
 				swap(rightInd, currentInd);
 				currentInd = rightInd;
 			}
-			else {
-				break; // we're done, the only child it has is greater
-			}
+		}
+		else if (leftVal < currentVal) {
+			//swap parent with left val
+			swap(leftInd, currentInd);
+			currentInd = leftInd;
+		}
+		else if (rightVal < currentVal) {
+			//swap parent with right val
+			swap(rightInd, currentInd);
+			currentInd = rightInd;
+		}
+		else {
+			return; // both children are greater than the parent, we're done
 		}
 	}
+	else if (hasLeftChild(currentInd)) {
+		T leftVal = arraylist[leftInd]; 
+		if (leftVal < currentVal) {
+			//swap parent with left val
+			swap(leftInd, currentInd);
+			currentInd = leftInd;
+		}
+		else {
+			return; // we're done, the only child it has is greater
+		}
+	}
+	else if (hasRightChild(currentInd)){
+		T rightVal = arraylist[rightInd];
+		if (rightVal < currentVal) {
+			//swap parent with right val
+			swap(rightInd, currentInd);
+			currentInd = rightInd;
+		}
+		else {
+			return; // we're done, the only child it has is greater
+		}
+	}
+	else {
+		return; // we're done, node has no children 
+	}
+	swapChildren(currentInd);
 }
 
 template <typename T>
@@ -167,13 +167,16 @@ void MinHeap<T>::removeMin() {
 	T temp = arraylist[size];
 	arraylist[1] = temp;
 	size--;
-	swapChildren();
+	swapChildren(1);
 }
 
 template <typename T>
 void MinHeap<T>::insert(T data) {
 	
 	size++;
+	if (size == current_capacity) {
+		grow();
+	}
 	arraylist[size] = data;
 	swapParent();	
 }

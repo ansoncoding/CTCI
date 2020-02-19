@@ -2,7 +2,8 @@
 #include "Heap.h"
 #include <iostream>
 
-int d3[] = { 8, 12, 3, 7, 2 , 10, 6, 77, 1, 5, 4, 19, 14, 0, 49 };
+int d3[] = { 8, 12, 3, 7, 2 ,10, 6, 77, 1, 5, 4, 19, 14, 0, 49 };
+int mins[] = { 8, 8, 3, 3, 2 ,2,  2,  2, 1, 1, 1, 1,  1, 0, 0 };
 int N3 = 15;
 
 TEST(TestMinHeap, InsertFindRemove) {
@@ -11,8 +12,8 @@ TEST(TestMinHeap, InsertFindRemove) {
 	
 	for (int i = 0; i < N3; i++) {
 		mh.insert(d3[i]);
+		EXPECT_EQ(mh.getMin(), mins[i]);
 	}
-	EXPECT_EQ(mh.getMin(), 0);
 }
 //
 //TEST(TestMinHeap, CopyConstructor) {
