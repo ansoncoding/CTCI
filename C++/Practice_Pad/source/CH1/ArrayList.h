@@ -30,6 +30,7 @@ public:
     void print() const;
     virtual bool isEmpty() const;
     void remove(int index);
+    void removeByVal(T data);
 };
 
 
@@ -171,5 +172,14 @@ void ArrayList<T>::remove(int index) {
     }
 }
 
+template <typename T>
+void ArrayList<T>::removeByVal(T data) {
+    
+    for (int i = 0; i < count; i++) {
+        if (arraylist[i] == data) {
+            remove(i);
+        }
+    }    
+}
 
 #endif
