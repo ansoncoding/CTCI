@@ -1,12 +1,13 @@
 #ifndef GRAPH_ADJACENCY_LIST_H
 #define GRAPH_ADJACENCY_LIST_H
 #include "LinkedListQueue.h"
-//#include "ArrayList.h"
+
 #include <unordered_map> 
+#include <set>
 
 template <typename T>
 struct GNode {
-	LinkedListQ<int> links;
+	set<int> links;
 	T data;
 	bool visited = false;
 	int ID; // the ID and also index in the list
@@ -15,7 +16,7 @@ struct GNode {
 		this->data = other.data;
 		links = other.links;
 	}
-	GNode(int ID, T data, const LinkedListQ<int> & l) {
+	GNode(int ID, T data, const set<int> & l) {
 		this->data = data;
 		this->links = l;
 		this->ID = ID;
@@ -23,8 +24,8 @@ struct GNode {
 	GNode(int ID, T data) {
 		this->data = data;
 		this->ID = ID;
-		this->links = LinkedListQ<int>();
-		this->links.append(ID);
+		this->links = set<int>();
+		this->links.insert(ID);
 	}
 	GNode(const GNode& other) {
 		copy(other);
@@ -49,56 +50,16 @@ class GraphAL {
 
 private:
 	unordered_map<int, GNode<T>*> nodes;
-	//ArrayList<GNode<T>*> * nodes = nullptr;
-	void copy(const GraphAL& other);
-	void cleanup();
+	
 	void clearVisitedFlags();
 	bool isConnectedHelper(int find_ID, LinkedListQ<int>& q) const;
 public:
-	GraphAL<T>();
-	~GraphAL<T>();
-	GraphAL<T>(const GraphAL& other);
-	GraphAL<T> & operator=(const GraphAL& other);
 	bool find(T data, int & retID) const;
 	void insert(GNode<T> new_Node);
-	void remove(GNode<T> n);
+	void remove(T data);
 	bool isConnected(T data1, T data2);
 	void print() const;
 };
-
-template <typename T>
-void GraphAL<T>::copy(const GraphAL& other) {
-
-}
-
-template <typename T>
-void GraphAL<T>::cleanup() {
-
-}
-
-template <typename T>
-GraphAL<T>::GraphAL() {
-	nodes = unordered_map<int, GNode<T>*>();
-}
-
-template <typename T>
-GraphAL<T>::~GraphAL() {
-	cleanup();
-}
-
-template <typename T>
-GraphAL<T>::GraphAL(const GraphAL& other) {
-	copy(other);
-}
-
-template <typename T>
-GraphAL<T>& GraphAL<T>::operator=(const GraphAL& other) {
-	if (&other != this) {
-		cleanup();
-		copy(other);
-	}
-	return *this;
-}
 
 template <typename T>
 bool GraphAL<T>::find(T data, int & retID) const {
@@ -119,20 +80,15 @@ void GraphAL<T>::insert(GNode<T> new_Node) {
 }
 
 template <typename T>
-void GraphAL<T>::remove(GNode<T> n) {
+void GraphAL<T>::remove(T data) {
 	
-	int remove_ID = n->ID;
-	for (auto it = nodes.begin(); it != nodes.end(); ++it) {
-		nodes.get(i)->links.removeByVal(remove_ID);
-	}
-
-	for (auto it = nodes.begin(); it != nodes.end(); ++it) {
-		GNode<T>* temp = it->second;
-		if (temp->ID == remove_ID) {
-
-			nodes.erase(it);
-
+	int remove_ID;
+	if (find(data, remove_ID)) {
+		for (auto it = nodes.begin(); it != nodes.end(); ++it) {
+			GNode<T>* temp = it->second;
+			temp->links.erase(remove_ID);
 		}
+		nodes.erase(remove_ID);
 	}
 }
 
@@ -149,7 +105,7 @@ bool GraphAL<T>::isConnectedHelper(int find_ID, LinkedListQ<int> & q) const {
 
 		n->visited = true;
 
-		if (!n->links.isEmpty()) {
+		if (!n->links.empty()) {
 
 			for (auto it = n->links.begin(); it != n->links.end(); ++it) {
 
@@ -177,8 +133,11 @@ bool GraphAL<T>::isConnected(T data1, T data2) {
 	int ID_d2 = -1;
 	if (find(data1, ID_d1) && find(data2, ID_d2)) {
 		GNode<T>* node = nodes.at(ID_d1);
-		if (!node->links.isEmpty()) {
-			LinkedListQ<int> q = LinkedListQ<int>(node->links);
+		if (!node->links.empty()) {
+			LinkedListQ<int> q = LinkedListQ<int>();
+			for (auto it = node->links.begin(); it != node->links.end(); it++) {
+				q.append(*it);
+			}
 			retval = isConnectedHelper(ID_d2, q);
 		}
 	}
@@ -189,12 +148,13 @@ bool GraphAL<T>::isConnected(T data1, T data2) {
 
 template <typename T>
 void GraphAL<T>::print() const {
-	/*for (int i = 0; i < nodes->getSize(); i++) {
-		nodes->get(i)->print();
-	}*/
 	
-	for (auto it = nodes.begin(); it != nodes.end(); ++it)
-		it->second->print();
+	for (auto it = nodes.begin(); it != nodes.end(); ++it) {
+		GNode<T> * temp = it->second;
+		for (auto it = temp->links.begin(); it != temp->links.end(); it++) {
+			cout << *it << " ";
+		}
+	}
 	cout << endl;
 }
 
