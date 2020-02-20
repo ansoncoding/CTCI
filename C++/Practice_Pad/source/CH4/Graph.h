@@ -24,6 +24,7 @@ struct GNode {
 		this->data = data;
 		this->ID = ID;
 		this->links = LinkedListQ<int>();
+		this->links.append(ID);
 	}
 	GNode(const GNode& other) {
 		copy(other);
