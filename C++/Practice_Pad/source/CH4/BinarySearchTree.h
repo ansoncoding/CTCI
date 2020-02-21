@@ -205,5 +205,4 @@ void insert_array_min_height_bst(T* data, int length, BinarySearchTree<T>& bst) 
 	}
 }
 
-
 #endif

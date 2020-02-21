@@ -26,7 +26,6 @@ struct GNode {
 		this->data = data;
 		this->ID = ID;
 		this->links = set<int>();
-		this->links.insert(ID);
 	}
 	GNode(const GNode& other) {
 		copy(other);
@@ -50,18 +49,76 @@ template <typename T>
 class GraphAL {
 
 private:
-	unordered_map<int, GNode<T>*> nodes;
-	
+	unordered_map<int, GNode<T>*> nodes; // ID mapped to GNode
+	void cleanup();
+	void copy(const GraphAL& other);
 	void clearVisitedFlags();
-	bool isConnectedHelper(int find_ID, LinkedListQ<int>& q) const;
-	bool isConnectedHelper2(int find_ID, LinkedListQ<int>& q) const;
+	bool isConnectedHelperBFS(int find_ID, LinkedListQ<int>& q, vector<int> & path) const;
+	bool isConnectedHelperDFS(int find_ID, LinkedListQ<int>& q, vector<int> & path) const;
 public:
+	GraphAL<T>(const GraphAL & other);
+	GraphAL<T>& operator=(const GraphAL& other);
+	~GraphAL<T>();
+	GraphAL<T>();
+	GraphAL<T>(T * data, int length);
 	bool find(T data, int & retID) const;
 	void insert(GNode<T> new_Node);
 	void remove(T data);
-	bool isConnected(T data1, T data2);
+	bool isConnected(T data1, T data2, vector<int>& path);
 	void print() const;
+	void printPath(vector<int>& path) const;
+	bool addEdge(T data1, T data2);
+	bool removeEdge(T data1, T data2);
 };
+
+template <typename T>
+void GraphAL<T>::cleanup() {
+	for (auto it = nodes.begin(); it != nodes.end(); ++it) {
+
+		delete it->second;
+		it->second = nullptr;
+	}
+}
+
+template <typename T>
+void GraphAL<T>::copy(const GraphAL& other) {
+	for (auto it = other.nodes.begin(); it != other.nodes.end(); ++it) {
+		this->nodes.insert(pair<int, GNode<T>*>(it->first, it->second));
+	}
+}
+
+template <typename T>
+GraphAL<T>::GraphAL() {
+	nodes = unordered_map<int, GNode<T>*>();
+}
+
+template <typename T>
+GraphAL<T>::~GraphAL() {
+	cleanup();
+}
+
+template <typename T>
+GraphAL<T>::GraphAL(T* vals, int length) {
+
+	nodes = unordered_map<int, GNode<T>*>();
+
+	for (int i = 0; i < length; i++) {
+		GNode<T>* n = new GNode<T>(i, vals[i]);
+		nodes.insert(pair<int, GNode<T>*>(i, n));
+	}
+}
+template <typename T>
+GraphAL<T>::GraphAL(const GraphAL& other) {
+	copy(other);
+}
+
+template <typename T>
+GraphAL<T>& GraphAL<T>::operator=(const GraphAL& other) {
+	if (&other != this) {
+		cleanup();
+		copy(other);
+	}
+}
 
 template <typename T>
 bool GraphAL<T>::find(T data, int & retID) const {
@@ -94,20 +151,52 @@ void GraphAL<T>::remove(T data) {
 	}
 }
 
+template <typename T>
+bool GraphAL<T>::removeEdge(T data1, T data2) {
+	int ID_d1 = -1;
+	int ID_d2 = -1;
+
+	//ensure the nodes are in the graph first
+	if (find(data1, ID_d1) && find(data2, ID_d2)) {
+		nodes.at(ID_d1)->links.erase(ID_d2);
+		nodes.at(ID_d2)->links.erase(ID_d1);
+		return true;
+	}
+	return false;
+}
+
+template <typename T>
+bool GraphAL<T>::addEdge(T data1, T data2) {
+	
+	int ID_d1 = -1;
+	int ID_d2 = -1;
+
+	//ensure the nodes are in the graph first
+	if (find(data1, ID_d1) && find(data2, ID_d2)) {
+		nodes.at(ID_d1)->links.insert(ID_d2);
+		nodes.at(ID_d2)->links.insert(ID_d1);
+		return true;
+	}
+	return false;
+}
 
 //DFS
 template <typename T>
-bool GraphAL<T>::isConnectedHelper(int find_ID, LinkedListQ<int> & q) const {
+bool GraphAL<T>::isConnectedHelperDFS(int find_ID, LinkedListQ<int> & q, vector<int> & path) const {
 
 	if (q.isEmpty()) {
 		throw invalid_argument("Queue is empty");
 	}
-	int index = q.peek();
-	GNode<T>* n = nodes.at(index);
+	int seek_ID = q.peek();
+	GNode<T>* n = nodes.at(seek_ID);
 
 	if (!n->visited) {
 
 		n->visited = true;
+		if (seek_ID == find_ID) {
+
+			return true;
+		}
 
 		if (!n->links.empty()) {
 
@@ -123,7 +212,7 @@ bool GraphAL<T>::isConnectedHelper(int find_ID, LinkedListQ<int> & q) const {
 	q.remove();
 
 	if (!q.isEmpty()) {
-		if (isConnectedHelper(find_ID, q)) {
+		if (isConnectedHelperDFS(find_ID, q, path)) {
 			return true;
 		}
 	}
@@ -132,32 +221,41 @@ bool GraphAL<T>::isConnectedHelper(int find_ID, LinkedListQ<int> & q) const {
 
 //BFS
 template <typename T>
-bool GraphAL<T>::isConnectedHelper2(int find_ID, LinkedListQ<int>& q) const {
+bool GraphAL<T>::isConnectedHelperBFS(int find_ID, LinkedListQ<int>& q, vector<int>& path) const {
 
 	if (q.isEmpty()) {
 		throw invalid_argument("Queue is empty");
 	}
+
 	LinkedListQ<int> newq = LinkedListQ<int>();
+	
 
 	while (!q.isEmpty()) {
+
 		int seek_ID = q.peek();
-		GNode<T>* n = nodes.at(seek_ID);
+
+		GNode<T>* n = nodes.at(seek_ID); // get the node from the hashmap with the ID
 		
 		if (!n->visited) {
 
 			n->visited = true;
 
-			if (seek_ID == find_ID) {
+			if (seek_ID == find_ID) { // if the node's ID matches the ID we're trying to find, return true
 				
+				path.push_back(seek_ID);
+
 				return true;
 			}
 
-			if (!n->links.empty()) {
+			if (!n->links.empty()) { // the node is not the one we're trying to find. insert the nodes in a new list
+
+				path.push_back(seek_ID);
 
 				for (auto it = n->links.begin(); it != n->links.end(); ++it) {
 
 					if (*it == find_ID) {
-						
+
+						path.push_back(find_ID);
 						return true;
 					}
 					newq.append(*it);
@@ -167,8 +265,10 @@ bool GraphAL<T>::isConnectedHelper2(int find_ID, LinkedListQ<int>& q) const {
 		q.remove();
 	}
 
+	// if we reach here means the q is empty, none of the nodes in the queue were the node we're looking for.
+	// we have to look further (next layer) out in BFS
 	if (!newq.isEmpty()) {
-		if (isConnectedHelper(find_ID, newq)) {
+		if (isConnectedHelperBFS(find_ID, newq, path)) {
 			return true;
 		}
 	}
@@ -177,23 +277,36 @@ bool GraphAL<T>::isConnectedHelper2(int find_ID, LinkedListQ<int>& q) const {
 
 
 template <typename T>
-bool GraphAL<T>::isConnected(T data1, T data2) {
+bool GraphAL<T>::isConnected(T data1, T data2, vector<int>& path) {
 	bool retval = false;
 	int ID_d1 = -1;
 	int ID_d2 = -1;
+
+	//ensure the nodes are in the graph first
 	if (find(data1, ID_d1) && find(data2, ID_d2)) {
-			
+		
+		path.push_back(ID_d1);
+		
+		// the node knows about itself
+		if (ID_d1 == ID_d2) {
+			return true;
+		}
+
+		// use the IDs to see if the nodes know each other
 		GNode<T>* node = nodes.at(ID_d1);
-		if (!node->links.empty()) {
+		node->visited = true;
+
+		if (!node->links.empty()) { // the links being empty means the node is disconnected from rest of the nodes
+
 			LinkedListQ<int> q = LinkedListQ<int>();
 			for (auto it = node->links.begin(); it != node->links.end(); it++) {
 				q.append(*it);
 			}
-			retval = isConnectedHelper2(ID_d2, q);
+			retval = isConnectedHelperBFS(ID_d2, q, path);
+
+			clearVisitedFlags();
 		}
 	}
-	clearVisitedFlags();
-
 	return retval;
 }
 
@@ -209,6 +322,22 @@ void GraphAL<T>::print() const {
 		cout << endl;
 	}
 	cout << endl;
+}
+
+template <typename T>
+void GraphAL<T>::printPath(vector<int> & path) const {
+
+	for (int i = 0; i < path.size(); i++) {
+
+		GNode<T>* n = nodes.at(path.at(i));
+
+		cout << n->data;
+
+		if (i < (path.size() - 1)) {
+			cout << " -> ";
+		}
+	}
+	cout << " (Path length: " << path.size() - 1 << ")" << endl;
 }
 
 template <typename T>
