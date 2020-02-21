@@ -66,3 +66,28 @@ TEST(TestBinaryTree, AssignmentOperator) {
 	EXPECT_TRUE(bt.isNull());
 	EXPECT_TRUE(copy.isNull());
 }
+
+TEST(TestBinaryTree, Height0) {
+
+	BinaryTree<int> bt = BinaryTree<int>();
+	EXPECT_EQ(bt.getHeight(), 0);
+
+	bt.insert(1);
+	EXPECT_EQ(bt.getHeight(), 0);
+	
+}
+
+TEST(TestBinaryTree, HeightOther) {
+	BinaryTree<int> bt = BinaryTree<int>();
+	for (int i = 0; i < N; i++) {
+		bt.insert(d[i]);
+	}
+	EXPECT_EQ(bt.getHeight(), 4);
+
+
+	BinaryTree<int> bt2 = BinaryTree<int>();
+	for (int i = 0; i < 3; i++) {
+		bt2.insert(d[i]);
+	}
+	EXPECT_EQ(bt2.getHeight(), 1);
+}

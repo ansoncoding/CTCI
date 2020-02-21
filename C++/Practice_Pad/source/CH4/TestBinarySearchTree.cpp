@@ -78,3 +78,28 @@ TEST(TestBinarySearchTree, Order) {
 		EXPECT_EQ(output[i], io[i]);
 	}
 }
+
+
+TEST(TestBinarySearchTree, Height0) {
+
+	BinarySearchTree<int> bst = BinarySearchTree<int>();
+	EXPECT_EQ(bst.getHeight(), 0);
+
+	bst.insert(1);
+	EXPECT_EQ(bst.getHeight(), 0);
+}
+
+TEST(TestBinarySearchTree, HeightOther) {
+	BinarySearchTree<int> bst = BinarySearchTree<int>();
+	for (int i = 0; i < N2; i++) {
+		bst.insert(d2[i]);
+	}
+	EXPECT_EQ(bst.getHeight(), 5);
+
+
+	BinarySearchTree<int> bst2 = BinarySearchTree<int>();
+	for (int i = 0; i < 3; i++) {
+		bst2.insert(d2[i]);
+	}
+	EXPECT_EQ(bst2.getHeight(), 1);
+}

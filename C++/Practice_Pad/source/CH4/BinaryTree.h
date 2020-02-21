@@ -26,6 +26,7 @@ protected:
 	bool remove_helper(T data, BTNode<T>*& n);
 	virtual void insert_helper(T data, BTNode<T>* n);
 	T find_leaf_remove(BTNode<T> *& n);
+	int getHeight_helper(BTNode<T>* n) const;
 	void copy(const BinaryTree& other);
 	void deleteNode(BTNode<T>*& n);
 	void print_helper(int space, const BTNode<T>* n) const;
@@ -49,6 +50,7 @@ public:
 	bool remove(T data);
 	void insert(T data);
 	bool find(T data) const;
+	int getHeight() const;
 	void print() const;
 	void inorder() const;
 	void preorder() const;
@@ -384,4 +386,33 @@ void BinaryTree<T>::inorder(T* output) const {
 	inorder_helper(root, output, index);
 	cout << endl;
 }
+
+template <typename T>
+int BinaryTree<T>::getHeight_helper(BTNode<T>* n) const {
+	if (isLeaf(n)) {
+		return 0;
+	}
+	else {
+		int height_left = 0;
+		int height_right = 0;
+		if (n->left != nullptr) {
+			height_left = getHeight_helper(n->left);
+		}
+		if (n->right != nullptr) {
+			height_right = getHeight_helper(n->right);
+		}
+		int height_children = max(height_left, height_right);
+		return height_children + 1;
+	}
+}
+
+template <typename T>
+int BinaryTree<T>::getHeight() const {
+	if (root == nullptr) {
+		return 0;
+	}
+	
+	return getHeight_helper(root);
+}
+
 #endif
