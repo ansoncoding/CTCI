@@ -26,21 +26,21 @@ TEST(TestGraph, InsertAndIsConnected) {
 		GNode<string> gnode = GNode<string>(i, graph_data2[i - N4]);
 		g.insert(gnode);
 	}
-	vector<int> ret_path;
+	
 	for (int i = 0; i < N4; i++) {
-		EXPECT_TRUE(g.isConnected(graph_data[i], graph_data[i], ret_path)); //everyone is connected to themselves
+		EXPECT_TRUE(g.isConnected(graph_data[i], graph_data[i])); //everyone is connected to themselves
 	}
 	
 	for (int i = 0; i < N4; i++) {
 		for (int j = 0; j < N4; j++) {
-			EXPECT_TRUE(g.isConnected(graph_data[i], graph_data[j], ret_path)); //everyone is connected to everyone in graph_data
+			EXPECT_TRUE(g.isConnected(graph_data[i], graph_data[j])); //everyone is connected to everyone in graph_data
 		}
 	}
 
 	for (int i = 0; i < N4; i++) {
 		for (int j = N4; j < N4 + N4; j++) {
 
-			EXPECT_FALSE(g.isConnected(graph_data[i], graph_data[j], ret_path)); // ppl in graph_data are not connected to those in graph_data2
+			EXPECT_FALSE(g.isConnected(graph_data[i], graph_data[j])); // ppl in graph_data are not connected to those in graph_data2
 		}
 	}
 	for (int i = N4; i < N4 + N4; i++) {
@@ -49,7 +49,7 @@ TEST(TestGraph, InsertAndIsConnected) {
 			if (i == j) //everyone knows themselves this test is done already
 				continue;
 
-			EXPECT_FALSE(g.isConnected(graph_data[i], graph_data[j], ret_path)); // ppl in graph_data2 are not connected to each other
+			EXPECT_FALSE(g.isConnected(graph_data[i], graph_data[j])); // ppl in graph_data2 are not connected to each other
 		}
 	}
 }
@@ -64,11 +64,11 @@ TEST(TestGraph, Remove) {
 		GNode<string> gnode = GNode<string>(i, graph_data[i], s);
 		g.insert(gnode);
 	}
-	vector<int> ret_path;
+
 	for (int r = 0; r < N4; r++) {
 		g.remove(graph_data[r]);
 		for (int i = r; i < N4; i++) {
-			EXPECT_FALSE(g.isConnected(graph_data[r], graph_data[i], ret_path));
+			EXPECT_FALSE(g.isConnected(graph_data[r], graph_data[i]));
 		}
 	}
 }
@@ -87,9 +87,9 @@ TEST(TestGraph, CopyConstructor) {
 	}
 
 	GraphAL<string> copy(g);
-	vector<int> ret_path;
+	
 	for (int i = 0; i < N4; i++) {
-		EXPECT_TRUE(copy.isConnected(graph_data[i], graph_data[i], ret_path)); //everyone is connected to themselves
+		EXPECT_TRUE(copy.isConnected(graph_data[i], graph_data[i])); //everyone is connected to themselves
 	}
 }
 
@@ -106,8 +106,8 @@ TEST(TestGraph, AssignmentOperator) {
 	}
 
 	GraphAL<string> copy = g;
-	vector<int> ret_path;
+	
 	for (int i = 0; i < N4; i++) {
-		EXPECT_TRUE(copy.isConnected(graph_data[i], graph_data[i], ret_path)); //everyone is connected to themselves
+		EXPECT_TRUE(copy.isConnected(graph_data[i], graph_data[i])); //everyone is connected to themselves
 	}
 }

@@ -53,12 +53,13 @@ private:
 	unordered_map<int, GNode<T>*> nodes;
 	
 	void clearVisitedFlags();
-	bool isConnectedHelper(int find_ID, LinkedListQ<int>& q, vector<int>& path) const;
+	bool isConnectedHelper(int find_ID, LinkedListQ<int>& q) const;
+	bool isConnectedHelper2(int find_ID, LinkedListQ<int>& q) const;
 public:
 	bool find(T data, int & retID) const;
 	void insert(GNode<T> new_Node);
 	void remove(T data);
-	bool isConnected(T data1, T data2, vector<int>& path);
+	bool isConnected(T data1, T data2);
 	void print() const;
 };
 
@@ -93,9 +94,10 @@ void GraphAL<T>::remove(T data) {
 	}
 }
 
-//BFS
+
+//DFS
 template <typename T>
-bool GraphAL<T>::isConnectedHelper(int find_ID, LinkedListQ<int> & q, vector<int>& path) const {
+bool GraphAL<T>::isConnectedHelper(int find_ID, LinkedListQ<int> & q) const {
 
 	if (q.isEmpty()) {
 		throw invalid_argument("Queue is empty");
@@ -105,8 +107,6 @@ bool GraphAL<T>::isConnectedHelper(int find_ID, LinkedListQ<int> & q, vector<int
 
 	if (!n->visited) {
 
-		path.push_back(index);
-
 		n->visited = true;
 
 		if (!n->links.empty()) {
@@ -114,7 +114,6 @@ bool GraphAL<T>::isConnectedHelper(int find_ID, LinkedListQ<int> & q, vector<int
 			for (auto it = n->links.begin(); it != n->links.end(); ++it) {
 
 				if (*it == find_ID) {
-					path.push_back(*it);
 					return true;
 				}
 				q.append(*it);
@@ -124,29 +123,73 @@ bool GraphAL<T>::isConnectedHelper(int find_ID, LinkedListQ<int> & q, vector<int
 	q.remove();
 
 	if (!q.isEmpty()) {
-		if (isConnectedHelper(find_ID, q, path)) {
+		if (isConnectedHelper(find_ID, q)) {
 			return true;
 		}
 	}
 	return false;
 }
 
+//BFS
 template <typename T>
-bool GraphAL<T>::isConnected(T data1, T data2, vector<int> &path) {
+bool GraphAL<T>::isConnectedHelper2(int find_ID, LinkedListQ<int>& q) const {
+
+	if (q.isEmpty()) {
+		throw invalid_argument("Queue is empty");
+	}
+	LinkedListQ<int> newq = LinkedListQ<int>();
+
+	while (!q.isEmpty()) {
+		int seek_ID = q.peek();
+		GNode<T>* n = nodes.at(seek_ID);
+		
+		if (!n->visited) {
+
+			n->visited = true;
+
+			if (seek_ID == find_ID) {
+				
+				return true;
+			}
+
+			if (!n->links.empty()) {
+
+				for (auto it = n->links.begin(); it != n->links.end(); ++it) {
+
+					if (*it == find_ID) {
+						
+						return true;
+					}
+					newq.append(*it);
+				}
+			}
+		}
+		q.remove();
+	}
+
+	if (!newq.isEmpty()) {
+		if (isConnectedHelper(find_ID, newq)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
+template <typename T>
+bool GraphAL<T>::isConnected(T data1, T data2) {
 	bool retval = false;
 	int ID_d1 = -1;
 	int ID_d2 = -1;
 	if (find(data1, ID_d1) && find(data2, ID_d2)) {
-		
-		path.push_back(ID_d1);
-		
+			
 		GNode<T>* node = nodes.at(ID_d1);
 		if (!node->links.empty()) {
 			LinkedListQ<int> q = LinkedListQ<int>();
 			for (auto it = node->links.begin(); it != node->links.end(); it++) {
 				q.append(*it);
 			}
-			retval = isConnectedHelper(ID_d2, q, path);
+			retval = isConnectedHelper2(ID_d2, q);
 		}
 	}
 	clearVisitedFlags();
