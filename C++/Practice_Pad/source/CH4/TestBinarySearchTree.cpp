@@ -157,3 +157,30 @@ TEST(TestBinarySearchTree, MinHeightBST_Other) {
 	EXPECT_EQ(bst2.getHeight(), 5);
 }
 
+TEST(TestBinarySearchTree, IsBalancedFalse) {
+	BinarySearchTree<int> bst = BinarySearchTree<int>();
+	
+	bst.insert(0);
+	bst.insert(1);
+	bst.insert(2);
+	EXPECT_FALSE(bst.isBalanced());
+}
+
+TEST(TestBinarySearchTree, IsBalancedTrue) {
+	BinarySearchTree<int> bst = BinarySearchTree<int>();
+	int data[128];
+	for (int i = 0; i < 128; i++) {
+		data[i] = i;
+	}
+	
+	insert_array_min_height_bst(data, 5, bst);
+	EXPECT_TRUE(bst.isBalanced());
+
+	BinarySearchTree<int> bst1 = BinarySearchTree<int>();
+	insert_array_min_height_bst(data, 22, bst1);
+	EXPECT_TRUE(bst1.isBalanced());
+
+	BinarySearchTree<int> bst2 = BinarySearchTree<int>();
+	insert_array_min_height_bst(data, 56, bst2);
+	EXPECT_TRUE(bst2.isBalanced());
+}

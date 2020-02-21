@@ -91,3 +91,27 @@ TEST(TestBinaryTree, HeightOther) {
 	}
 	EXPECT_EQ(bt2.getHeight(), 1);
 }
+
+TEST(TestBinaryTree, IsBalancedEdgeCases) {
+	BinaryTree<int> bt = BinaryTree<int>();
+	EXPECT_TRUE(bt.isBalanced());
+	bt.insert(1);
+	EXPECT_TRUE(bt.isBalanced());
+}
+
+TEST(TestBinaryTree, IsBalancedTrue) {
+	// for False cases please see Binary Search Tree tests
+	BinaryTree<int> bt = BinaryTree<int>();
+	EXPECT_TRUE(bt.isBalanced());
+	bt.insert(1);
+	bt.insert(2);
+	bt.insert(0);
+	EXPECT_TRUE(bt.isBalanced());
+
+	BinaryTree<int> bt2 = BinaryTree<int>();
+	for (int i = 0; i < N; i++) {
+		bt2.insert(d[i]);
+	}
+	EXPECT_TRUE(bt2.isBalanced());
+}
+

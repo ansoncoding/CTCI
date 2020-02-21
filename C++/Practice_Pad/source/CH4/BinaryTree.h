@@ -34,6 +34,7 @@ protected:
 	void inorder_helper(const BTNode<T>* n, T* output, int &index) const; //for testing purposes only
 	void preorder_helper(const BTNode<T>* n) const;
 	void postorder_helper(const BTNode<T>* n) const;
+	bool isBalanced_helper(const BTNode<T>* n) const;
 
 	const int COUNT = 10;
 	BTNode<T>* root;
@@ -56,6 +57,7 @@ public:
 	void preorder() const;
 	void postorder() const; 
 	void inorder(T* output) const;
+	bool isBalanced() const;
 };
 
 
@@ -413,6 +415,35 @@ int BinaryTree<T>::getHeight() const {
 	}
 	
 	return getHeight_helper(root);
+}
+
+template <typename T>
+bool BinaryTree<T>::isBalanced() const {
+	if (root == nullptr) {
+		return true;
+	}
+	return isBalanced_helper(root);
+}
+
+template <typename T>
+bool BinaryTree<T>::isBalanced_helper(const BTNode<T>* n) const {
+	if (isLeaf(n)) {
+		return true;
+	}
+	
+	int height_left = 0;
+	int height_right = 0;
+	if (n->left != nullptr && n->right != nullptr) {
+		return isBalanced_helper(n->left) && isBalanced_helper(n->right);
+	}
+	if (n->right != nullptr) {
+		height_right = getHeight_helper(n->right) + 1;
+	} 
+	else if (n->left != nullptr) {
+		height_left = getHeight_helper(n->left) + 1;
+	}
+	unsigned int abs_diff = abs(height_left - height_right);
+	return (abs_diff <= 1);
 }
 
 #endif
