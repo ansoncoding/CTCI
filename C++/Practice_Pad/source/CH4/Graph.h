@@ -54,7 +54,7 @@ private:
 	void copy(const GraphAL& other);
 	void clearVisitedFlags();
 	bool isConnectedHelperBFS(int find_ID, LinkedListQ<int>& q, vector<int> & path) const;
-	bool isConnectedHelperDFS(int find_ID, LinkedListQ<int>& q, vector<int> & path) const;
+	bool isConnectedHelperDFS(int find_ID, vector<int>& stack, vector<int> & path) const;
 public:
 	GraphAL<T>(const GraphAL & other);
 	GraphAL<T>& operator=(const GraphAL& other);
@@ -64,7 +64,7 @@ public:
 	bool find(T data, int & retID) const;
 	void insert(GNode<T> new_Node);
 	void remove(T data);
-	bool isConnected(T data1, T data2, vector<int>& path);
+	bool isConnected(T data1, T data2, vector<int>& path, bool BFS=true);
 	void print() const;
 	void printPath(vector<int>& path) const;
 	bool addEdge(T data1, T data2);
@@ -182,39 +182,44 @@ bool GraphAL<T>::addEdge(T data1, T data2) {
 
 //DFS
 template <typename T>
-bool GraphAL<T>::isConnectedHelperDFS(int find_ID, LinkedListQ<int> & q, vector<int> & path) const {
+bool GraphAL<T>::isConnectedHelperDFS(int find_ID, vector<int> & stack, vector<int> & path) const {
 
-	if (q.isEmpty()) {
+	if (stack.empty()) {
 		throw invalid_argument("Queue is empty");
 	}
-	int seek_ID = q.peek();
-	GNode<T>* n = nodes.at(seek_ID);
 
-	if (!n->visited) {
+	while (!stack.empty()) {
 
-		n->visited = true;
-		if (seek_ID == find_ID) {
+		int seek_ID = stack.back();
+		stack.pop_back();
+		
 
-			return true;
-		}
+		GNode<T>* n = nodes.at(seek_ID);
 
-		if (!n->links.empty()) {
+		if (!n->visited) {
 
-			for (auto it = n->links.begin(); it != n->links.end(); ++it) {
+			
+			path.push_back(seek_ID);
 
-				if (*it == find_ID) {
-					return true;
+			n->visited = true;
+			if (seek_ID == find_ID) {
+
+				//path.push_back(seek_ID);
+				return true;
+			}
+
+			if (!n->links.empty()) {		
+
+				for (auto it = n->links.begin(); it != n->links.end(); ++it) {
+
+					stack.push_back(*it);
 				}
-				q.append(*it);
 			}
 		}
-	}
-	q.remove();
-
-	if (!q.isEmpty()) {
-		if (isConnectedHelperDFS(find_ID, q, path)) {
-			return true;
+		else {
+			path.pop_back();
 		}
+
 	}
 	return false;
 }
@@ -277,7 +282,7 @@ bool GraphAL<T>::isConnectedHelperBFS(int find_ID, LinkedListQ<int>& q, vector<i
 
 
 template <typename T>
-bool GraphAL<T>::isConnected(T data1, T data2, vector<int>& path) {
+bool GraphAL<T>::isConnected(T data1, T data2, vector<int>& path, bool BFS) {
 	bool retval = false;
 	int ID_d1 = -1;
 	int ID_d2 = -1;
@@ -298,11 +303,20 @@ bool GraphAL<T>::isConnected(T data1, T data2, vector<int>& path) {
 
 		if (!node->links.empty()) { // the links being empty means the node is disconnected from rest of the nodes
 
-			LinkedListQ<int> q = LinkedListQ<int>();
-			for (auto it = node->links.begin(); it != node->links.end(); it++) {
-				q.append(*it);
+			if (BFS) {
+				LinkedListQ<int> q = LinkedListQ<int>();
+				for (auto it = node->links.begin(); it != node->links.end(); it++) {
+					q.append(*it);
+				}
+				retval = isConnectedHelperBFS(ID_d2, q, path);
 			}
-			retval = isConnectedHelperBFS(ID_d2, q, path);
+			else {
+				vector<int> stack = vector<int>();
+				for (auto it = node->links.begin(); it != node->links.end(); it++) {
+					stack.push_back(*it);
+				}
+				retval = isConnectedHelperDFS(ID_d2, stack, path);
+			}
 
 			clearVisitedFlags();
 		}
