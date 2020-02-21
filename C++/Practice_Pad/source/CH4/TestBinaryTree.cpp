@@ -115,3 +115,26 @@ TEST(TestBinaryTree, IsBalancedTrue) {
 	EXPECT_TRUE(bt2.isBalanced());
 }
 
+TEST(TestBinaryTree, IsBST_Edge) {
+	BinaryTree<int> bt = BinaryTree<int>();
+	EXPECT_THROW(bt.isBST(), invalid_argument);
+
+	bt.insert(1);
+	EXPECT_TRUE(bt.isBST());
+}
+
+TEST(TestBinaryTree, IsBST_False) {
+	// for True cases please see Binary Search Tree tests
+	BinaryTree<int> bt = BinaryTree<int>();
+	for (int i = 0; i < N; i++) {
+		bt.insert(d[i]);
+	}
+	EXPECT_FALSE(bt.isBST());
+
+
+	BinaryTree<int> bt2 = BinaryTree<int>();
+	for (int i = 0; i < 6; i++) {
+		bt2.insert(d[i]);
+	}
+	EXPECT_FALSE(bt2.isBST());
+}

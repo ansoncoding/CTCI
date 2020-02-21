@@ -184,3 +184,20 @@ TEST(TestBinarySearchTree, IsBalancedTrue) {
 	insert_array_min_height_bst(data, 56, bst2);
 	EXPECT_TRUE(bst2.isBalanced());
 }
+
+
+TEST(TestBinarySearchTree, IsBST_True) {
+	// for True cases please see Binary Search Tree tests
+	BinarySearchTree<int> bt = BinarySearchTree<int>();
+	for (int i = 0; i < N2; i++) {
+		bt.insert(d2[i]);
+	}
+	EXPECT_TRUE(bt.isBST());
+
+
+	BinarySearchTree<int> bt2 = BinarySearchTree<int>();
+	for (int i = 0; i < 6; i++) {
+		bt2.insert(d2[i]);
+	}
+	EXPECT_TRUE(bt2.isBST());
+}

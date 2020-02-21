@@ -35,6 +35,7 @@ protected:
 	void preorder_helper(const BTNode<T>* n) const;
 	void postorder_helper(const BTNode<T>* n) const;
 	bool isBalanced_helper(const BTNode<T>* n) const;
+	bool isBST_helper(const BTNode<T>* n) const;
 
 	const int COUNT = 10;
 	BTNode<T>* root;
@@ -58,6 +59,7 @@ public:
 	void postorder() const; 
 	void inorder(T* output) const;
 	bool isBalanced() const;
+	bool isBST() const;
 };
 
 
@@ -377,6 +379,7 @@ void BinaryTree<T>::inorder_helper(const BTNode<T>* n, T* output, int& index) co
 		inorder_helper(n->right, output, index);
 	}
 }
+
 //for testing purposes only
 template <typename T>
 void BinaryTree<T>::inorder(T* output) const {
@@ -444,6 +447,36 @@ bool BinaryTree<T>::isBalanced_helper(const BTNode<T>* n) const {
 	}
 	unsigned int abs_diff = abs(height_left - height_right);
 	return (abs_diff <= 1);
+}
+
+template <typename T>
+bool BinaryTree<T>::isBST_helper(const BTNode<T> * n) const {
+	
+	
+	if (isLeaf(n)) {
+		return true;
+	}
+
+	bool retval = false;
+	if (n->left != nullptr && n->right != nullptr) {
+		retval = (n->data > n->left->data) && (n->data < n->right->data) && isBST_helper(n->left) && isBST_helper(n->right);
+	}
+	else if (n->left != nullptr) {
+		retval = (n->data > n->left->data) && isBST_helper(n->left);
+	}
+	else if (n->right != nullptr) {
+		retval = (n->data < n->right->data) && isBST_helper(n->right);
+	}
+	return retval;
+}
+
+template <typename T>
+bool BinaryTree<T>::isBST() const {
+	if (root == nullptr) {
+		throw invalid_argument("Tree is empty, cannot determine if tree BST");
+		// could also return true, depending on definition.
+	}
+	return isBST_helper(root);
 }
 
 #endif
