@@ -109,20 +109,10 @@ TEST(TestBinarySearchTree, MinHeightBST_Edge) {
 	for (int i = 0; i < 128; i++) {
 		data[i] = i;
 	}
-	BinarySearchTree<int> bst1 = BinarySearchTree<int>();
-	insert_array_min_height_bst(data, 1, bst1);
-	EXPECT_EQ(bst1.getHeight(), 0);
+	BinarySearchTree<int> bst0 = BinarySearchTree<int>();
+	insert_array_min_height_bst(data, 1, bst0);
+	EXPECT_EQ(bst0.getHeight(), 0);
 
-	BinarySearchTree<int> bst2 = BinarySearchTree<int>();
-	insert_array_min_height_bst(data, 128, bst2);
-	EXPECT_EQ(bst2.getHeight(), 7);
-}
-
-TEST(TestBinarySearchTree, MinHeightBST_Other) {
-	int data[128];
-	for (int i = 0; i < 128; i++) {
-		data[i] = i;
-	}
 	BinarySearchTree<int> bst1 = BinarySearchTree<int>();
 	insert_array_min_height_bst(data, 2, bst1);
 	EXPECT_EQ(bst1.getHeight(), 1);
@@ -132,26 +122,38 @@ TEST(TestBinarySearchTree, MinHeightBST_Other) {
 	EXPECT_EQ(bst2.getHeight(), 1);
 
 	BinarySearchTree<int> bst3 = BinarySearchTree<int>();
-	insert_array_min_height_bst(data, 5, bst3);
+	insert_array_min_height_bst(data, 4, bst3);
 	EXPECT_EQ(bst3.getHeight(), 2);
 
 	BinarySearchTree<int> bst4 = BinarySearchTree<int>();
-	insert_array_min_height_bst(data, 7, bst4);
-	EXPECT_EQ(bst4.getHeight(), 2);
+	insert_array_min_height_bst(data, 15, bst4);
+	EXPECT_EQ(bst4.getHeight(), 3);
 
 	BinarySearchTree<int> bst5 = BinarySearchTree<int>();
-	insert_array_min_height_bst(data, 8, bst5);
-	EXPECT_EQ(bst5.getHeight(), 3);
+	insert_array_min_height_bst(data, 16, bst5);
+	EXPECT_EQ(bst5.getHeight(), 4);
 
 	BinarySearchTree<int> bst6 = BinarySearchTree<int>();
-	insert_array_min_height_bst(data, 15, bst6);
-	EXPECT_EQ(bst6.getHeight(), 3);
-
-	BinarySearchTree<int> bst7 = BinarySearchTree<int>();
-	insert_array_min_height_bst(data, 16, bst7);
-	EXPECT_EQ(bst7.getHeight(), 4);
-
-	BinarySearchTree<int> bst8 = BinarySearchTree<int>();
-	insert_array_min_height_bst(data, 22, bst8);
-	EXPECT_EQ(bst8.getHeight(), 4);
+	insert_array_min_height_bst(data, 128, bst6);
+	EXPECT_EQ(bst6.getHeight(), 7);
 }
+
+TEST(TestBinarySearchTree, MinHeightBST_Other) {
+	int data[128];
+	for (int i = 0; i < 128; i++) {
+		data[i] = i;
+	}
+
+	BinarySearchTree<int> bst = BinarySearchTree<int>();
+	insert_array_min_height_bst(data, 5, bst);
+	EXPECT_EQ(bst.getHeight(), 2);
+
+	BinarySearchTree<int> bst1 = BinarySearchTree<int>();
+	insert_array_min_height_bst(data, 22, bst1);
+	EXPECT_EQ(bst1.getHeight(), 4);
+
+	BinarySearchTree<int> bst2 = BinarySearchTree<int>();
+	insert_array_min_height_bst(data, 56, bst2);
+	EXPECT_EQ(bst2.getHeight(), 5);
+}
+
