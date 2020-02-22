@@ -72,12 +72,15 @@ TEST(StableStackTests, CopyConstructor) {
 }
 
 TEST(StableStackTests, AssignmentOperator) {
-	StableStack ss = StableStack();
-	for (int i = 0; i < 8; i++) {
-		ss.push(i * 10);
+	StableStack copy;
+	{
+		StableStack ss = StableStack();
+		for (int i = 0; i < 8; i++) {
+			ss.push(i * 10);
+		}
+		copy = ss;
 	}
 
-	StableStack copy = ss;
 	for (int i = 7; i >= 0; i--) {
 		EXPECT_EQ(copy.peek(), i * 10);
 		copy.pop();

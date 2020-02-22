@@ -33,8 +33,12 @@ TEST(LinkedListTests, CopyConstructor) {
 }
 
 TEST(LinkedListTests, AssignmentOperator) {
-	LinkedList ll = LinkedList(10);
-	LinkedList copy = ll;
+	
+	LinkedList copy;
+	{
+		LinkedList ll = LinkedList(10);
+		copy = ll;
+	}
 
 	Node* retval;
 	EXPECT_EQ(copy.getLength(), 10);

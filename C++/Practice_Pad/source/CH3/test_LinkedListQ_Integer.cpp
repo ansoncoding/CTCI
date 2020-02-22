@@ -27,19 +27,22 @@ TEST(LinkedListQ_IntegerTests, CopyConstructor) {
 }
 
 TEST(LinkedListQ_IntegerTests, AssignmentOperator) {
-	LinkedListQ<int> ll = LinkedListQ<int>();
-	for (int i = 0; i < 10; i++) {
-		ll.append(i);
-		EXPECT_EQ(ll.peek(), 0);
-	}
+	LinkedListQ<int> copy;
+	{
+		LinkedListQ<int> ll = LinkedListQ<int>();
+		for (int i = 0; i < 10; i++) {
+			ll.append(i);
+			EXPECT_EQ(ll.peek(), 0);
+		}
 
-	LinkedListQ<int> copy = ll;
+		copy = ll;
+	}
 
 	EXPECT_EQ(copy.getSize(), 10);
 	for (int i = 0; i < 10; i++) {
-		EXPECT_TRUE(ll.contains(i));
-		EXPECT_EQ(ll.peek(), i);
-		ll.remove();
+		EXPECT_TRUE(copy.contains(i));
+		EXPECT_EQ(copy.peek(), i);
+		copy.remove();
 	}
 }
 

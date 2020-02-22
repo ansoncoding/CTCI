@@ -123,13 +123,16 @@ TEST(ArrayListTests, InvalidIndex) {
     EXPECT_THROW(al.remove(200), OutofBoundsException);
 }
 
-TEST(ArrayListTests, CopyConstructor) {
-    ArrayList<int> al = ArrayList<int>();
-    for (int i = 0; i < 25; i++) {
-        al.add(i * 4);
-    }
+TEST(ArrayListTests, AssignmentOperator) {
+    ArrayList<int> al_copy;
+    {
+        ArrayList<int> al = ArrayList<int>();
+        for (int i = 0; i < 25; i++) {
+            al.add(i * 4);
+        }
 
-    ArrayList<int> al_copy = ArrayList<int>(al);
+        al_copy = al;
+    }
     int retval;
     for (int i = 0; i < 25; i++) {
         ASSERT_TRUE(al_copy.contains(i * 4, retval));
@@ -141,7 +144,7 @@ TEST(ArrayListTests, CopyConstructor) {
     EXPECT_EQ(al_copy.getCapacity(), 32);
 }
 
-TEST(ArrayListTests, AssignmentOperator) {
+TEST(ArrayListTests, CopyConstructor) {
     ArrayList<int> al = ArrayList<int>();
     for (int i = 0; i < 25; i++) {
         al.add(i * 4);

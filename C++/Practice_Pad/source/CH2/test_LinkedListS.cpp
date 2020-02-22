@@ -49,13 +49,17 @@ TEST(LinkedListStringTests, CopyConstructor) {
 
 TEST(LinkedListStringTests, AssignmentOperator) {
 
-	LinkedListS lls = LinkedListS();
 	string s[] = { "!", "day", "beautiful", "a", "it's", "Hello" };
-	for (unsigned int i = 0; i < 6; i++) {
-		lls.prepend(s[i]);
+	LinkedListS copy;
+	{
+		LinkedListS lls = LinkedListS();
+		
+		for (unsigned int i = 0; i < 6; i++) {
+			lls.prepend(s[i]);
+		}
+		copy = lls;
 	}
-
-	LinkedListS copy = lls;
+	
 	EXPECT_EQ(copy.getLength(), 6);
 	EXPECT_FALSE(copy.isEmpty());
 	for (unsigned int i = 0; i < 6; i++) {

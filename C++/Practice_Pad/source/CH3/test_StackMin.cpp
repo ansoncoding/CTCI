@@ -74,12 +74,15 @@ TEST(StackMinTests, CopyConstructor) {
 }
 
 TEST(StackMinTests, AssignmentOperator) {
-	StackMin sm = StackMin();
-	for (int i = 0; i < 8; i++) {
-		sm.push(i * 10);
-	}
+	StackMin copy;
+	{
+		StackMin sm = StackMin();
+		for (int i = 0; i < 8; i++) {
+			sm.push(i * 10);
+		}
 
-	StackMin copy = sm;
+		copy = sm;
+	}
 	for (int i = 7; i >= 0; i--) {
 		EXPECT_EQ(copy.peek(), i * 10);
 		copy.pop();

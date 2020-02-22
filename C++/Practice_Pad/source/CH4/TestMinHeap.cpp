@@ -45,12 +45,15 @@ TEST(TestMinHeap, CopyConstructor) {
 }
 
 TEST(TestMinHeap, AssignmentOperator) {
-	MinHeap<int> mh = MinHeap<int>();
-	for (int i = 0; i < N3; i++) {
-		mh.insert(d3[i]);
+	MinHeap<int> copy;
+	{
+		MinHeap<int> mh = MinHeap<int>();
+		for (int i = 0; i < N3; i++) {
+			mh.insert(d3[i]);
+		}
+		copy = mh;
 	}
 
-	MinHeap<int> copy = mh;
 	for (int i = 0; i < N3; i++) {
 		EXPECT_EQ(copy.getMin(), dio[i]);
 		copy.removeMin();

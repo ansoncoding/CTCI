@@ -46,24 +46,27 @@ TEST(TestBinarySearchTree, CopyConstructor) {
 }
 
 TEST(TestBinarySearchTree, AssignmentOperator) {
-	BinarySearchTree<int> bt = BinarySearchTree<int>();
-	for (int i = 0; i < N2; i++) {
-		bt.insert(d2[i]);
+	BinarySearchTree<int> copy;
+	{
+		BinarySearchTree<int> bt = BinarySearchTree<int>();
+		for (int i = 0; i < N2; i++) {
+			bt.insert(d2[i]);
+		}
+		copy = bt;
 	}
-	BinarySearchTree<int> copy = bt;
 
 	for (int i = 0; i < N2; i++) {
 		EXPECT_TRUE(copy.find(d2[i]));
 	}
 
 	for (int i = 0; i < N2; i++) {
-		bt.remove(d2[i]);
+
 		copy.remove(d2[i]);
 
-		EXPECT_FALSE(bt.find(d2[i]));
+
 		EXPECT_FALSE(copy.find(d2[i]));
 	}
-	EXPECT_TRUE(bt.isNull());
+
 	EXPECT_TRUE(copy.isNull());
 }
 

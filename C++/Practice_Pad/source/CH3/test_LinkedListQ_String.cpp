@@ -35,18 +35,22 @@ TEST(LinkedListQ_StringTests, CopyConstructor) {
 }
 
 TEST(LinkedListQ_StringTests, AssignmentOperator) {
-	LinkedListQ<string> ll = LinkedListQ<string>();
-	for (int i = 0; i < 12; i++) {
-		ll.append(d12[i]);
-		EXPECT_STREQ(ll.peek().c_str(), d12[0].c_str());
-	}
+	
+	LinkedListQ<string> copy;
+	{
+		LinkedListQ<string> ll = LinkedListQ<string>();
+		for (int i = 0; i < 12; i++) {
+			ll.append(d12[i]);
+			EXPECT_STREQ(ll.peek().c_str(), d12[0].c_str());
+		}
 
-	LinkedListQ<string> copy = ll;
+		copy = ll;
+	}
 
 	EXPECT_EQ(copy.getSize(), 12);
 	for (int i = 0; i < 12; i++) {
-		EXPECT_STREQ(ll.peek().c_str(), d12[i].c_str());
-		ll.remove();
+		EXPECT_STREQ(copy.peek().c_str(), d12[i].c_str());
+		copy.remove();
 	}
 }
 

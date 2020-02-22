@@ -101,7 +101,8 @@ void BinaryTree<T>::deleteNode(BTNode<T>*& n) {
 
 template <typename T>
 void BinaryTree<T>::cleanup() {
-	deleteNode(root);
+	if (root != nullptr)
+		deleteNode(root);
 }
 
 template <typename T>

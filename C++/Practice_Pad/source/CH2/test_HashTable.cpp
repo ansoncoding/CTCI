@@ -104,13 +104,17 @@ TEST(HashTableTests, CopyConstructor) {
 TEST(HashTableTests, AssignmentOperator) {
 
 	string d[] = { "These", "are", "the", "strings", "I", "want", "to", "insert", "into", "the", "hashtable", "." };
-	HashTable ht = HashTable();
+	
+	HashTable copy;
+	{
+		HashTable ht = HashTable();
 
-	for (unsigned int i = 0; i < 12; i++) {
-		ht.insert(d[i]);
+		for (unsigned int i = 0; i < 12; i++) {
+			ht.insert(d[i]);
+		}
+
+		copy = ht;
 	}
-
-	HashTable copy = ht;
 	for (unsigned int i = 0; i < 12; i++) {
 		EXPECT_TRUE(copy.contains(d[i]));
 	}

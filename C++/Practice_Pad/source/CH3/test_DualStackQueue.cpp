@@ -71,12 +71,15 @@ TEST(DualStackQueueTests, CopyConstructor) {
 }
 
 TEST(DualStackQueueTests, AssignmentOperator) {
-	DSQueue sm = DSQueue();
-	for (int i = 0; i < 8; i++) {
-		sm.add(i * 10);
+	DSQueue copy;
+	{
+		DSQueue sm = DSQueue();
+		for (int i = 0; i < 8; i++) {
+			sm.add(i * 10);
+		}
+		copy = sm;
 	}
-
-	DSQueue copy = sm;
+	
 	for (int i = 0; i < 8; i++) {
 		EXPECT_EQ(copy.peek(), i * 10);
 		copy.remove();

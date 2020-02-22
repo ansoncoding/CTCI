@@ -55,12 +55,15 @@ TEST(SimpleStackTests, CopyConstructor) {
 }
 
 TEST(SimpleStackTests, AssignmentOperator) {
-	SimpleStack ss = SimpleStack();
-	for (int i = 0; i < 8; i++) {
-		ss.push(i * 10);
-	}
+	SimpleStack copy;
+	{
+		SimpleStack ss = SimpleStack();
+		for (int i = 0; i < 8; i++) {
+			ss.push(i * 10);
+		}
 
-	SimpleStack copy = ss;
+		copy = ss;
+	}
 	for (int i = 7; i >= 0; i--) {
 		EXPECT_EQ(copy.peek(), i * 10);
 		copy.pop();

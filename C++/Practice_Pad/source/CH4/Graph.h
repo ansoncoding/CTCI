@@ -5,6 +5,7 @@
 #include <unordered_map> 
 #include <set>
 #include <vector>
+#include <iterator>
 
 template <typename T>
 struct GNode {
@@ -67,9 +68,16 @@ public:
 	bool isConnected(T data1, T data2, vector<int>& path, bool BFS=true);
 	void print() const;
 	void printPath(vector<int>& path) const;
-	bool addEdge(T data1, T data2);
+	bool addEdge(T data1, T data2, bool bidirectional=true);
 	bool removeEdge(T data1, T data2);
+	
+//	using const_iterator = unordered_map<int, GNode<T>*>::const_iterator;
+	typename unordered_map<int, GNode<T>*>::iterator begin() { return nodes.begin(); }
+	typename unordered_map<int, GNode<T>*>::iterator end() { return nodes.end(); }
+
+
 };
+
 
 template <typename T>
 void GraphAL<T>::cleanup() {
@@ -83,7 +91,8 @@ void GraphAL<T>::cleanup() {
 template <typename T>
 void GraphAL<T>::copy(const GraphAL& other) {
 	for (auto it = other.nodes.begin(); it != other.nodes.end(); ++it) {
-		this->nodes.insert(pair<int, GNode<T>*>(it->first, it->second));
+		GNode<T>* temp = new GNode<T>(*(it->second));
+		this->nodes.insert(pair<int, GNode<T>*>(it->first, temp));
 	}
 }
 
@@ -118,6 +127,7 @@ GraphAL<T>& GraphAL<T>::operator=(const GraphAL& other) {
 		cleanup();
 		copy(other);
 	}
+	return *this;
 }
 
 template <typename T>
@@ -166,7 +176,7 @@ bool GraphAL<T>::removeEdge(T data1, T data2) {
 }
 
 template <typename T>
-bool GraphAL<T>::addEdge(T data1, T data2) {
+bool GraphAL<T>::addEdge(T data1, T data2, bool bidirectional) {
 	
 	int ID_d1 = -1;
 	int ID_d2 = -1;
@@ -174,7 +184,9 @@ bool GraphAL<T>::addEdge(T data1, T data2) {
 	//ensure the nodes are in the graph first
 	if (find(data1, ID_d1) && find(data2, ID_d2)) {
 		nodes.at(ID_d1)->links.insert(ID_d2);
-		nodes.at(ID_d2)->links.insert(ID_d1);
+		if (bidirectional) {
+			nodes.at(ID_d2)->links.insert(ID_d1);
+		}
 		return true;
 	}
 	return false;

@@ -124,18 +124,21 @@ TEST(TriStackTests, CopyConstructor) {
 }
 
 TEST(TriStackTests, AssignmentOperator) {
-	TriStack stacks = TriStack();
-	for (int i = 0; i < 8; i++) {
-		stacks.push(one, i * 10);
-	}
-	for (int i = 0; i < 8; i++) {
-		stacks.push(two, i * 2);
-	}
-	for (int i = 0; i < 8; i++) {
-		stacks.push(three, i * 5);
-	}
+	TriStack copy;
+	{
+		TriStack stacks = TriStack();
+		for (int i = 0; i < 8; i++) {
+			stacks.push(one, i * 10);
+		}
+		for (int i = 0; i < 8; i++) {
+			stacks.push(two, i * 2);
+		}
+		for (int i = 0; i < 8; i++) {
+			stacks.push(three, i * 5);
+		}
 
-	TriStack copy = stacks;
+		copy = stacks;
+	}
 
 	for (int i = 7; i >= 0; i--) {
 		EXPECT_EQ(copy.peek(one), i * 10);

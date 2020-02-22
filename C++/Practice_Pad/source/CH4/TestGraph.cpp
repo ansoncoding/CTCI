@@ -91,18 +91,22 @@ TEST(TestGraph, CopyConstructor) {
 }
 
 TEST(TestGraph, AssignmentOperator) {
-	GraphAL<string> g = GraphAL<string>();
+	GraphAL<string> copy;
+	{
+		GraphAL<string> g = GraphAL<string>();
 
-	for (int i = 0; i < N4; i++) {
-		set<int> s = set<int>();
-		
-		s.insert((i + 1) % N4);
-		s.insert((i + 2) % N4);
-		GNode<string> gnode = GNode<string>(i, graph_data[i], s);
-		g.insert(gnode);
+		for (int i = 0; i < N4; i++) {
+			set<int> s = set<int>();
+
+			s.insert((i + 1) % N4);
+			s.insert((i + 2) % N4);
+			GNode<string> gnode = GNode<string>(i, graph_data[i], s);
+			g.insert(gnode);
+		}
+
+		copy = g;
 	}
-
-	GraphAL<string> copy = g;
+	
 	vector<int> retpath = vector<int>();
 	for (int i = 0; i < N4; i++) {
 		EXPECT_TRUE(copy.isConnected(graph_data[i], graph_data[i], retpath)); //everyone is connected to themselves
