@@ -70,12 +70,18 @@ public:
 	void printPath(vector<int>& path) const;
 	bool addEdge(T data1, T data2, bool bidirectional=true);
 	bool removeEdge(T data1, T data2);
+	bool isEmpty() const;
 	
-//	using const_iterator = unordered_map<int, GNode<T>*>::const_iterator;
-	typename unordered_map<int, GNode<T>*>::iterator begin() { return nodes.begin(); }
-	typename unordered_map<int, GNode<T>*>::iterator end() { return nodes.end(); }
 
+	// Wrap hashmap iterator in these functions to allow iteration on graph
+	typename unordered_map<int, GNode<T>*>::iterator begin() {
+		return nodes.begin();
+	}
 
+	// Wrap hashmap iterator in these functions to allow iteration on graph
+	typename unordered_map<int, GNode<T>*>::iterator end() {
+		return nodes.end();
+	}
 };
 
 
@@ -372,5 +378,10 @@ void GraphAL<T>::clearVisitedFlags() {
 		GNode<T>* temp = it->second;
 		temp->visited = false;
 	}
+}
+
+template <typename T>
+bool GraphAL<T>::isEmpty() const {
+	return (nodes.size() == 0);
 }
 #endif

@@ -120,3 +120,7 @@ TEST(TestGraph, InsertEdge) {
 TEST(TestGraph, RemoveEdge) {
 
 }
+
+TEST(TestGraph, IsEmpty) {
+
+}
