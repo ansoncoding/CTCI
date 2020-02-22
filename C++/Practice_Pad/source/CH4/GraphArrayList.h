@@ -71,7 +71,6 @@ public:
 	bool addEdge(T data1, T data2, bool bidirectional=true);
 	bool removeEdge(T data1, T data2);
 	bool isEmpty() const;
-	
 
 	// Wrap hashmap iterator in these functions to allow iteration on graph
 	typename unordered_map<int, GNode<T>*>::iterator begin() {
@@ -122,6 +121,7 @@ GraphAL<T>::GraphAL(T* vals, int length) {
 		nodes.insert(pair<int, GNode<T>*>(i, n));
 	}
 }
+
 template <typename T>
 GraphAL<T>::GraphAL(const GraphAL& other) {
 	copy(other);
@@ -297,7 +297,6 @@ bool GraphAL<T>::isConnectedHelperBFS(int find_ID, LinkedListQ<int>& q, vector<i
 	}
 	return false;
 }
-
 
 template <typename T>
 bool GraphAL<T>::isConnected(T data1, T data2, vector<int>& path, bool BFS) {

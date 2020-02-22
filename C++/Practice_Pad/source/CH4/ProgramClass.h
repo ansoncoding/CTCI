@@ -1,6 +1,6 @@
-#ifndef PROGRAM_H
-#define PROGRAM_H
-#include "Graph.h"
+#ifndef PROGRAM_CLASS_H
+#define PROGRAM_CLASS_H
+#include "GraphArrayList.h"
 
 #include <iostream>
 using namespace std;

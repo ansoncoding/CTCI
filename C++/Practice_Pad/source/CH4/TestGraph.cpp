@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Graph.h"
+#include "GraphArrayList.h"
 
 string graph_data[] = { "jane", "jack", "mike", "lisa", "lola", "lora", "anna", "lily" };
 string graph_data2[] = { "jay",  "jam",  "zak",  "rex",  "amy",  "jac",  "ida",  "eve" };
@@ -124,3 +124,4 @@ TEST(TestGraph, RemoveEdge) {
 TEST(TestGraph, IsEmpty) {
 
 }
+
