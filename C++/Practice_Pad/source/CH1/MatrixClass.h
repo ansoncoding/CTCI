@@ -24,8 +24,11 @@ public:
     int getCell(const int row, const int col) const;
     void print () const;
     void rotate_cw_90();
+    void rotate_cw_90_ver2();
     void rotate_ccw_90();
+    void rotate_ccw_90_ver2();
     void flip_180();
+    void transpose();
     void rotate_180();
     void zero_matrix();
     void zero_matrix_2();

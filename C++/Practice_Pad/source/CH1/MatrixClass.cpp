@@ -102,6 +102,24 @@ void Matrix_2D::print() const {
     cout << endl;
 }
 
+void Matrix_2D::transpose() {
+    
+    for (int i = 0; i < N; i++) {
+        for (int j = i; j < M; j++) {
+            swap(i, j, j, i);
+        }
+    }
+}
+
+void Matrix_2D::rotate_cw_90_ver2() {
+    flip_180();
+    transpose();
+}
+
+void Matrix_2D::rotate_ccw_90_ver2() {
+    transpose();
+    flip_180();
+}
 
 void Matrix_2D::rotate_cw_90() {
     int num_layers = N / 2;

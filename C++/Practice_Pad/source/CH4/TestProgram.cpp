@@ -30,5 +30,5 @@ TEST(TestProgramClass, BuildCircular) {
 	p.addDependency("a", "f");
 	p.addDependency("c", "d");
 
-	ASSERT_FALSE(p.build(retpath));
+	EXPECT_FALSE(p.build(retpath));
 }

@@ -33,9 +33,6 @@ public:
     void removeByVal(T data);
 };
 
-
-
-
 template <typename T>
 ArrayList<T>::ArrayList() {
     arraylist = new T[initial_capacity];

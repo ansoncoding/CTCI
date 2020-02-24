@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iomanip>
 #include <random>
+#include <stack>
 
 using namespace std;
 
@@ -36,6 +37,7 @@ protected:
 	void postorder_helper(const BTNode<T>* n) const;
 	bool isBalanced_helper(const BTNode<T>* n) const;
 	bool isBST_helper(const BTNode<T>* n) const;
+	BTNode<T>* first_common_ancestor_helper(T data1, T data2, BTNode<T>* n) const;
 
 	const int COUNT = 10;
 	BTNode<T>* root;
@@ -60,6 +62,7 @@ public:
 	void inorder(T* output) const;
 	bool isBalanced() const;
 	bool isBST() const;
+	BTNode<T>* first_common_ancestor(T data1, T data2) const;
 };
 
 
@@ -480,4 +483,60 @@ bool BinaryTree<T>::isBST() const {
 	return isBST_helper(root);
 }
 
+template <typename T>
+BTNode<T>* BinaryTree<T>::first_common_ancestor_helper(T data1, T data2, BTNode<T>* n) const {
+	
+	if (isLeaf(n)) { // should throw exception but in general if we reach here something is wrong
+		throw invalid_argument("Node is leaf, something is wrong");
+	}
+
+	if (n->data == data1 || n->data == data2) {
+		return n;
+	}
+
+	// has both left and right
+	bool data1_in_left = false;
+	bool data1_in_right = false;
+	bool data2_in_left = false;
+	bool data2_in_right = false;
+
+	if (n->right != nullptr && n->left != nullptr) {
+
+		data1_in_left = find_helper(data1, n->left);
+		data1_in_right = find_helper(data1, n->right);
+		data2_in_left = find_helper(data2, n->left);
+		data2_in_right = find_helper(data2, n->right);
+
+		// two pieces of data in different left and right subtrees, return current node.
+		if ((data1_in_left && data2_in_right) || (data2_in_left && data1_in_right)) {
+			return n;
+		}
+		if (data1_in_left && data2_in_left) {
+			return first_common_ancestor_helper(data1, data2, n->left);
+		}
+		if (data1_in_right && data2_in_right) {
+			return first_common_ancestor_helper(data1, data2, n->right);
+		}
+	}
+	else if (n->left != nullptr) {
+		return first_common_ancestor_helper(data1, data2, n->left);
+	}
+	else if (n->right != nullptr) {
+		return first_common_ancestor_helper(data1, data2, n->right);
+	}
+}
+
+template <typename T>
+BTNode<T>* BinaryTree<T>::first_common_ancestor(T data1, T data2) const {
+	
+	if (root == nullptr) {
+		return nullptr;
+	}
+
+	if (!find(data1) || !find(data2)) {
+		return nullptr;
+	}
+	
+	return first_common_ancestor_helper(data1, data2, root);
+}
 #endif
