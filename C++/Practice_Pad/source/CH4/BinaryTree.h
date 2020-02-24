@@ -24,6 +24,7 @@ protected:
 	void cleanup();
 	BTNode<T> * copy_helper(const BTNode<T>*other);
 	virtual bool find_helper(T data, const BTNode<T>* n) const;
+	virtual bool find_node_helper(T data, BTNode<T>* n, BTNode<T> * & ret);
 	bool remove_helper(T data, BTNode<T>*& n);
 	virtual void insert_helper(T data, BTNode<T>* n);
 	T find_leaf_remove(BTNode<T> *& n);
@@ -38,6 +39,7 @@ protected:
 	bool isBalanced_helper(const BTNode<T>* n) const;
 	bool isBST_helper(const BTNode<T>* n) const;
 	BTNode<T>* first_common_ancestor_helper(T data1, T data2, BTNode<T>* n) const;
+	BTNode<T>* first_common_ancestor_helper_v2(BTNode<T>* cur, BTNode<T>* n1, BTNode<T>* n2) const;
 
 	const int COUNT = 10;
 	BTNode<T>* root;
@@ -54,6 +56,7 @@ public:
 	bool remove(T data);
 	void insert(T data);
 	bool find(T data) const;
+	bool find_node(T data, BTNode<T> * & ret);
 	int getHeight() const;
 	void print() const;
 	void inorder() const;
@@ -63,6 +66,7 @@ public:
 	bool isBalanced() const;
 	bool isBST() const;
 	BTNode<T>* first_common_ancestor(T data1, T data2) const;
+	BTNode<T>* first_common_ancestor_v2(T data1, T data2);
 };
 
 
@@ -274,6 +278,32 @@ bool BinaryTree<T>::find(T data) const {
 		return false;
 	}
 	return find_helper(data, root);
+}
+
+template <typename T>
+bool BinaryTree<T>::find_node_helper(T data, BTNode<T>* n, BTNode<T>*& ret) {
+	bool retval = false;
+	if (n->data == data) {
+		ret = n;
+		return true;
+	}
+	else {
+		if (n->left != nullptr) {
+			retval = find_node_helper(data, n->left, ret);
+		}
+		if (!retval && (n->right != nullptr)) {
+			retval = find_node_helper(data, n->right, ret);
+		}
+		return retval;
+	}
+}
+
+template <typename T>
+bool BinaryTree<T>::find_node(T data, BTNode<T> * & ret) {
+	if (root == nullptr) {
+		return false;
+	}
+	return find_node_helper(data, root, ret);
 }
 
 template <typename T>
@@ -538,5 +568,48 @@ BTNode<T>* BinaryTree<T>::first_common_ancestor(T data1, T data2) const {
 	}
 	
 	return first_common_ancestor_helper(data1, data2, root);
+}
+
+template <typename T>
+BTNode<T>* BinaryTree<T>::first_common_ancestor_helper_v2(BTNode<T>* cur, BTNode<T>* n1, BTNode<T>* n2) const {
+	if (cur == nullptr) {
+		return nullptr;
+	}
+	if (cur == n1 && cur == n2) {
+		return cur;
+	}
+
+	BTNode<T>* x = first_common_ancestor_helper_v2(cur->left, n1, n2);
+	if (x != nullptr && x != n1 && x != n2) {
+		return x;
+	}
+	BTNode<T>* y = first_common_ancestor_helper_v2(cur->right, n1, n2);
+	
+	if (y != nullptr && y != n1 && y != n2) {
+		return y;
+	}
+	if (x != nullptr && y != nullptr) {
+		return cur;
+	}
+	else if (cur == n1 || cur == n2) {
+		return cur;
+	}
+	else {
+		return (x == nullptr)? y : x;
+	}	
+}
+
+template <typename T>
+BTNode<T>* BinaryTree<T>::first_common_ancestor_v2(T data1, T data2) {
+
+	if (data1 == data2) {
+		throw invalid_argument("tree doesn't contain duplicates");
+	}
+	BTNode<T>* n1 = nullptr;
+	BTNode<T>* n2 = nullptr;
+	if (find_node(data1, n1) && find_node(data2, n2)) {
+		return first_common_ancestor_helper_v2(root, n1, n2);
+	}
+	return nullptr;
 }
 #endif
