@@ -579,9 +579,6 @@ BTNode<T>* BinaryTree<T>::first_common_ancestor_helper_v2(BTNode<T>* cur, BTNode
 	if (cur == nullptr) { // not found
 		return nullptr;
 	}
-	if (cur == n1 && cur == n2) { // we can probably remove this as we don't accept data1 and data2 to be the same
-		return cur;
-	}
 	if (cur == n1 || cur == n2) { // one of the nodes is the current node, the current node is the ancestor
 		return cur;
 	}
@@ -601,9 +598,8 @@ BTNode<T>* BinaryTree<T>::first_common_ancestor_helper_v2(BTNode<T>* cur, BTNode
 	if (found_in_left != nullptr && found_in_right != nullptr) { // elements are in different subtrees, return root (or A.K.A cur)
 		return cur;
 	}
-	// the case unprocessed is if both found_in_left and found_in_right are nullptr, shouldn't happen.
-	// should never reach here because the first_common_ancestor_v2() checks that both nodes exist in the tree.
-	throw invalid_argument("data was not in tree, something went wrong"); 
+	// elements not found in this subtree, return nullptr
+	return nullptr;
 }
 
 template <typename T>
