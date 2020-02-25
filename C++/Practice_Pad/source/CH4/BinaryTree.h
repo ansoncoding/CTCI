@@ -573,33 +573,34 @@ BTNode<T>* BinaryTree<T>::first_common_ancestor(T data1, T data2) const {
 	return first_common_ancestor_helper(data1, data2, root);
 }
 
+// we already know the data required is in the tree and n1 and n2 are valid nodes that exist in the tree.
 template <typename T>
 BTNode<T>* BinaryTree<T>::first_common_ancestor_helper_v2(BTNode<T>* cur, BTNode<T>* n1, BTNode<T>* n2) const {
-	if (cur == nullptr) {
+	if (cur == nullptr) { // not found
 		return nullptr;
 	}
-	if (cur == n1 && cur == n2) {
+	if (cur == n1 && cur == n2) { // we can probably remove this as we don't accept data1 and data2 to be the same
 		return cur;
 	}
-	if (cur == n1 || cur == n2) {
+	if (cur == n1 || cur == n2) { // one of the nodes is the current node, the current node is the ancestor
 		return cur;
 	}
 
-	BTNode<T>* x = first_common_ancestor_helper_v2(cur->left, n1, n2);
-	if (x != nullptr && x != n1 && x != n2) {
-		return x;
+	BTNode<T>* found_in_left = first_common_ancestor_helper_v2(cur->left, n1, n2); // try finding the ancestor in left tree. 
+	if (found_in_left != nullptr && found_in_left != n1 && found_in_left != n2) {
+		return found_in_left;
 	}
-	BTNode<T>* y = first_common_ancestor_helper_v2(cur->right, n1, n2);
-	
-	if (y != nullptr && y != n1 && y != n2) {
-		return y;
+	BTNode<T>* found_in_right = first_common_ancestor_helper_v2(cur->right, n1, n2); // try finding the ancestor in right tree.
+
+	if (found_in_right != nullptr && found_in_left == nullptr) {//both elements are in one subtree, return the left or right subtree
+		return found_in_right;
 	}
-	if (x != nullptr && y != nullptr) {
+	if (found_in_left != nullptr && found_in_right == nullptr) { //both elements are in one subtree, return the left or right subtree
+		return found_in_left;
+	}
+	if (found_in_left != nullptr && found_in_right != nullptr) { // elements are in different subtrees, return root (or A.K.A cur)
 		return cur;
 	}
-	else {
-		return (x == nullptr)? y : x;
-	}	
 }
 
 template <typename T>
