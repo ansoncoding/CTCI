@@ -578,6 +578,9 @@ BTNode<T>* BinaryTree<T>::first_common_ancestor_helper_v2(BTNode<T>* cur, BTNode
 	if (cur == n1 && cur == n2) {
 		return cur;
 	}
+	if (cur == n1 || cur == n2) {
+		return cur;
+	}
 
 	BTNode<T>* x = first_common_ancestor_helper_v2(cur->left, n1, n2);
 	if (x != nullptr && x != n1 && x != n2) {
@@ -589,9 +592,6 @@ BTNode<T>* BinaryTree<T>::first_common_ancestor_helper_v2(BTNode<T>* cur, BTNode
 		return y;
 	}
 	if (x != nullptr && y != nullptr) {
-		return cur;
-	}
-	else if (cur == n1 || cur == n2) {
 		return cur;
 	}
 	else {

@@ -204,3 +204,22 @@ TEST(TestBinarySearchTree, IsBST_True) {
 	}
 	EXPECT_TRUE(bt2.isBST());
 }
+
+// Because Binary Tree insertion order is randomized, cannot test CommonAncestor. Use BST instead.
+TEST(TestBinarySearchTree, CommonAncestor) {
+	int ca[] = { 8, 8, 3, 3, 8, 8, 8, 8, 3, 5, 8, 19, 8, 8 };
+
+	BinarySearchTree<int> bst = BinarySearchTree<int>();
+	for (int i = 0; i < N2; i++) {
+		bst.insert(d2[i]);
+	}
+	
+	for (int i = 0; i < N2-1; i++) {
+		BTNode<int>* retval = bst.first_common_ancestor_v2(d2[i], d2[i + 1]);
+		ASSERT_NE(retval, nullptr);
+		EXPECT_EQ(retval->data, ca[i]);
+		//cout << "common ancestor of " << d2[i] << " and " << d2[i + 1] << " is " << retval->data << endl;
+	}
+	BTNode<int>* retval = bst.first_common_ancestor_v2(61, 0);
+	EXPECT_EQ(retval, nullptr);
+}
