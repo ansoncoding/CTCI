@@ -558,7 +558,10 @@ BTNode<T>* BinaryTree<T>::first_common_ancestor_helper(T data1, T data2, BTNode<
 
 template <typename T>
 BTNode<T>* BinaryTree<T>::first_common_ancestor(T data1, T data2) const {
-	
+	if (data1 == data2) {
+		throw invalid_argument("tree doesn't contain duplicates");
+	}
+
 	if (root == nullptr) {
 		return nullptr;
 	}
