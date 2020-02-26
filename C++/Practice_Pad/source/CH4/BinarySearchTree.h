@@ -264,7 +264,6 @@ vector<vector<T>> BinarySearchTree<T>::print_possible_init_arrays_helper(BTNode<
 	vector<vector<T>> left_all = print_possible_init_arrays_helper(n->left);
 	vector<vector<T>> right_all = print_possible_init_arrays_helper(n->right);
 	
-
 	for (int i = 0; i < left_all.size(); i++) {
 		for (int j = 0; j < right_all.size(); j++) {
 			vector<vector<T>> temp;
@@ -272,7 +271,6 @@ vector<vector<T>> BinarySearchTree<T>::print_possible_init_arrays_helper(BTNode<
 			retval.insert(retval.end(), temp.begin(), temp.end());
 		}
 	}
-
 	
 	return retval;
 }

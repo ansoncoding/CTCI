@@ -40,6 +40,7 @@ protected:
 	bool isBST_helper(const BTNode<T>* n) const;
 	BTNode<T>* first_common_ancestor_helper(T data1, T data2, BTNode<T>* n) const;
 	BTNode<T>* first_common_ancestor_helper_v2(BTNode<T>* cur, BTNode<T>* n1, BTNode<T>* n2) const;
+	bool compare_subtree_helper(BTNode<T>* equal_val, BTNode<T>* compare_root) const;
 
 	const int COUNT = 10;
 	BTNode<T>* root;
@@ -67,6 +68,8 @@ public:
 	bool isBST() const;
 	BTNode<T>* first_common_ancestor(T data1, T data2) const;
 	BTNode<T>* first_common_ancestor_v2(T data1, T data2);
+	bool compare_subtree(BTNode<T>* subtree_root);
+	bool compare_subtree(const BinaryTree<T> & other);
 };
 
 
@@ -615,5 +618,39 @@ BTNode<T>* BinaryTree<T>::first_common_ancestor_v2(T data1, T data2) {
 		return first_common_ancestor_helper_v2(root, n1, n2);
 	}
 	return nullptr;
+}
+
+// CTCI 4.10
+template <typename T>
+bool BinaryTree<T>::compare_subtree(const BinaryTree<T>& other) {
+	return compare_subtree(other.root);
+}
+
+template <typename T>
+bool BinaryTree<T>::compare_subtree_helper(BTNode<T> * equal_val, BTNode<T>* subtree_root) const {
+	if ((equal_val == nullptr && subtree_root != nullptr) || (subtree_root == nullptr && equal_val != nullptr)) {
+		return false;
+	}
+
+	if (subtree_root == nullptr && equal_val == nullptr) {
+		return true;
+	}
+
+	if (equal_val->data != subtree_root->data) {
+		return false;
+	}
+	return compare_subtree_helper(equal_val->left, subtree_root->left) && compare_subtree_helper(equal_val->right, subtree_root->right);
+}
+
+template <typename T>
+bool BinaryTree<T>::compare_subtree(BTNode<T>* subtree_root) {
+	if (subtree_root == nullptr) {
+		throw invalid_argument("tree is null!");
+	}
+	BTNode<T>* root_equal = nullptr;
+	if (find_node(subtree_root->data, root_equal)) {
+		return compare_subtree_helper(subtree_root, root_equal);
+	}
+	return false;
 }
 #endif
