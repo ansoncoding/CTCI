@@ -645,7 +645,7 @@ bool BinaryTree<T>::compare_subtree_helper(BTNode<T> * equal_val, BTNode<T>* sub
 template <typename T>
 bool BinaryTree<T>::compare_subtree(BTNode<T>* subtree_root) {
 	if (subtree_root == nullptr) {
-		throw invalid_argument("tree is null!");
+		return true;// empty tree always a subtree.
 	}
 	BTNode<T>* root_equal = nullptr;
 	if (find_node(subtree_root->data, root_equal)) {
