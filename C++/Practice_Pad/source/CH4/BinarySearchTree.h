@@ -2,6 +2,8 @@
 #define BINARY_SEARCH_TREE_H
 
 #include "BinaryTree.h"
+#include "LinkedListQueue.h"
+#include "ArrayList.h" 
 
 template <typename T>
 class BinarySearchTree : public BinaryTree<T> {
@@ -12,8 +14,10 @@ private:
 	BTNode<T>* find_leaf_remove(BTNode<T>* &n);
 	T right_min_remove(BTNode<T>*& n);
 	BTNode<T>* FindMin(BTNode<T>* n);
+	vector<vector<T>> print_possible_init_arrays_helper(BTNode<T>* n) const;
 public:
 	void remove(T data);
+	void print_possible_init_arrays() const;
 };
 
 
@@ -37,7 +41,6 @@ void BinarySearchTree<T>::insert_helper(T data, BTNode<T>* n) {
 		}
 	}
 }
-
 
 template <typename T>
 bool BinarySearchTree<T>::find_helper(T data, const BTNode<T>* n) const {
@@ -91,6 +94,7 @@ T BinarySearchTree<T>::right_min_remove(BTNode<T>* &n) {
 		return retval;
 	}
 }
+
 template <typename T>
 BTNode<T>* BinarySearchTree<T>::FindMin(BTNode<T>* n) {
 	BTNode<T>* temp = n;
@@ -100,6 +104,7 @@ BTNode<T>* BinarySearchTree<T>::FindMin(BTNode<T>* n) {
 	return temp;
 
 }
+
 // n has both children.
 // find minimum value on right subtree
 // return the new root node
@@ -178,6 +183,7 @@ void BinarySearchTree<T>::remove(T data) {
 	root = remove_helper(data, root);
 }
 
+//CTCI 4.2
 template <typename T>
 void insert_array_min_height_bst(T* data, int length, BinarySearchTree<T>& bst) {
 
@@ -202,6 +208,91 @@ void insert_array_min_height_bst(T* data, int length, BinarySearchTree<T>& bst) 
 			second_half[i - mid - 1] = data[i];
 		}
 		insert_array_min_height_bst(second_half, size2, bst);
+	}
+}
+
+template <typename T>
+vector<vector<T>> generate_possibles(vector<T> & left, vector<T> & right, vector<T> & prefix) {
+	vector<vector<T>> retval = vector<vector<T>>();
+	//left = 1, 2
+	//right = 5, 6
+	// return 1, 2, 5, 6
+	//        1, 5, 6, 2
+	//        5, 6, 1, 2
+	//        5, 1, 2, 6
+	//        1, 5, 2, 6
+	//        5, 1, 6, 2
+	if (left.size() == 0 || right.size() == 0) {
+		vector<T> temp = prefix;
+		temp.insert(temp.end(), left.begin(), left.end());
+		temp.insert(temp.end(), right.begin(), right.end());
+		retval.push_back(temp);
+		return retval;
+	}
+
+	T headLeft = left.at(0);
+	prefix.push_back(headLeft);
+	left.erase(left.begin());
+	vector<vector<T>> resultl = generate_possibles(left, right, prefix);
+	retval.insert(retval.end(), resultl.begin(), resultl.end());
+	prefix.pop_back();
+	left.insert(left.begin(), headLeft);
+
+	T headRight = right.at(0);
+	prefix.push_back(headRight);
+	right.erase(right.begin());
+	vector<vector<T>> resultr = generate_possibles(left, right, prefix);
+	retval.insert(retval.end(), resultr.begin(), resultr.end());
+	prefix.pop_back();
+	right.insert(right.begin(), headRight);
+
+	return retval;
+}
+
+template <typename T>
+vector<vector<T>> BinarySearchTree<T>::print_possible_init_arrays_helper(BTNode<T>* n) const {
+	
+	vector<vector<T>> retval;
+	if (n == nullptr) {
+		retval.push_back(vector<T>());
+		return retval;
+	}
+
+	vector<T> prefix;
+	prefix.push_back(n->data);
+	
+	vector<vector<T>> left_all = print_possible_init_arrays_helper(n->left);
+	vector<vector<T>> right_all = print_possible_init_arrays_helper(n->right);
+	
+
+	for (int i = 0; i < left_all.size(); i++) {
+		for (int j = 0; j < right_all.size(); j++) {
+			vector<vector<T>> temp;
+			temp = generate_possibles(left_all.at(i), right_all.at(j), prefix);
+			retval.insert(retval.end(), temp.begin(), temp.end());
+		}
+	}
+
+	
+	return retval;
+}
+
+//CTCI 4.9
+template <typename T>
+void BinarySearchTree<T>::print_possible_init_arrays() const {
+	if (root == nullptr) {
+		cout << "Binary Search Tree is empty" << endl;
+		return;
+	}
+	
+	vector<vector<T>> ret = print_possible_init_arrays_helper(root);
+	// print them here
+	for (int i = 0; i < ret.size(); i++) {
+		vector<T> temp = ret.at(i);
+		for (int j = 0; j < temp.size(); j++) {
+			cout << temp.at(j) << " " ;
+		}
+		cout << endl;
 	}
 }
 

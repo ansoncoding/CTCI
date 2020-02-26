@@ -67,7 +67,7 @@ ArrayList<T>::~ArrayList() {
 template <typename T>
 void ArrayList<T>::copy(const ArrayList& other) {
     current_capacity = other.current_capacity;
-    arraylist = new int[current_capacity];
+    arraylist = new T[current_capacity];
     memset(arraylist, 0, current_capacity * sizeof(int));
 
     for (int i = 0; i < other.count; i++) {

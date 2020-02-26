@@ -554,6 +554,7 @@ BTNode<T>* BinaryTree<T>::first_common_ancestor_helper(T data1, T data2, BTNode<
 	else if (n->right != nullptr) {
 		return first_common_ancestor_helper(data1, data2, n->right);
 	}
+	return nullptr;
 }
 
 template <typename T>

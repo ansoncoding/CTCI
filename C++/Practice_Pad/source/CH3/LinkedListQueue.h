@@ -36,7 +36,7 @@ public:
 	bool isEmpty() const;
 	bool contains(T data) const;
 	T peek() const;
-	void print() const;
+	void print(bool endline=true) const;
 
 
 	// Forward declaration must be done in the same access scope 
@@ -202,7 +202,7 @@ bool LinkedListQ<T>::isEmpty() const {
 }
 
 template<typename T>
-void LinkedListQ<T>::print() const {
+void LinkedListQ<T>::print(bool endline) const {
 	if (head == nullptr) {
 		cout << "List is empty" << endl;
 	}
@@ -213,7 +213,9 @@ void LinkedListQ<T>::print() const {
 			cout << temp->data << " ";
 			temp = temp->next;
 		}
-		cout << endl;
+		if (endline) {
+			cout << endl;
+		}
 	}
 }
 #endif
