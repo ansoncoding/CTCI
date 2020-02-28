@@ -140,3 +140,23 @@ TEST(TestBinaryTree, IsBST_False) {
 	}
 	EXPECT_FALSE(bt2.isBST());
 }
+
+// size only works for BinaryTree NOT BinarySEARCH Tree
+TEST(TestBinaryTree, size) {
+	BinaryTree<int> bt = BinaryTree<int>();
+	EXPECT_EQ(bt.size(), 0);
+	bt.insert(1);
+	EXPECT_EQ(bt.size(), 1);
+	bt.remove(1);
+	EXPECT_EQ(bt.size(), 0);
+
+	for (int i = 0; i < N; i++) {
+		bt.insert(d[i]);
+		EXPECT_EQ(bt.size(), i + 1);
+	}
+	for (int i = 0; i < N; i++) {
+		bt.remove(d[i]);
+		EXPECT_EQ(bt.size(), N - i-1);
+	}
+	EXPECT_EQ(bt.size(), 0);
+}
