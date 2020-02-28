@@ -246,3 +246,24 @@ TEST(TestBinarySearchTree, CommonAncestorV2) {
 
 	EXPECT_THROW(bst.first_common_ancestor_v2(61, 61), invalid_argument);
 }
+
+TEST(TestBinarySearchTree, num_paths_sum) {
+
+	int ds[] = { 4, 2, 5, 1, 3, 6 };
+
+	int count = 6;
+	BinarySearchTree<int> bst = BinarySearchTree<int>();
+
+	for (int i = 0; i < count; i++) {
+		bst.insert(ds[i]);
+
+	}
+
+	EXPECT_EQ(bst.num_paths_with_sum(20), 0);
+	EXPECT_EQ(bst.num_paths_with_sum(6), 1);
+	EXPECT_EQ(bst.num_paths_with_sum(4), 0);
+	EXPECT_EQ(bst.num_paths_with_sum(9), 2);
+	EXPECT_EQ(bst.num_paths_with_sum(11), 1);
+	EXPECT_EQ(bst.num_paths_with_sum(5), 1);
+}
+

@@ -14,6 +14,7 @@ struct BTNode {
 	BTNode* right = nullptr;
 	T data;
 	int size;
+	bool visited = false;
 	BTNode(T data) {
 		this->data = data;
 		this->size = 1;
@@ -44,6 +45,7 @@ protected:
 	BTNode<T>* first_common_ancestor_helper_v2(BTNode<T>* cur, BTNode<T>* n1, BTNode<T>* n2) const;
 	bool compare_subtree_helper(BTNode<T>* equal_val, BTNode<T>* compare_root) const;
 	BTNode<T>* getRandomNode_helper(BTNode<T>* n, int randInt);
+	void num_paths_with_sum_helper(int sum, int & current_sum, int & current_path_len, int & num_paths, vector<BTNode<T>*> & v) const;
 
 	const int COUNT = 10;
 	BTNode<T>* root;
@@ -75,6 +77,7 @@ public:
 	bool compare_subtree(const BinaryTree<T>& other);
 	BTNode<T>* getRandomNode();
 	int size() const;
+	int num_paths_with_sum(int sum) const;
 };
 
 
@@ -719,6 +722,80 @@ BTNode<T>* BinaryTree<T>::getRandomNode() {
 	}
 	int randI = rand() % root->size;
 	return getRandomNode_helper(root, randI);
+}
+
+template <typename T>
+void BinaryTree<T>::num_paths_with_sum_helper(const int sum, int & current_sum, int& current_path_len, int & num_paths, vector<BTNode<T>*> & v) const {
+	if (v.empty()) {
+		return;
+	}
+	BTNode<T>* n = v.back();
+	
+	if (n->left != nullptr) {
+		int current_sum_copy = current_sum + n->left->data;
+		int current_path_len_copy = current_path_len + 1;
+		vector<BTNode<T>*> v_copy = v;
+		v_copy.push_back(n->left);
+		n->visited = true;
+		
+		if (current_sum_copy > sum) {
+			
+			while (!v.empty() && (current_sum_copy > sum)) {
+				BTNode<T>* begin = v_copy.front();
+				current_sum_copy -= begin->data;
+				current_path_len_copy--;
+				v_copy.erase(v_copy.begin());
+			}
+		}
+		if ((current_sum_copy == sum) && (current_path_len_copy >= 1)) {
+			num_paths++;
+		}
+		
+		num_paths_with_sum_helper(sum, current_sum_copy, current_path_len_copy, num_paths, v_copy);
+	}
+
+	if (n->right != nullptr) {
+		vector<BTNode<T>*> v_copy = v;
+		v_copy.push_back(n->right);
+		int current_sum_copy = current_sum + n->right->data;
+		int current_path_len_copy = current_path_len + 1;
+		
+		if (current_sum_copy > sum) {
+
+			while (!v_copy.empty() && (current_sum_copy > sum)) {
+				BTNode<T>* begin = v_copy.front();
+				current_sum_copy -= begin->data;
+				current_path_len_copy--;
+				v_copy.erase(v_copy.begin());
+			}
+		}
+		if ((current_sum_copy == sum) && (current_path_len_copy >= 1)) {
+			num_paths++;
+		}
+		
+		num_paths_with_sum_helper(sum, current_sum_copy, current_path_len_copy, num_paths, v_copy);
+	}
+	n->visited = true;
+	if (isLeaf(n)) {
+		v.pop_back();
+	}
+	else if (n->visited) {
+		v.pop_back();
+	}
+}
+
+template <typename T>
+int BinaryTree<T>::num_paths_with_sum(int sum) const {
+	if (root == nullptr) {
+		return 0;
+	}
+	vector<BTNode<T>* > v;
+	v.push_back(root);
+	int num_paths = 0;
+	int current_sum = root->data;
+	int current_path_len = 0;
+	num_paths_with_sum_helper(sum, current_sum, current_path_len,  num_paths, v);
+	return num_paths;
 }
 
 #endif
