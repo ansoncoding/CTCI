@@ -10,11 +10,13 @@ using namespace std;
 
 template <typename T>
 struct BTNode {
-	BTNode* left = nullptr; 
+	BTNode* left = nullptr;
 	BTNode* right = nullptr;
 	T data;
+	int size;
 	BTNode(T data) {
 		this->data = data;
+		this->size = 1;
 	}
 };
 
@@ -22,18 +24,18 @@ template <typename T>
 class BinaryTree {
 protected:
 	void cleanup();
-	BTNode<T> * copy_helper(const BTNode<T>*other);
+	BTNode<T>* copy_helper(const BTNode<T>* other);
 	virtual bool find_helper(T data, const BTNode<T>* n) const;
-	virtual bool find_node_helper(T data, BTNode<T>* n, BTNode<T> * & ret);
+	virtual bool find_node_helper(T data, BTNode<T>* n, BTNode<T>*& ret);
 	bool remove_helper(T data, BTNode<T>*& n);
 	virtual void insert_helper(T data, BTNode<T>* n);
-	T find_leaf_remove(BTNode<T> *& n);
+	T find_leaf_remove(BTNode<T>*& n);
 	int getHeight_helper(BTNode<T>* n) const;
 	void copy(const BinaryTree& other);
 	void deleteNode(BTNode<T>*& n);
 	void print_helper(int space, const BTNode<T>* n) const;
 	void inorder_helper(const BTNode<T>* n) const;
-	void inorder_helper(const BTNode<T>* n, T* output, int &index) const; //for testing purposes only
+	void inorder_helper(const BTNode<T>* n, T* output, int& index) const; //for testing purposes only
 	void preorder_helper(const BTNode<T>* n) const;
 	void postorder_helper(const BTNode<T>* n) const;
 	bool isBalanced_helper(const BTNode<T>* n) const;
@@ -41,41 +43,44 @@ protected:
 	BTNode<T>* first_common_ancestor_helper(T data1, T data2, BTNode<T>* n) const;
 	BTNode<T>* first_common_ancestor_helper_v2(BTNode<T>* cur, BTNode<T>* n1, BTNode<T>* n2) const;
 	bool compare_subtree_helper(BTNode<T>* equal_val, BTNode<T>* compare_root) const;
+	BTNode<T>* getRandomNode_helper(BTNode<T>* n, int randInt);
 
 	const int COUNT = 10;
 	BTNode<T>* root;
 
 public:
-	
+
 	BinaryTree<T>();
-	BinaryTree<T>(T * data, int size);
+	BinaryTree<T>(T* data, int size);
 	BinaryTree<T>(const BinaryTree& other);
 	BinaryTree<T>& operator=(const BinaryTree& other);
-	
-	bool isLeaf(const BTNode<T> * n) const;
+
+	bool isLeaf(const BTNode<T>* n) const;
 	bool isNull() const;
 	bool remove(T data);
 	void insert(T data);
 	bool find(T data) const;
-	bool find_node(T data, BTNode<T> * & ret);
+	bool find_node(T data, BTNode<T>*& ret);
 	int getHeight() const;
 	void print() const;
 	void inorder() const;
 	void preorder() const;
-	void postorder() const; 
+	void postorder() const;
 	void inorder(T* output) const;
 	bool isBalanced() const;
 	bool isBST() const;
 	BTNode<T>* first_common_ancestor(T data1, T data2) const;
 	BTNode<T>* first_common_ancestor_v2(T data1, T data2);
 	bool compare_subtree(BTNode<T>* subtree_root);
-	bool compare_subtree(const BinaryTree<T> & other);
+	bool compare_subtree(const BinaryTree<T>& other);
+	BTNode<T>* getRandomNode();
+	int size() const;
 };
 
 
 template <typename T>
-BTNode<T> * BinaryTree<T>::copy_helper(const BTNode<T>* other) {
-	
+BTNode<T>* BinaryTree<T>::copy_helper(const BTNode<T>* other) {
+
 	BTNode<T>* retval = nullptr;
 
 	if (other != nullptr) {
@@ -126,7 +131,7 @@ BinaryTree<T>& BinaryTree<T>::operator=(const BinaryTree<T>& other) {
 		cleanup();
 		copy(other);
 	}
-	return* this;
+	return*this;
 }
 
 template <typename T>
@@ -151,6 +156,7 @@ T BinaryTree<T>::find_leaf_remove(BTNode<T>*& n) {
 			T retval = T(n->left->data);
 			delete n->left;
 			n->left = nullptr;
+			n->size--;
 			return retval;
 		}
 	}
@@ -159,30 +165,35 @@ T BinaryTree<T>::find_leaf_remove(BTNode<T>*& n) {
 			T retval = T(n->right->data);
 			delete n->right;
 			n->right = nullptr;
+			n->size--;
 			return retval;
 		}
 	}
 	int randint = rand();
 	if (randint % 2) {
 		if (n->left != nullptr) {
+			n->size--;
 			return find_leaf_remove(n->left);
 		}
 		else {
+			n->size--;
 			return find_leaf_remove(n->right);
 		}
 	}
 	else {
 		if (n->right != nullptr) {
+			n->size--;
 			return find_leaf_remove(n->right);
 		}
 		else {
+			n->size--;
 			return find_leaf_remove(n->left);
 		}
 	}
 }
 
 template <typename T>
-bool BinaryTree<T>::remove_helper(T data, BTNode<T> * & n) {
+bool BinaryTree<T>::remove_helper(T data, BTNode<T>*& n) {
 	bool retval = false;
 	if (n->data == data) {
 		if (isLeaf(n)) {
@@ -194,11 +205,23 @@ bool BinaryTree<T>::remove_helper(T data, BTNode<T> * & n) {
 		}
 		retval = true;
 	}
-	if (n != nullptr && n->left != nullptr){// && (data < n->data)) {
-		retval |= remove_helper(data, n->left);
+	if (retval) {
+		return retval;
 	}
-	if (n != nullptr && n->right != nullptr){// && (data > n->data)) {
+	if (n != nullptr && n->left != nullptr) {
+		retval |= remove_helper(data, n->left);
+		if (retval) {
+			n->size--;
+		}
+	}
+	if (retval) {
+		return retval;
+	}
+	if (n != nullptr && n->right != nullptr) {
 		retval |= remove_helper(data, n->right);
+		if (retval) {
+			n->size--;
+		}
 	}
 	return retval;
 }
@@ -208,11 +231,13 @@ bool BinaryTree<T>::remove(T data) {
 	if (root == nullptr) {
 		return false;
 	}
-	return remove_helper(data, root);
+	bool retval = remove_helper(data, root);
+
+	return retval;
 }
 
 template <typename T>
-bool BinaryTree<T>::isLeaf(const BTNode<T> * n) const {
+bool BinaryTree<T>::isLeaf(const BTNode<T>* n) const {
 	return (n->right == nullptr) && (n->left == nullptr);
 }
 
@@ -222,28 +247,34 @@ bool BinaryTree<T>::isNull() const {
 }
 
 template <typename T>
-void BinaryTree<T>::insert_helper(T data, BTNode<T> * n) {
+void BinaryTree<T>::insert_helper(T data, BTNode<T>* n) {
 	int randint = rand();
 	if (randint % 2) {
 		if (n->left == nullptr) {
 			n->left = new BTNode<T>(data);
+			n->size++;
 		}
 		else if (n->right == nullptr) {
 			n->right = new BTNode<T>(data);
+			n->size++;
 		}
 		else {
 			insert_helper(data, n->left);
+			n->size++;
 		}
 	}
 	else {
 		if (n->right == nullptr) {
 			n->right = new BTNode<T>(data);
+			n->size++;
 		}
 		else if (n->left == nullptr) {
 			n->left = new BTNode<T>(data);
+			n->size++;
 		}
 		else {
 			insert_helper(data, n->right);
+			n->size++;
 		}
 	}
 }
@@ -302,7 +333,7 @@ bool BinaryTree<T>::find_node_helper(T data, BTNode<T>* n, BTNode<T>*& ret) {
 }
 
 template <typename T>
-bool BinaryTree<T>::find_node(T data, BTNode<T> * & ret) {
+bool BinaryTree<T>::find_node(T data, BTNode<T>*& ret) {
 	if (root == nullptr) {
 		return false;
 	}
@@ -310,7 +341,7 @@ bool BinaryTree<T>::find_node(T data, BTNode<T> * & ret) {
 }
 
 template <typename T>
-void BinaryTree<T>::print_helper(int space, const BTNode<T> * n) const {
+void BinaryTree<T>::print_helper(int space, const BTNode<T>* n) const {
 	space += COUNT;
 
 	// Process right child first  
@@ -357,7 +388,7 @@ void BinaryTree<T>::inorder() const {
 
 template <typename T>
 void BinaryTree<T>::preorder_helper(const BTNode<T>* n) const {
-	
+
 	cout << n->data << " ";
 
 	if (n->left != nullptr) {
@@ -453,7 +484,7 @@ int BinaryTree<T>::getHeight() const {
 	if (root == nullptr) {
 		return 0;
 	}
-	
+
 	return getHeight_helper(root);
 }
 
@@ -470,7 +501,7 @@ bool BinaryTree<T>::isBalanced_helper(const BTNode<T>* n) const {
 	if (isLeaf(n)) {
 		return true;
 	}
-	
+
 	int height_left = 0;
 	int height_right = 0;
 	if (n->left != nullptr && n->right != nullptr) {
@@ -478,7 +509,7 @@ bool BinaryTree<T>::isBalanced_helper(const BTNode<T>* n) const {
 	}
 	if (n->right != nullptr) {
 		height_right = getHeight_helper(n->right) + 1;
-	} 
+	}
 	else if (n->left != nullptr) {
 		height_left = getHeight_helper(n->left) + 1;
 	}
@@ -487,9 +518,9 @@ bool BinaryTree<T>::isBalanced_helper(const BTNode<T>* n) const {
 }
 
 template <typename T>
-bool BinaryTree<T>::isBST_helper(const BTNode<T> * n) const {
-	
-	
+bool BinaryTree<T>::isBST_helper(const BTNode<T>* n) const {
+
+
 	if (isLeaf(n)) {
 		return true;
 	}
@@ -518,7 +549,7 @@ bool BinaryTree<T>::isBST() const {
 
 template <typename T>
 BTNode<T>* BinaryTree<T>::first_common_ancestor_helper(T data1, T data2, BTNode<T>* n) const {
-	
+
 	if (isLeaf(n)) { // should throw exception but in general if we reach here something is wrong
 		throw invalid_argument("Node is leaf, something is wrong");
 	}
@@ -573,7 +604,7 @@ BTNode<T>* BinaryTree<T>::first_common_ancestor(T data1, T data2) const {
 	if (!find(data1) || !find(data2)) {
 		return nullptr;
 	}
-	
+
 	return first_common_ancestor_helper(data1, data2, root);
 }
 
@@ -627,7 +658,7 @@ bool BinaryTree<T>::compare_subtree(const BinaryTree<T>& other) {
 }
 
 template <typename T>
-bool BinaryTree<T>::compare_subtree_helper(BTNode<T> * equal_val, BTNode<T>* subtree_root) const {
+bool BinaryTree<T>::compare_subtree_helper(BTNode<T>* equal_val, BTNode<T>* subtree_root) const {
 	if ((equal_val == nullptr && subtree_root != nullptr) || (subtree_root == nullptr && equal_val != nullptr)) {
 		return false;
 	}
@@ -653,4 +684,41 @@ bool BinaryTree<T>::compare_subtree(BTNode<T>* subtree_root) {
 	}
 	return false;
 }
+
+// CTCI 4.11
+template <typename T>
+int BinaryTree<T>::size() const {
+	if (root == nullptr) {
+		return 0;
+	}
+	return root->size;
+}
+
+template <typename T>
+BTNode<T>* BinaryTree<T>::getRandomNode_helper(BTNode<T>* n, int randInt) {
+	int leftSize = 0;
+	if (n->left != nullptr) {
+		leftSize = n->left->size;
+	}
+	if (leftSize == randInt) {
+		return n;
+	}
+	else if (randInt > leftSize) {
+		return getRandomNode_helper(n->right, randInt-leftSize-1);
+	}
+	else {
+		return getRandomNode_helper(n->left, randInt);
+	}
+	return nullptr;
+}
+
+template <typename T>
+BTNode<T>* BinaryTree<T>::getRandomNode() {
+	if (root == nullptr) {
+		return nullptr;
+	}
+	int randI = rand() % root->size;
+	return getRandomNode_helper(root, randI);
+}
+
 #endif
