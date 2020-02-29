@@ -112,16 +112,3 @@ TEST(TestGraph, AssignmentOperator) {
 		EXPECT_TRUE(copy.isConnected(graph_data[i], graph_data[i], retpath)); //everyone is connected to themselves
 	}
 }
-
-TEST(TestGraph, InsertEdge) {
-
-}
-
-TEST(TestGraph, RemoveEdge) {
-
-}
-
-TEST(TestGraph, IsEmpty) {
-
-}
-

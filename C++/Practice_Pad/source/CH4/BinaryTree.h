@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <random>
 #include <stack>
+#include <unordered_map>
 
 using namespace std;
 
@@ -45,7 +46,11 @@ protected:
 	BTNode<T>* first_common_ancestor_helper_v2(BTNode<T>* cur, BTNode<T>* n1, BTNode<T>* n2) const;
 	bool compare_subtree_helper(BTNode<T>* equal_val, BTNode<T>* compare_root) const;
 	BTNode<T>* getRandomNode_helper(BTNode<T>* n, int randInt);
-	void num_paths_with_sum_helper(int sum, int & current_sum, int & current_path_len, int & num_paths, vector<BTNode<T>*> & v) const;
+	void num_paths_with_sum_helper(int sum, int & current_sum, int & current_path_len, int & num_paths, vector<BTNode<T>*> & v) ;
+	void num_paths_with_sum_helper2(int sum, int current_sum, int& num_paths, BTNode<T>* n, unordered_map<int, int>& m) const;
+	void decrease_count(unordered_map<int, int>& m, int item) const;
+	void increase_count(unordered_map<int, int>& m, int item) const;
+	void clearVisitedFlagsHelper(BTNode<T>* n);
 
 	const int COUNT = 10;
 	BTNode<T>* root;
@@ -77,7 +82,9 @@ public:
 	bool compare_subtree(const BinaryTree<T>& other);
 	BTNode<T>* getRandomNode();
 	int size() const;
-	int num_paths_with_sum(int sum) const;
+	int num_paths_with_sum(int sum);
+	int num_paths_with_sum2(int sum) const;
+	void clearVisitedFlags();
 };
 
 
@@ -725,7 +732,7 @@ BTNode<T>* BinaryTree<T>::getRandomNode() {
 }
 
 template <typename T>
-void BinaryTree<T>::num_paths_with_sum_helper(const int sum, int & current_sum, int& current_path_len, int & num_paths, vector<BTNode<T>*> & v) const {
+void BinaryTree<T>::num_paths_with_sum_helper(const int sum, int & current_sum, int& current_path_len, int & num_paths, vector<BTNode<T>*> & v)  {
 	if (v.empty()) {
 		return;
 	}
@@ -785,7 +792,7 @@ void BinaryTree<T>::num_paths_with_sum_helper(const int sum, int & current_sum, 
 }
 
 template <typename T>
-int BinaryTree<T>::num_paths_with_sum(int sum) const {
+int BinaryTree<T>::num_paths_with_sum(int sum) {
 	if (root == nullptr) {
 		return 0;
 	}
@@ -795,7 +802,79 @@ int BinaryTree<T>::num_paths_with_sum(int sum) const {
 	int current_sum = root->data;
 	int current_path_len = 0;
 	num_paths_with_sum_helper(sum, current_sum, current_path_len,  num_paths, v);
+	clearVisitedFlags();
 	return num_paths;
+}
+
+template <typename T>
+void BinaryTree<T>::decrease_count(unordered_map<int, int>& m, int item) const {
+	unordered_map<int, int>::const_iterator found = m.find(item);
+	if (found != m.end()) {
+		m.at(item)--;
+		if (m.at(item) == 0) {
+			m.erase(item);
+		}
+	}
+}
+
+template <typename T>
+void BinaryTree<T>::increase_count(unordered_map<int, int>& m, int item) const {
+	unordered_map<int, int>::const_iterator found = m.find(item);
+	if (found != m.end()) {
+		m.at(item)++;
+	}
+	else {
+		m.insert(pair<int, int>(item, 1));
+	}
+}
+
+template <typename T>
+void BinaryTree<T>::num_paths_with_sum_helper2(const int sum, int current_sum, int& num_paths, BTNode<T> * n, unordered_map<int, int> & m) const {
+	current_sum += n->data;
+	if (current_sum == sum) {
+		num_paths++;
+	}
+	increase_count(m, current_sum);
+	int complement = sum - current_sum;
+	
+	unordered_map<int, int>::const_iterator found = m.find(complement);
+	if (found != m.end()) {
+		num_paths += found->second;
+	}
+	if (n->left != nullptr) {
+		num_paths_with_sum_helper2(sum, current_sum, num_paths, n->left, m);
+	}
+	if (n->right != nullptr) {
+		num_paths_with_sum_helper2(sum, current_sum, num_paths, n->right, m);
+	}
+	decrease_count(m, current_sum);
+}
+
+template <typename T>
+int BinaryTree<T>::num_paths_with_sum2(int sum) const {
+	if (root == nullptr) {
+		return 0;
+	}
+	unordered_map<int, int> m;
+	int current_sum = 0;
+	int num_paths = 0;
+	num_paths_with_sum_helper2(sum, current_sum, num_paths, root, m);
+
+	return num_paths;
+}
+
+template <typename T>
+void BinaryTree<T>::clearVisitedFlagsHelper(BTNode<T> * n) {
+	if (n != nullptr) {
+		n->visited = false;
+		clearVisitedFlagsHelper(n->left);
+		clearVisitedFlagsHelper(n->right);
+	}
+}
+
+template <typename T>
+void BinaryTree<T>::clearVisitedFlags() {
+	clearVisitedFlagsHelper(root);
 }
 
 #endif

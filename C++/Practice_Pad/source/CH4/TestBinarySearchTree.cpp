@@ -249,13 +249,13 @@ TEST(TestBinarySearchTree, CommonAncestorV2) {
 
 TEST(TestBinarySearchTree, num_paths_sum) {
 
-	int ds[] = { 4, 2, 5, 1, 3, 6 };
+	int test_data[] = { 4, 2, 5, 1, 3, 6 };
 
 	int count = 6;
 	BinarySearchTree<int> bst = BinarySearchTree<int>();
 
 	for (int i = 0; i < count; i++) {
-		bst.insert(ds[i]);
+		bst.insert(test_data[i]);
 
 	}
 
