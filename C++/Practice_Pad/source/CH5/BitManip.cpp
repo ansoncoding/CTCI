@@ -52,8 +52,34 @@ int insert_binary(int N, int M, int posn_j, int posn_i) {
 	return N;
 }
 
+// CTCI 5.2
+void print_decimal(double d) {
+	if (d > 1 || d < 0) {
+		throw invalid_argument("Only values between 0 and 1 are allowed");
+	}
+	cout << ".";
+	for (int i = 1; i < 32; i++) {
+		if (d >= (pow(0.5, i))) {
+			cout << "1";
+			d -= pow(0.5, i);
+		}
+		else {
+			cout << "0";
+		}
+		if (d == 0) {
+			break;
+		}
+	}
+	cout << endl;
+}
+
 int main() {
-	int retval = insert_binary(1024, 19, 2, 6);
 	
-	print_binary32(retval);
+	print_decimal(0.5);
+	print_decimal(0.25);
+	print_decimal(0.125);
+	print_decimal(0.783);
+	print_decimal(0.1);
+	print_decimal(0.99);
+	
 }
