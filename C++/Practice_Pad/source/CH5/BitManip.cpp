@@ -170,8 +170,17 @@ int flip_to_win(int N) {
 	return longest_ones_sequence_length;
 }
 
+int to_int(int rev_binary[32], int digits) {
+	int retval = 0;
+	for (int i = 0; i < digits; i++) {
+		if (rev_binary[i] == 1) {
+			retval += pow(2, i);
+		}
+	}
+	return retval;
+}
 
-int to_binary(int A, int binary[32]) {
+int to_rev_binary(int A, int binary[32]) {
 	int digits = 0;
 	for (int i = 0; i < 32; i++) {
 		if (A % 2) {
@@ -189,6 +198,56 @@ int to_binary(int A, int binary[32]) {
 	return digits;
 }
 
+// CTCI 5.4
+// return the next larger integer that has same number of binary ones as the given integer N.
+// E.g. 5 = 101 the next integer which has 2 binary 1s is 110 which is 6
+// E.g. 10 = 1010 the next integer which as 2 binary 1s is 1100 which is 12
+int next_largest(int N) {
+	int binary[32] = { 0 };
+	int digits = to_rev_binary(N, binary);
+	bool found = false;
+
+	// find "1, 0" combination and swap them
+	for (int i = 0; i < digits-1; i++) {
+		if (binary[i] == 1 && binary[i + 1] == 0) {
+			binary[i + 1] = 1; 
+			binary[i] = 0;
+			found = true;
+			break;
+		}
+	}
+	if (found) {
+		return to_int(binary, digits);
+	}
+	return N << 1; // there is no "1, 0" combination, shift to the left and add a zero is the only way
+}
+
+// CTCI 5.4
+// return the next smaller integer that has same number of binary ones as the given integer N.
+// E.g. 5 = 101 the next smallest integer which has 3 binary 1s is 011 which is 3
+// E.g. 10 = 1010 the next smallest integer which as 2 binary 1s is 1001 which is 9
+// If the integer has all ones E.g. 7 -> 111 (it's already the smallest number with the same number of integers,
+// we will simply return the integer itself
+int next_smallest(int N) {
+	int binary[32] = { 0 };
+	int digits = to_rev_binary(N, binary);
+	bool found = false;
+
+	// find "0, 1" combination and swap them
+	for (int i = 0; i < digits - 1; i++) {
+		if (binary[i] == 0 && binary[i + 1] == 1) {
+			binary[i + 1] = 0;
+			binary[i] = 1;
+			found = true;
+			break;
+		}
+	}
+	if (found) {
+		return to_int(binary, digits);
+	}
+	return N;
+}
+
 // CTCI 5.6
 int conversion(int A, int B) {
 	int digitsA = 0;
@@ -196,8 +255,8 @@ int conversion(int A, int B) {
 	int A_binary[32] = { 0 };
 	int B_binary[32] = { 0 };
 	int diff = 0;
-	digitsA = to_binary(A, A_binary);
-	digitsB = to_binary(B, B_binary);
+	digitsA = to_rev_binary(A, A_binary);
+	digitsB = to_rev_binary(B, B_binary);
 	int max_digits = digitsA > digitsB ? digitsA : digitsB;
 	for (int i = 0; i < max_digits; i++) {
 		if (A_binary[i] != B_binary[i]) {
@@ -238,11 +297,12 @@ int swap_odd_even_bits(int N) {
 }
 
 int main() {
-	for (int i = 1; i < 30; i++) {
-		int retval = swap_odd_even_bits(i);
-		//cout << retval << endl;
-		print_binary32(i);
-		print_binary32(retval);
-		cout << endl;
-	}
+	cout << next_largest(5) << endl;;
+	cout << next_largest(10) << endl;;
+	cout << next_largest(7) << endl;;
+	cout << next_largest(20) << endl;;
+	cout << next_smallest(5) << endl;;
+	cout << next_smallest(10) << endl;;
+	cout << next_smallest(7) << endl;;
+	cout << next_smallest(20) << endl;;
 }
