@@ -170,23 +170,60 @@ int flip_to_win(int N) {
 	return longest_ones_sequence_length;
 }
 
+
+int to_binary(int A, int binary[32]) {
+	int digits = 0;
+	for (int i = 0; i < 32; i++) {
+		if (A % 2) {
+			binary[i] = 1;
+		}
+		else {
+			binary[i] = 0;
+		}
+		A >>= 1;
+		digits++;
+		if (A == 0) {
+			break;
+		}
+	}
+	return digits;
+}
+
+// CTCI 5.6
+int conversion(int A, int B) {
+	int digitsA = 0;
+	int digitsB = 0;
+	int A_binary[32] = { 0 };
+	int B_binary[32] = { 0 };
+	int diff = 0;
+	digitsA = to_binary(A, A_binary);
+	digitsB = to_binary(B, B_binary);
+	int max_digits = digitsA > digitsB ? digitsA : digitsB;
+	for (int i = 0; i < max_digits; i++) {
+		if (A_binary[i] != B_binary[i]) {
+			diff++;
+		}
+	}
+	return diff;
+}
+
+
+int conversion2(int A, int B) {
+	int xor = A ^ B;
+	int diff = 0;
+	while (xor != 0) {
+		if (xor & 1) {
+			diff++;
+		}
+		xor >>= 1;
+	}
+	return diff;
+}
+
 int main() {
-	int retval = flip_to_win(1775);
-	cout << " soln = " << retval << endl;
-
-	retval = flip_to_win(11);
-	cout << " soln = " << retval << endl;
-
-	retval = flip_to_win(12345);
-	cout << " soln = " << retval << endl;
-	
-	retval = flip_to_win(128);
-	cout << " soln = " << retval << endl;
-
-	retval = flip_to_win(255);
-	cout << " soln = " << retval << endl;
-
-	retval = flip_to_win(4247);
-	cout << " soln = " << retval << endl;
-	
+	for (int i = 0; i < 15; i++) {
+		print_binary32(i);
+		print_binary32(i+1);
+		cout << conversion2(i, i+1) << endl;
+	}
 }
