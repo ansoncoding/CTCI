@@ -207,7 +207,6 @@ int conversion(int A, int B) {
 	return diff;
 }
 
-
 int conversion2(int A, int B) {
 	int xor = A ^ B;
 	int diff = 0;
@@ -220,10 +219,30 @@ int conversion2(int A, int B) {
 	return diff;
 }
 
+// CTCI 5.7
+int swap_odd_even_bits(int N) {
+	int retval = 0;
+	unsigned int even = 0;
+	unsigned int odd = 0;
+	unsigned int odd_mask = 0xaaaaaaaa;
+	unsigned int even_mask = 0x55555555;
+
+	even = N & even_mask;
+	odd = N & odd_mask;
+
+	even <<= 1;
+	odd >>= 1;
+
+	retval = even | odd;
+	return retval;
+}
+
 int main() {
-	for (int i = 0; i < 15; i++) {
+	for (int i = 1; i < 30; i++) {
+		int retval = swap_odd_even_bits(i);
+		//cout << retval << endl;
 		print_binary32(i);
-		print_binary32(i+1);
-		cout << conversion2(i, i+1) << endl;
+		print_binary32(retval);
+		cout << endl;
 	}
 }
