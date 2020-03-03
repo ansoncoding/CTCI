@@ -199,30 +199,6 @@ int to_rev_binary(int A, int binary[32]) {
 }
 
 // CTCI 5.4
-// return the next larger integer that has same number of binary ones as the given integer N.
-// E.g. 5 = 101 the next integer which has 2 binary 1s is 110 which is 6
-// E.g. 10 = 1010 the next integer which as 2 binary 1s is 1100 which is 12
-int next_largest(int N) {
-	int binary[32] = { 0 };
-	int digits = to_rev_binary(N, binary);
-	bool found = false;
-
-	// find "1, 0" combination and swap them
-	for (int i = 0; i < digits-1; i++) {
-		if (binary[i] == 1 && binary[i + 1] == 0) {
-			binary[i + 1] = 1; 
-			binary[i] = 0;
-			found = true;
-			break;
-		}
-	}
-	if (found) {
-		return to_int(binary, digits);
-	}
-	return N << 1; // there is no "1, 0" combination, shift to the left and add a zero is the only way
-}
-
-// CTCI 5.4
 // return the next smaller integer that has same number of binary ones as the given integer N.
 // E.g. 5 = 101 the next smallest integer which has 3 binary 1s is 011 which is 3
 // E.g. 10 = 1010 the next smallest integer which as 2 binary 1s is 1001 which is 9
@@ -296,13 +272,3 @@ int swap_odd_even_bits(int N) {
 	return retval;
 }
 
-int main() {
-	cout << next_largest(5) << endl;;
-	cout << next_largest(10) << endl;;
-	cout << next_largest(7) << endl;;
-	cout << next_largest(20) << endl;;
-	cout << next_smallest(5) << endl;;
-	cout << next_smallest(10) << endl;;
-	cout << next_smallest(7) << endl;;
-	cout << next_smallest(20) << endl;;
-}
