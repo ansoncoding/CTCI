@@ -25,8 +25,10 @@ public:
 	}
 };
 
+#if 0
 int main() {
 	string carl = "Carl";
 	Person p = Person(carl, 52);
 	p.print();
 }
+#endif
