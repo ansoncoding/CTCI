@@ -1,6 +1,6 @@
 package object_oriented_design;
 
-public class FlatheadDriver implements ScrewDriver {
+public class ScrewDriverFlathead implements ScrewDriverInterface {
 	public void turnClockwise() {
 		System.out.println("Flat head turns clockwise");
 	}

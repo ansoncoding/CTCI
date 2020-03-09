@@ -1,6 +1,6 @@
 package object_oriented_design;
 
-public interface ScrewDriver {
+public interface ScrewDriverInterface {
 	public void turnClockwise();
 	public void turnCounterclockwise();
 }

@@ -1,9 +1,9 @@
 package object_oriented_design;
 
-public class Staff extends Person {
+public class BasicStaff extends BasicPerson {
 	int pay;
 	int starting_year;
-	public Staff(String name, int age, int pay, int starting_year) {
+	public BasicStaff(String name, int age, int pay, int starting_year) {
 		super(name, age);
 		this.pay = pay;
 		this.starting_year = starting_year;
@@ -13,7 +13,7 @@ public class Staff extends Person {
 	}	
 	
 	public static void main(String[] args) {
-		Staff s = new Staff("John", 19, 14, 1999);
+		BasicStaff s = new BasicStaff("John", 19, 14, 1999);
 		s.print_info();
 	}
 }

@@ -1,6 +1,6 @@
 package object_oriented_design;
 
-public class PhilipsDriver implements ScrewDriver {
+public class ScrewDriverPhilips implements ScrewDriverInterface {
 
 	public void turnClockwise() {
 		System.out.println("Philips turn clockwise");
@@ -9,11 +9,11 @@ public class PhilipsDriver implements ScrewDriver {
 		System.out.println("Philips turn counter clockwise");
 	}
 	public static void main(String[] args) {
-		PhilipsDriver pd = new PhilipsDriver();
+		ScrewDriverPhilips pd = new ScrewDriverPhilips();
 		pd.turnClockwise();
 		pd.turnCounterclockwise();
 		
-		FlatheadDriver fd = new FlatheadDriver();
+		ScrewDriverFlathead fd = new ScrewDriverFlathead();
 		fd.turnClockwise();
 		fd.turnCounterclockwise();
 	}
