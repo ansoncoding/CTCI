@@ -1,4 +1,4 @@
-package object_oriented_design;
+package abstract_class_extension;
 
 public class BasicPerson {
 	String name;

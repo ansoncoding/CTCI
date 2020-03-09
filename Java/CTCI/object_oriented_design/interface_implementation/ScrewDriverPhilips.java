@@ -1,4 +1,4 @@
-package object_oriented_design;
+package interface_implementation;
 
 public class ScrewDriverPhilips implements ScrewDriverInterface {
 

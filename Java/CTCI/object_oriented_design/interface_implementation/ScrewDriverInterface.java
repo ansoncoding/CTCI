@@ -1,4 +1,4 @@
-package object_oriented_design;
+package interface_implementation;
 
 public interface ScrewDriverInterface {
 	public void turnClockwise();

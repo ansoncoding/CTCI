@@ -1,4 +1,4 @@
-package object_oriented_design;
+package singleton;
 
 public class SingletonRecords {
 
