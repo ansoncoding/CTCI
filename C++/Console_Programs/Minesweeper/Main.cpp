@@ -15,7 +15,7 @@
 #define DIALOGUE_XPOSN 0
 #define DIALOGUE_YPOSN 21
 #define GAMEOVER_XPOSN 0
-#define GAMEOVER_YPOSN 22
+#define GAMEOVER_YPOSN 23
 
 using namespace std;
 
@@ -79,7 +79,7 @@ char convertToCharacter(int boardNum) {
 	}
 
 }
-void drawBoard(int board[9][9], int row, int col) {
+void drawBoard(int board[9][9], int row, int col, int remainingMines) {
 	system("CLS");
 	cout << "------------------------------------" << endl;
 	for (int i = 0; i < 9; i++) {
@@ -92,6 +92,7 @@ void drawBoard(int board[9][9], int row, int col) {
 	}
 	
 	setCursorPosn(DIALOGUE_XPOSN, DIALOGUE_YPOSN);
+	cout << "You have " << remainingMines << " mines left!" << endl;
 	cout << "Use the arrow keys to move around the cells, press space to reveal, X to mark/unmark as mine" << endl;
 	setCursor(row, col);
 }
@@ -159,7 +160,7 @@ bool checkWin(int board[9][9]) {
 	return (total == 0 && mines == 10);
 }
 
-void getInputKeyboard(int board[9][9], int & newX, int & newY, ACTION &action) {
+void getInputKeyboard(int board[9][9], int & newX, int & newY, ACTION &action, int remainingMines) {
 	int row = newX;
 	int col = newY;
 
@@ -169,22 +170,22 @@ void getInputKeyboard(int board[9][9], int & newX, int & newY, ACTION &action) {
 		{
 			col = max(col - 1, 0);
 
-			drawBoard(board, row, col);
+			drawBoard(board, row, col, remainingMines);
 		}
 		else if (GetAsyncKeyState(VK_UP) & 1)//0x8000) 
 		{
 			row = max(row - 1, 0);
-			drawBoard(board, row, col);
+			drawBoard(board, row, col, remainingMines);
 		}
 		else if (GetAsyncKeyState(VK_RIGHT) & 1)//0x8000) 
 		{
 			col = min(col + 1, 8);
-			drawBoard(board, row, col);
+			drawBoard(board, row, col, remainingMines);
 		}
 		else if (GetAsyncKeyState(VK_DOWN) & 1)//0x8000) 
 		{
 			row = min(row + 1, 8);
-			drawBoard(board, row, col);
+			drawBoard(board, row, col, remainingMines);
 		}
 		else if (GetAsyncKeyState(VK_SPACE) & 1)//0x8000) 
 		{
@@ -211,51 +212,59 @@ int main() {
 	int newX = 0;
 	int newY = 0;
 	ACTION choice = REVEAL;
+	int remainingMines = 10;
 
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_CURSOR_INFO ConsoleCursorInfo;
 	ConsoleCursorInfo.bVisible = TRUE;
 	ConsoleCursorInfo.dwSize = 100;
 	SetConsoleCursorInfo(hConsole, &ConsoleCursorInfo);
-		
+	
 	
 	while (!gameover) {
 
-		drawBoard(board, newX, newY);
+		drawBoard(board, newX, newY, remainingMines);
 
-		getInputKeyboard(board, newX, newY, choice);
+		getInputKeyboard(board, newX, newY, choice, remainingMines);
 
 		if (choice == MARK) {
 			if (board[newX][newY] == MINE) {
 				board[newX][newY] = FLAGGED_MINE;
+				remainingMines--;
 			}
 			else if (board[newX][newY] == FLAGGED_MINE) {
 				board[newX][newY] = MINE;
+				remainingMines++;
 			}
 			else if (board[newX][newY] == FLAG) {
 				board[newX][newY] = SAFE;
+				remainingMines++;
 			}
 			else {
 				board[newX][newY] = FLAG;
+				remainingMines--;
 			}
 		}
 		else if (choice == REVEAL) {
 
 			if (board[newX][newY] == MINE) {
 				board[newX][newY] = REVEALED_MINE;
-				drawBoard(board, newX, newY);
+				drawBoard(board, newX, newY, remainingMines);
 				setCursorPosn(GAMEOVER_XPOSN, GAMEOVER_YPOSN);
 				cout << "You stepped on a mine! Game Over!" << endl;
 				gameover = true;
 			}
 			else {
+				if (board[newX][newY] == FLAG || board[newX][newY] == FLAGGED_MINE) {
+					remainingMines++;
+				}
 				int numMines = getNumSurroundingMines(board, newX, newY);
 				board[newX][newY] = numMines == 0 ? REVEALED_0 : numMines;
 
 			}
 		}
 		if (checkWin(board)) {
-			drawBoard(board, newX, newY);
+			drawBoard(board, newX, newY, remainingMines);
 			setCursorPosn(GAMEOVER_XPOSN, GAMEOVER_YPOSN);
 			cout << "You found all the mines! Good Job! You won!" << endl;
 			gameover = true;
