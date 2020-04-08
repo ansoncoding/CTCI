@@ -208,21 +208,34 @@ void getInputKeyboard(int board[9][9], int & newX, int & newY, ACTION &action, i
 	}
 }
 
-void incrementDir(DIRECTION dir, int& row, int& col) {
+bool incrementDir(DIRECTION dir, int& row, int& col) {
 	switch (dir) {
 	case LEFT:
+		if (col == 0) {
+			return false;
+		}
 		col = max(0, col - 1);
 		break;
 	case RIGHT:
+		if (col == 8) {
+			return false;
+		}
 		col = min(8, col + 1);
 		break;
 	case UP:
+		if (row == 0) {
+			return false;
+		}
 		row = max(0, row - 1);
 		break;
 	case DOWN:
+		if (row == 8) {
+			return false;
+		}
 		row = min(8, row + 1);
 		break;
 	}
+	return true;
 }
 
 int revealTillNonzero(int board[9][9], int row, int col, DIRECTION dir) {
@@ -232,30 +245,7 @@ int revealTillNonzero(int board[9][9], int row, int col, DIRECTION dir) {
 	int rowBoundary;
 	int colBoundary;
 
-	switch (dir) {
-	case LEFT:
-		newC = max(0, col - 1);
-		colBoundary = 0;
-		rowBoundary = -1;
-		break;
-	case RIGHT:
-		newC = min(8, col + 1);
-		colBoundary = 8;
-		rowBoundary = -1;
-		break;
-	case UP:
-		newR = max(0, row - 1);
-		rowBoundary = 0;
-		colBoundary = -1;
-		break;
-	case DOWN:
-		newR = min(8, row + 1);
-		rowBoundary = 8;
-		colBoundary = -1;
-		break;
-	}
-	
-	while (newR != rowBoundary && newC != colBoundary) {
+	while (incrementDir(dir, newR, newC)) {
 		if (board[newR][newC] == MINE) {
 			break;
 		}
@@ -269,7 +259,6 @@ int revealTillNonzero(int board[9][9], int row, int col, DIRECTION dir) {
 				break;
 			}
 		}
-		incrementDir(dir, newR, newC);
 	}
 	if (dir == LEFT || dir == RIGHT) {
 		return newC;
