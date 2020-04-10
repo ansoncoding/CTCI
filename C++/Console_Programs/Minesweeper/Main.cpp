@@ -20,7 +20,7 @@
 using namespace std;
 
 enum DIRECTION {
-	UP, DOWN, LEFT, RIGHT
+	UP, DOWN, LEFT, RIGHT, ALL
 };
 
 enum ACTION {
@@ -141,7 +141,7 @@ void resetBoard(int board[9][9]) {
 	board[3][3] = MINE;
 	board[3][6] = MINE;
 	board[4][5] = MINE;
-	board[6][2] = MINE;
+	board[5][2] = MINE;
 	board[7][6] = MINE;
 	board[7][7] = MINE;
 	board[8][1] = MINE;
@@ -267,6 +267,7 @@ int revealTillNonzero(int board[9][9], int row, int col, DIRECTION dir) {
 		return newR;
 	}
 }
+
 // The user revealed a zero at passed row and col, reveal all surrounding zeros
 // and one other non-mine cell bordering on the zeros
 void autoReveal(int board[9][9], int row, int col) {
@@ -296,6 +297,134 @@ void autoReveal(int board[9][9], int row, int col) {
 	for (int i = row + 1; i <= bottomBound; i++) {
 		revealTillNonzero(board, i, col, RIGHT);
 	}
+}
+
+void autoRevealAll(int board[9][9], int row, int col, DIRECTION dir) {
+	int newR = row, newC = col;
+
+	int cell = board[row][col];
+
+	if (cell == SAFE) {
+		
+		int mineCount = getNumSurroundingMines(board, newR, newC);
+		if (mineCount == 0) {
+			board[row][col] = REVEALED_0;
+		}
+		else {
+			board[row][col] = mineCount;
+			return;
+		}
+	}
+	else if (cell != REVEALED_0) {
+		return;
+	}
+	
+	switch (dir) {
+
+	case ALL:
+		if (incrementDir(UP, newR, newC)) {
+			autoRevealAll(board, newR, newC, UP);
+			newR = row;
+			newC = col;
+		}
+		if (incrementDir(DOWN, newR, newC)) {
+			autoRevealAll(board, newR, newC, DOWN);
+			newR = row;
+			newC = col;
+		}
+		if (incrementDir(LEFT, newR, newC)) {
+			autoRevealAll(board, newR, newC, LEFT);
+			newR = row;
+			newC = col;
+		}
+		if (incrementDir(RIGHT, newR, newC)) {
+			autoRevealAll(board, newR, newC, RIGHT);
+		}
+		
+		break;
+	case UP:
+		if (!incrementDir(UP, newR, newC)) {
+			return;
+		}
+		autoRevealAll(board, newR, newC, UP);
+		newR = row;
+		newC = col;
+
+		if (!incrementDir(LEFT, newR, newC)) {
+			return;
+		}
+		autoRevealAll(board, newR, newC, LEFT);
+		newR = row;
+		newC = col;
+
+		if (!incrementDir(RIGHT, newR, newC)) {
+			return;
+		}
+		autoRevealAll(board, newR, newC, RIGHT);
+
+		break;
+	case LEFT:
+		if (!incrementDir(LEFT, newR, newC)) {
+			return;
+		}
+		autoRevealAll(board, newR, newC, LEFT);
+		newR = row;
+		newC = col;
+		if (!incrementDir(UP, newR, newC)) {
+			return;
+		}
+		autoRevealAll(board, newR, newC, UP);
+		newR = row;
+		newC = col;
+
+		if (!incrementDir(DOWN, newR, newC)) {
+			return;
+		}
+		autoRevealAll(board, newR, newC, DOWN);
+		break;
+	case RIGHT:
+		if (!incrementDir(RIGHT, newR, newC)) {
+			return;
+		}
+		autoRevealAll(board, newR, newC, RIGHT);
+		newR = row;
+		newC = col;
+		if (!incrementDir(UP, newR, newC)) {
+			return;
+		}
+		autoRevealAll(board, newR, newC, UP);
+		newR = row;
+		newC = col;
+
+		if (!incrementDir(DOWN, newR, newC)) {
+			return;
+		}
+		autoRevealAll(board, newR, newC, DOWN);
+
+		break;
+	case DOWN:
+		if (!incrementDir(DOWN, newR, newC)) {
+			return;
+		}
+		autoRevealAll(board, newR, newC, DOWN);
+		newR = row;
+		newC = col;
+
+		if (!incrementDir(LEFT, newR, newC)) {
+			return;
+		}
+		autoRevealAll(board, newR, newC, LEFT);
+		newR = row;
+		newC = col;
+
+		if (!incrementDir(RIGHT, newR, newC)) {
+			return;
+		}
+		autoRevealAll(board, newR, newC, RIGHT);
+
+		break;
+	}
+	
 }
 
 int main() {
@@ -355,7 +484,8 @@ int main() {
 				int numMines = getNumSurroundingMines(board, newX, newY);
 				if (numMines == 0) {
 					board[newX][newY] = REVEALED_0;
-					autoReveal(board, newX, newY);
+					//autoReveal(board, newX, newY);
+					autoRevealAll(board, newX, newY, ALL);
 				}
 				else {
 					board[newX][newY] = numMines;
