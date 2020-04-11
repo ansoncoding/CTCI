@@ -35,10 +35,11 @@ public:
         cout << "TA " << name << " teaches " << class_name << endl;
     }
 };
-
+#if 0
 int main()
 {
     TA ta = TA("Alex", 19, "MATH 100");
     
     return 0;
 }
+#endif
