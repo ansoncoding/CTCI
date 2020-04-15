@@ -1,7 +1,6 @@
 package project_euler;
 
-public class NthPrime {
-	
+public class CircularPrimes {
 	public static boolean isPrime(int number) { 
 		if (number == 2 || number == 3) { 
 			return true; 
@@ -30,17 +29,16 @@ public class NthPrime {
 		return true; 
 	}
 	
-	public static int nthPrime(int n) {
-		
-		if (n == 1) {
-			return 2;
+	static int circularPrimesUnderN(int n) {
+		if (n <= 2) {
+			return 0;
 		}
-		if (n == 2) {
-			return 3;
+		if (n == 3) {
+			return 1;
 		}
 		
 		int count = 2;
-		int start = 5;
+		int start = 3;
 		int retval = start;
 		for (int i = start;  count < n; i+=2) {
 			if (isPrime(i)) {
@@ -55,8 +53,7 @@ public class NthPrime {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(nthPrime(10001));
-
+		System.out.println(circularPrimesUnderN(1000));
 	}
 
 }
