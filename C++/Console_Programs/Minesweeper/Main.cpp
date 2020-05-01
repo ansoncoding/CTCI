@@ -4,23 +4,28 @@ using namespace std;
 
 class Minesweeper {
 
-	enum ACTION {
-		REVEAL, MARK
+public:
+	enum class LEVEL {
+		EASY, MEDIUM, HARD
 	};
 
-private:
 
-	const static int SAFE = 0;
+private:
+	enum class ACTION {
+		REVEAL, MARK, QUIT, RESTART
+	};
+
 	const static int MINE = 9;
 	const static int FLAG = 10;
-	const static int REVEALED_0 = 11;
+	const static int SAFE = 11;
 	const static int REVEALED_MINE = 12;
 	const static int FLAGGED_MINE = 13 ;
+	
 
-	const static int DIALOGUE_XPOSN = 0;
-	const static int DIALOGUE_YPOSN = 21;
-	const static int GAMEOVER_XPOSN = 0;
-	const static int GAMEOVER_YPOSN = 23;
+	const int DIALOGUE_XPOSN = 0;
+	const int DIALOGUE_YPOSN;
+	const int GAMEOVER_XPOSN = 0;
+	const int GAMEOVER_YPOSN;
 
 	int m_boardW;
 	int m_boardH;
@@ -38,23 +43,15 @@ private:
 		SetConsoleCursorPosition(hConsole, pos);
 	}
 
-	static void setCursor(int row, int col) {
+	static void setCursor(int col, int row) {
 		int consoleY = 1 + (row) * 2;
 		int consoleX = 2 + (col) * 4;
 		setCursorPosn(consoleX, consoleY);
-	}
-
-	static void setSymbol(int row, int col, char symbol) {
-		int consoleY = 1 + (row) * 2;
-		int consoleX = 2 + (col) * 4;
-		setCursorPosn(consoleX, consoleY);
-		cout << symbol;
 	}
 
 	static char convertToCharacter(int boardNum) {
 		switch (boardNum) {
-		case REVEALED_0:
-			return '0';
+		
 		case REVEALED_MINE:
 			return '*';
 		case MINE:
@@ -63,6 +60,8 @@ private:
 		case FLAG:
 		case FLAGGED_MINE:
 			return '#';
+		case 0:
+			return '0';
 		case 1:
 			return '1';
 		case 2:
@@ -86,25 +85,68 @@ private:
 		}
 		}
 	}
+	void updateCursor() {
+		setCursor(m_xposn, m_yposn);
+	}
+
 	void drawBoard() const {
 		system("CLS");
-		cout << "------------------------------------" << endl;
+		cout <<  setfill('-') << setw((m_boardW << 2) + 1) << "-"  << endl;
 		for (int y = 0; y < m_boardH; y++) {
 			cout << "| ";
 			for (int x = 0; x < m_boardW; x++) {
 				cout << convertToCharacter(getCell(x, y)) << " | ";
 			}
-			cout << endl << "------------------------------------" << endl;
+			cout << endl << setfill('-') << setw((m_boardW << 2) + 1) << "-"  << endl;
 
 		}
 
 		setCursorPosn(DIALOGUE_XPOSN, DIALOGUE_YPOSN);
 		cout << "You have " << m_remainingMines << " mines left!" << endl;
-		cout << "Use the arrow keys to move around the cells, press space to reveal, X to mark/unmark as mine" << endl;
-		setCursor(m_yposn, m_xposn);
+		cout << "Arrow keys to move" << endl;
+		cout << "Space to reveal" << endl;
+		cout << "X to mark / unmark as mine" << endl;
+		cout << "Q to quit" << endl;
+		cout << "R to restart" << endl;
+		setCursor(m_xposn, m_yposn);
 	}
 
-	int getNumSurroundingMines(int col, int row) {
+	void revealSurroundingSqr(int col, int row) {
+
+		int identifiedMines = getNumSurroundingMines(m_xposn, m_yposn, true);
+
+		if (identifiedMines == getCell(col, row)) {
+			int left = max(0, col - 1);
+			int right = min(col + 1, m_boardW - 1);
+			int top = max(0, row - 1);
+			int bottom = min(row + 1, m_boardH - 1);
+
+			int count = 0;
+
+			for (int y = top; y <= bottom; y++) {
+				for (int x = left; x <= right; x++) {
+					if (y == row && x == col) {
+						continue;
+					}
+					int cell = getCell(x, y);
+					if (cell == SAFE) {
+						int n = getNumSurroundingMines(x, y, false);
+						
+						setCell(x, y, n);
+						
+						if (n == 0) {
+							autoRevealAll(x, y, true);
+						}
+					}
+					else if (cell == MINE) {
+						stepOnMine(x, y);
+					}
+				}
+			}
+		}
+	}
+
+	int getNumSurroundingMines(int col, int row, bool flaggedOnly) const {
 		int left = max(0, col - 1);
 		int right = min(col + 1, m_boardW-1);
 		int top = max(0, row - 1);
@@ -119,9 +161,16 @@ private:
 					continue;
 				}
 				int cell = getCell(x, y);
-				if (cell == MINE || cell == FLAGGED_MINE) {
+				if (flaggedOnly) {
+					if (cell == FLAGGED_MINE || cell == FLAG) {
+						count++;
+					}
+				}
+				else {
+					if (cell == MINE || cell == FLAGGED_MINE) {
 
-					count++;
+						count++;
+					}
 				}
 			}
 		}
@@ -137,7 +186,23 @@ private:
 		m_board[col + row * m_boardW] = val;
 	}
 
+	void generateMines() {
+		srand(time(nullptr));
+		int count = 0;
+		int totalCells = m_boardH * m_boardW;
+		while (count < m_totalMines) {
+			int cell = rand() % totalCells;
+			if (m_board[cell] != MINE) {
+				m_board[cell] = MINE;
+				count++;
+			}
+		}
+	}
+
 	void resetBoard() {
+
+		m_board = new int[m_boardW * m_boardH];
+		m_remainingMines = m_totalMines;
 
 		// set everything to blank first
 		for (int y = 0; y < m_boardH; y++) {
@@ -145,21 +210,10 @@ private:
 				setCell(x, y, SAFE);
 			}
 		}
-
-		// set 10 mines (we can also do this with rand() but for now it's hand-picked
-		setCell(0, 0, MINE);
-		setCell(2, 1, MINE);
-		setCell(3, 1, MINE);
-		setCell(3, 3, MINE);
-		setCell(6, 3, MINE);
-		setCell(6, 4, MINE);
-		setCell(2, 5, MINE);
-		setCell(6, 7, MINE);
-		setCell(7, 7, MINE);
-		setCell(1, 8, MINE);
+		generateMines();
 	}
 
-	bool checkWin() {
+	bool checkWin() const {
 		int mines = 0;
 		int total = (m_boardW * m_boardH);
 		for (int y = 0; y < m_boardH; y++) {
@@ -184,31 +238,41 @@ private:
 			{
 				m_xposn = max(m_xposn - 1, 0);
 
-				drawBoard();
+				updateCursor();
 			}
 			else if (GetAsyncKeyState(VK_UP) & 1)//0x8000) 
 			{
 				m_yposn = max(m_yposn - 1, 0);
-				drawBoard();
+				updateCursor();
 			}
 			else if (GetAsyncKeyState(VK_RIGHT) & 1)//0x8000) 
 			{
 				m_xposn = min(m_xposn + 1, m_boardW-1);
-				drawBoard();
+				updateCursor();
 			}
 			else if (GetAsyncKeyState(VK_DOWN) & 1)//0x8000) 
 			{
 				m_yposn = min(m_yposn + 1, m_boardH-1);
-				drawBoard();
+				updateCursor();
 			}
 			else if (GetAsyncKeyState(VK_SPACE) & 1)//0x8000) 
 			{
-				m_choice = REVEAL;
+				m_choice = ACTION::REVEAL;
 				break;
 			}
 			else if (GetAsyncKeyState('X') & 1)//0x8000) 
 			{
-				m_choice = MARK;
+				m_choice = ACTION::MARK;
+				break;
+			}
+			else if (GetAsyncKeyState('Q') & 1)//0x8000) 
+			{
+				m_choice = ACTION::QUIT;
+				break;
+			}
+			else if (GetAsyncKeyState('R') & 1)//0x8000) 
+			{
+				m_choice = ACTION::RESTART;
 				break;
 			}
 		}
@@ -229,36 +293,29 @@ private:
 	}
 
 	// flood fill algorithm
-	void autoRevealAll(int col, int row) {
+	void autoRevealAll(int col, int row, bool skipCheck) {
 
 		if (!isOnBoard(col, row)) {
 			return;
 		}
-		int cell = getCell(col, row);
-		if (continueFill(cell)) {
-			int n = getNumSurroundingMines(col, row);
-			if (n == 0) {
-				setCell(col, row, REVEALED_0);
 
-				autoRevealAll(col, row + 1); //south
-				autoRevealAll(col, row - 1); //north
-				autoRevealAll(col + 1, row); //east
-				autoRevealAll(col - 1, row); //west
-			}
-			else {
-				setCell(col, row, n);
+		int cell = getCell(col, row);
+		if (skipCheck || continueFill(cell)) {
+			int n = getNumSurroundingMines(col, row, false);
+			
+			setCell(col, row, n);
+			
+			if (n == 0) {
+				autoRevealAll(col, row + 1, false); //south
+				autoRevealAll(col, row - 1, false); //north
+				autoRevealAll(col + 1, row, false); //east
+				autoRevealAll(col - 1, row, false); //west
 			}
 		}
 		return;
 	}
 
-public:
-	Minesweeper() : m_boardW(9), m_boardH(9), m_gameover(false), m_remainingMines(10), m_choice(REVEAL), m_xposn(0), m_yposn(0), m_totalMines(10) {
-		
-		m_board = new int[m_boardW*m_boardH];
-		
-		resetBoard();
-
+	void initConsole() {
 		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 		CONSOLE_CURSOR_INFO ConsoleCursorInfo;
 		ConsoleCursorInfo.bVisible = TRUE;
@@ -266,14 +323,68 @@ public:
 		SetConsoleCursorInfo(hConsole, &ConsoleCursorInfo);
 	}
 
-	void play() {
+	void waitForUserAction() {
+		while (1) {
+			if (GetAsyncKeyState('R') & 1)
+			{
+				m_choice = ACTION::RESTART;
+				break;
+			}
+			else if (GetAsyncKeyState('Q') & 1)
+			{
+				m_choice = ACTION::QUIT;
+				m_gameover = true;
+				break;
+			}
+		}
+	}
+
+	void stepOnMine(int col, int row) {
+		setCell(col, row, REVEALED_MINE);
+		drawBoard();
+		setCursorPosn(GAMEOVER_XPOSN, GAMEOVER_YPOSN);
+		cout << "You stepped on a mine! Game Over! Press R to play again, Q to quit" << endl;
+
+		cout << " _____" << endl;
+		cout << "/ ____|" << endl;
+		cout << "| |  __  __ _ _ __ ___   ___  _____   _____ _ __" << endl;
+		cout << "| | |_ |/ _` | '_ ` _ \\ / _ \\/ _ \\ \\ / /_ \\ '__|" << endl;
+		cout << "| |__| | (_| | | | | | | __ / (_) \\ V / __/ |" << endl;
+		cout << "\\_____ |\\__,_|_| |_| |_|\\___|\\___ /\\_/\\___|_|" << endl;
+
+		waitForUserAction();
+	}
+
+	void cleanup() {
+		if (m_board != nullptr) {
+			delete[] m_board;
+			m_board = nullptr;
+		}
+	}
+
+	Minesweeper(int width, int height, int numMines)
+		: m_boardW(width), 
+		m_boardH(height), 
+		m_gameover(false), 
+		m_remainingMines(numMines), 
+		m_totalMines(numMines), 
+		m_choice(ACTION::REVEAL), 
+		m_xposn(0), m_yposn(0), 
+	DIALOGUE_YPOSN(height * 2 + 3), 
+	GAMEOVER_YPOSN(height) {
+
+		resetBoard();
+		initConsole();
+	}
+
+	void playInternal() {
 
 		while (!m_gameover) {
 
 			drawBoard();
 			getInputKeyboard();
 
-			if (m_choice == MARK) {
+			if (m_choice == ACTION::MARK) {
 				int cell = getCell(m_xposn, m_yposn);
 				if (cell == MINE) {
 					setCell(m_xposn, m_yposn, FLAGGED_MINE);
@@ -292,50 +403,96 @@ public:
 					m_remainingMines--;
 				}
 			}
-			else if (m_choice == REVEAL) {
+			else if (m_choice == ACTION::REVEAL) {
 				int cell = getCell(m_xposn, m_yposn);
-				if (cell == MINE) {
-					setCell(m_xposn, m_yposn, REVEALED_MINE);
-					drawBoard();
-					setCursorPosn(GAMEOVER_XPOSN, GAMEOVER_YPOSN);
-					cout << "You stepped on a mine! Game Over!" << endl;
-					m_gameover = true;
+				if (cell == MINE || cell == FLAGGED_MINE) {
+					stepOnMine(m_xposn, m_yposn);
+				}
+				else if (cell >= 1 && cell <= 7) {
+					revealSurroundingSqr(m_xposn, m_yposn);
 				}
 				else {
 					if (cell == FLAG || cell == FLAGGED_MINE) {
 						m_remainingMines++;
 					}
-					int numMines = getNumSurroundingMines(m_xposn, m_yposn);
+					int numMines = getNumSurroundingMines(m_xposn, m_yposn, false);
+					setCell(m_xposn, m_yposn, numMines);
 					if (numMines == 0) {
-						autoRevealAll(m_xposn, m_yposn);
-					}
-					else {
-						setCell(m_xposn, m_yposn, numMines);
+						autoRevealAll(m_xposn, m_yposn, true);
 					}
 				}
 			}
-			if (checkWin()) {
+
+			if (m_choice == ACTION::QUIT) {
+				m_gameover = true;
+			}
+			if (m_choice == ACTION::RESTART) {
+				cleanup();
+				resetBoard();
+				drawBoard();
+			}
+			if (!m_gameover && checkWin()) {
 				drawBoard();
 				setCursorPosn(GAMEOVER_XPOSN, GAMEOVER_YPOSN);
-				cout << "You found all the mines! Good Job! You won!" << endl;
-				m_gameover = true;
+				cout << "You found all the mines! Good Job! You won! Q to exit, R to play again" << endl;
+				waitForUserAction();
 			}
 		}
 	}
 
-	~Minesweeper() {
-		if (m_board != nullptr) {
-			delete[] m_board;
-			m_board = nullptr;
+	static tuple<int, int, int> getGameSettings(LEVEL level) {
+		switch (level) {
+		case LEVEL::EASY:
+			return { 9, 9, 10 };
+		case LEVEL::MEDIUM:
+			return { 16, 16, 40 };
+		case LEVEL::HARD:
+			return { 16, 30, 99 };
 		}
+	}
+public:
+	
+
+	Minesweeper(const Minesweeper& other) = delete;
+	Minesweeper& operator=(const Minesweeper& other) = delete;
+
+	static Minesweeper& getInstance(LEVEL level) {
+		auto [w, h, mines] = getGameSettings(level);
+		static Minesweeper game(w, h, mines);
+		return game;
+	}
+
+	static void play(LEVEL level) {
+		return getInstance(level).playInternal();
+	}
+
+	~Minesweeper() {
+		cleanup();
 	}
 };
 
 
 int main() {
 
-	Minesweeper game = Minesweeper();
-	game.play();
+	cout << "Welcome to minesweeper" << endl;
+	cout << "Please choose difficulty:" << endl;
+	cout << " 1 - easy" << endl;
+	cout << " 2 - medium" << endl;
+	cout << " 3 - hard" << endl;
+	Minesweeper::LEVEL level  = Minesweeper::LEVEL::EASY;
+	int i;
+	cin >> i;
+	
+	cout << " You have chosen level " << i << endl;
+	switch (i) {
+	case 2 :
+		level = Minesweeper::LEVEL::MEDIUM;
+		break;
+	case 3:
+		level = Minesweeper::LEVEL::HARD;
+		break;
+	}
+	Minesweeper::play(level);
 	
 	return 0;
 }
