@@ -1,7 +1,8 @@
 package project_euler;
 
 public class CircularPrimes {
-	public static boolean isPrime(int number) { 
+	
+	static boolean isPrime(int number) { 
 		if (number == 2 || number == 3) { 
 			return true; 
 		} 
@@ -29,6 +30,29 @@ public class CircularPrimes {
 		return true; 
 	}
 	
+	static boolean isCircularPrime(String num) {
+		for (int i = 0; i < num.length(); i++) {
+			int temp = Integer.parseInt(num);
+			if (!isPrime(temp)) {
+				return false;
+			}
+			num = num.substring(1).concat(num.substring(0,1));
+			//System.out.println(num);
+		}
+		return true;
+	}
+	
+	static boolean noEvenDigits(String num) {
+		for (int i = 0; i < num.length(); i++) {
+			int val = Character.getNumericValue(num.charAt(i));
+			
+			if (val %2 == 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	static int circularPrimesUnderN(int n) {
 		if (n <= 2) {
 			return 0;
@@ -38,22 +62,26 @@ public class CircularPrimes {
 		}
 		
 		int count = 2;
-		int start = 3;
-		int retval = start;
-		for (int i = start;  count < n; i+=2) {
-			if (isPrime(i)) {
-				count++;
-				if (count == n) {
-					retval = i;
-					break;
+		int start = 5;
+		
+		for (int i = start;  i < n; i+=2) {
+			
+			String temp = Integer.toString(i);
+			
+			// Since we're looking for circular primes we cannot allow any even digits in the number
+			// since the rotation will be an even number
+			if (noEvenDigits(temp)) {
+			
+				if (isCircularPrime(temp)) {
+					count++;
 				}
 			}
 		}
-		return retval;
+		return count;
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(circularPrimesUnderN(1000));
+		System.out.println(circularPrimesUnderN(1000000));
 	}
 
 }
