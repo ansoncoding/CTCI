@@ -209,6 +209,47 @@ private:
 		}
 	}
 
+	void consoleSettings() {
+		int minX = 5 * m_boardW;
+		int minY = 2 * m_boardH + 10;
+
+		HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+		// Get current console settings
+		CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo;
+		if (!GetConsoleScreenBufferInfo(hStdout, &screenBufferInfo)) {
+			cerr << "Error trying to get console screen buffer info: err " << GetLastError() << endl;
+			return;
+		}
+
+		// Compare with required settings to play game
+		COORD currentBuffSize = screenBufferInfo.dwSize;
+		if (currentBuffSize.X < minX || currentBuffSize.Y < minY) {
+
+			COORD buffSize;
+			buffSize.X = minX;
+			buffSize.Y = minY;
+			if (!SetConsoleScreenBufferSize(hStdout, buffSize)) {
+				cerr << "Error trying to set console screen buffer info: err " << GetLastError() << endl;
+				return;
+			}
+		}
+
+		int currentW = screenBufferInfo.srWindow.Right - screenBufferInfo.srWindow.Left;
+		int currentH = screenBufferInfo.srWindow.Bottom - screenBufferInfo.srWindow.Top;
+		
+		if (currentW < minX || currentH < minY) {
+			SMALL_RECT rectSize;
+			rectSize.Top = 0;
+			rectSize.Bottom = minY-1;
+			rectSize.Left = 0;
+			rectSize.Right = minX-1;
+			if (!SetConsoleWindowInfo(hStdout, true, &rectSize)) {
+				cerr << "Error trying to set console screen info: err " << GetLastError() << endl;
+				return;
+			}
+		}
+	}
+
 	void resetBoard(int width, int height, int numMines) {
 		m_boardW = width;
 		m_boardH = height;
@@ -218,7 +259,7 @@ private:
 		m_choice = ACTION::REVEAL;
 		m_xposn = 0;
 		m_yposn = 0;
-		DIALOGUE_YPOSN = height * 2 + 3;
+		DIALOGUE_YPOSN = height * 2 + 2;
 		GAMEOVER_YPOSN = height;
 
 		m_board = new int[m_boardW * m_boardH];
@@ -231,6 +272,8 @@ private:
 			}
 		}
 		generateMines();
+
+		consoleSettings();
 	}
 
 	void resetBoard() {
