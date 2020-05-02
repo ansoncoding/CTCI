@@ -4,44 +4,45 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CoverBuildings {
+    
+	// Given an array of buildings of various heights (widths are all equal to 1)
+	// there are 2 rectangular covers which can be used to cover the buildings.
+	// Find the minimum area required to cover all of the buildings using 2 covers 
 	
-	// This algorithm uses O(n^2) but we can use it to check our answer
-	static int cover2(int[] H) {
-		
-		int N = H.length;
-		
-		if (N == 1) {
-            return H[0];
-        }
-        if (N == 2) {
-            return H[0] + H[1];
-        }
-        int maxHeight = Math.max(H[0], H[1]);
-        int[] memo = new int[N]; // memo stores the optimal area given 1 cloth at each height
-        memo[0] = H[0] * 1;
-        memo[1] = maxHeight * 2;
-        int min= memo[1];
-        for (int i = 2; i < N; i++) {
-        	
-        	// we can set the min to be the previous heights all under one cover and the new height under a new cover
-        	min = memo[i-1] + H[i]; 
-        	maxHeight = Math.max(maxHeight, H[i]);
-        	for (int j = 0; j < i; j++) {
-        		int area = memo[j] + maxHeight * (i-j);
-        		//System.out.println("area " + area);
-        		if (area < min) {
-        			min = area;
-        		}
-        	}
-        	memo[i] = maxHeight * (i+1);
-        	//System.out.println("memo " + i + " " + memo[i]);
-        }
-        return min;
-	}
-
+	// Analysis: The problem is complex because there are many possibilities
+	// For an array of length N there are N-1 places where the 2 covers could meet
+	// The total area is the max height of the 1st partition * width of 1st partition + max height of 2nd partition * its width
+	// Using one pass we can find the max height "so far" and store them in an array, however how to find the max height starting at 
+	// index i?
+	// Using a 2D matrix we can store the max heights of the arrays starting at index i however this would require O(n^2) time 
+	// and O(n^2) space, not ideal.
+	
+	// The insight is there are only two covers, so in the case that the max heights occur on two opposing sides of the 
+	// array the minimum area is max height * N, no matter how many lower buildings are in between them.
+	
+	// So the insight is we can store the max height "so far" in another array but starting from the right hand side, and 
+	// find the minimum areas start from each side
+	
+	// Getting max height is O(n) and we know the max area is max height * N (N is the total number of buildings)
+	// We can go from the left side and subtract the first building from the max area, and add its height instead 
+	// So we can use O(n) to find the minimum of these :
+	// maxArea - 1 * maxHeight + 1 * H[0]
+	// maxArea - 2 * maxHeight + 2 * max(H[1], H[0])
+	// maxArea - 3 * maxHeight + 3 * max(H[2], H[1], H[0])
+	// ...
+	// maxArea - (N-1) * maxHeight + (N-1) * max(H[N-1], .... H[0])
+	
+	// Then we do it again from the right hand side - think about flipping the buildings around the y-axis without changing their order
+	// it still works.
+	// This will take O(n) again. 
+	// And we take the minimum area of the min areas found starting from left, and starting from right and return that. 
+	// Total space is O(n), total time O(n)
+	
     static int solution(int[] H) {
-        
+    	
         int N = H.length;
+        
+        // Trivial cases, simply return the appropriate values
         if (N == 1) {
             return H[0];
         }
@@ -49,44 +50,46 @@ public class CoverBuildings {
             return H[0] + H[1];
         }
         
-        int height1 = H[0];
-        int height2 = H[1];
-        int width1 = 1;
-        int width2 = 1;
-        int area = height1 * width1 + height2 * width2;
+        // Initialize the max height arrays, memo is from left side, rev_memo from right hand side. They store the max height seen
+        // so far. E.g H = [5, 2, 3, 4] memo will be [5, 5, 5, 5], rev_memo will be [4, 4, 4, 5]
+        int[] memo = new int[N];
+        int[] rev_memo = new int[N];
+        int global_max = H[0];
+        memo[0] = H[0];
+        rev_memo[0] = H[N-1];
         
-        for (int i = 2; i < N; i++) {
-            
-            int tempHeight1 = Math.max(height1, height2);
-            int tempHeight2 = Math.max(height2, H[i]);
-            
-            int a1 = height1 * width1 + tempHeight2 * (width2 + 1);
-            int a2 = tempHeight1 * (width1 + width2) + H[i];
-            
-            // option a1 is smaller, keep track of its widths and heights
-            // width1 and height1 do not change
-            if (a1 < a2) {
-                height2 = tempHeight2;
-                width2 += 1;
-                area = a1;
-            } else {
-                //option a2 is smaller, keep track of width and heights
-                height1 = tempHeight1;
-                width1 += width2;
-                height2 = H[i];
-                width2 = 1;
-                area = a2;
-//            }
-//            else {
-//            	
-//            }
-            }
+        for (int i = 1; i < N; i++) {
+        	memo[i] = Math.max(memo[i-1], H[i]);
+        	rev_memo[i] = Math.max(rev_memo[i-1], H[N-i-1]);
+        	if (H[i] > global_max) {
+        		global_max = H[i];
+        	}
+        }       
+
+        int maxArea = global_max * N;
+        
+        // Left hand side
+        int minArea1 = maxArea;
+        for (int i = 0; i < N-1; i++) {
+        	int area = maxArea - (global_max * (i + 1)) + (memo[i] * (i + 1)); 
+        	if (area < minArea1) {
+        		minArea1 = area;
+        	}
         }
         
-        return area;
+        // Right hand side
+        int minArea2 = maxArea;
+        for (int i = 0; i < N-1; i++) {
+        	int area = maxArea - (global_max * (i + 1)) + (rev_memo[i] * (i + 1)); 
+        	if (area < minArea2) {
+        		minArea2 = area;
+        	}
+        }
+        return Math.min(minArea1, minArea2);
     }
+    
     public static void main(String[] args) {
-    	int N = 6;
+    	int N = 100;
     	int input[] = new int[N];
     	Set<Integer> in = new HashSet<Integer>(N);
 
@@ -99,9 +102,13 @@ public class CoverBuildings {
     		input[count] = i;
     		count++;
     	}
-    	System.out.println(in);
+    	
+//    	int input[] = {5,3,2,4};
+//    	int input2[] = {1, 1, 7, 6, 6, 6};
+//    	int input3[] = {7, 7, 3, 7, 7};
+//    	int input4[] = {5, 3, 5, 2, 1};
+//    	int input5[] = {3, 1, 4};
+    	//System.out.println(in);
 		System.out.println(solution(input));
-		System.out.println(cover2(input));
-
 	}
 }
