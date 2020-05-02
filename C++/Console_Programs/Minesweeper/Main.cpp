@@ -14,7 +14,17 @@ private:
 	enum class ACTION {
 		REVEAL, MARK, QUIT, RESTART, LEVEL_SELECT
 	};
-
+		
+	const static int BLK_ON_WHITE = 240;
+	const static int BLU_ON_WHITE = 249;
+	const static int RED_ON_WHITE = 252;
+	const static int GRN_ON_WHITE = 242;
+	const static int BRN_ON_WHITE = 244;
+	const static int WHT_ON_WHITE = 255;
+	const static int PRL_ON_WHITE = 245;
+	const static int TL_ON_WHITE = 243;
+	const static int GRY_ON_WHITE = 248;
+	
 	const static int MINE = 9;
 	const static int FLAG = 10;
 	const static int SAFE = 11;
@@ -27,6 +37,7 @@ private:
 	const int GAMEOVER_XPOSN = 0;
 	int GAMEOVER_YPOSN;
 
+	const HANDLE m_stdHandle;
 	int m_boardW;
 	int m_boardH;
 	int* m_board = nullptr;
@@ -37,51 +48,51 @@ private:
 	int m_xposn;
 	int m_yposn;
 
-	static void setCursorPosn(int x, int y) {
-		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	void setCursorPosn(int x, int y) const {
+		//HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 		COORD pos = { x, y };
-		SetConsoleCursorPosition(hConsole, pos);
+		SetConsoleCursorPosition(m_stdHandle, pos);
 	}
 
-	static void setCursor(int col, int row) {
+	void setCursor(int col, int row) const {
 		int consoleY = 1 + (row) * 2;
 		int consoleX = 2 + (col) * 4;
 		setCursorPosn(consoleX, consoleY);
 	}
 
-	static char convertToCharacter(int boardNum) {
+	constexpr static pair<char, int> convertToCharacter(int boardNum) {
 		switch (boardNum) {
 		
 		case REVEALED_MINE:
-			return '*';
+			return { '*', RED_ON_WHITE };
 		case MINE:
 		case SAFE:
-			return ' ';
+			return { ' ', WHT_ON_WHITE };
 		case FLAG:
 		case FLAGGED_MINE:
-			return '#';
+			return { '#', RED_ON_WHITE };
 		case 0:
-			return '0';
+			return { '0', GRY_ON_WHITE };
 		case 1:
-			return '1';
+			return { '1', BLU_ON_WHITE };
 		case 2:
-			return '2';
+			return { '2', GRN_ON_WHITE };
 		case 3:
-			return '3';
+			return { '3', RED_ON_WHITE };
 		case 4:
-			return '4';
+			return { '4', PRL_ON_WHITE };
 		case 5:
-			return '5';
+			return { '5', BRN_ON_WHITE };
 		case 6:
-			return '6';
+			return { '6', TL_ON_WHITE };
 		case 7:
-			return '7';
+			return { '7', BLK_ON_WHITE };
 		case 8:
-			return '8';
+			return { '8', GRY_ON_WHITE };
 
 		default: {
 			cerr << "Something went wrong" << endl;
-			return ' ';
+			return { ' ', WHT_ON_WHITE };
 		}
 		}
 	}
@@ -90,28 +101,39 @@ private:
 		setCursor(m_xposn, m_yposn);
 	}
 	
-	void updateCellsAndMines(int val) {
+	void updateCellsAndMines(int col, int row, int val) {
 		
+		SetConsoleTextAttribute(m_stdHandle, RED_ON_WHITE);
 		setCursorPosn(DIALOGUE_XPOSN, DIALOGUE_YPOSN);
 		cout << "You have " << m_remainingMines << " mines left!" << endl;
-		setCursor(m_xposn, m_yposn);
-		cout << convertToCharacter(val);
+		setCursor(col, row);
+		auto [ch, color] = convertToCharacter(val);
+		
+		SetConsoleTextAttribute(m_stdHandle, color);
+		cout << ch;
 	}
 
 	void drawBoard() const {
+		
+		SetConsoleTextAttribute(m_stdHandle, BLK_ON_WHITE);
 		system("CLS");
 		cout <<  setfill('-') << setw((m_boardW << 2) + 1) << "-"  << endl;
 		for (int y = 0; y < m_boardH; y++) {
 			cout << "| ";
 			for (int x = 0; x < m_boardW; x++) {
-				cout << convertToCharacter(getCell(x, y)) << " | ";
+				auto [val, color] = convertToCharacter(getCell(x, y));
+				SetConsoleTextAttribute(m_stdHandle, color);
+				cout << val ;
+				SetConsoleTextAttribute(m_stdHandle, BLK_ON_WHITE);
+				cout << " | ";
 			}
 			cout << endl << setfill('-') << setw((m_boardW << 2) + 1) << "-"  << endl;
 
 		}
-
+		SetConsoleTextAttribute(m_stdHandle, RED_ON_WHITE);
 		setCursorPosn(DIALOGUE_XPOSN, DIALOGUE_YPOSN);
 		cout << "You have " << m_remainingMines << " mines left!" << endl;
+		SetConsoleTextAttribute(m_stdHandle, BLK_ON_WHITE);
 		cout << "Arrow keys to move" << endl;
 		cout << "Space to reveal" << endl;
 		cout << "X to mark / unmark as mine" << endl;
@@ -121,8 +143,9 @@ private:
 		setCursor(m_xposn, m_yposn);
 	}
 
-	void revealSurroundingSqr(int col, int row) {
+	bool revealSurroundingSqr(int col, int row) {
 
+		bool floodfill = false;
 		int identifiedMines = getNumSurroundingMines(m_xposn, m_yposn, true);
 
 		if (identifiedMines == getCell(col, row)) {
@@ -143,9 +166,11 @@ private:
 						int n = getNumSurroundingMines(x, y, false);
 						
 						setCell(x, y, n);
-						
+						updateCellsAndMines(x, y, n);
+
 						if (n == 0) {
 							autoRevealAll(x, y, true);
+							floodfill = true;
 						}
 					}
 					else if (cell == MINE) {
@@ -154,6 +179,7 @@ private:
 				}
 			}
 		}
+		return floodfill;
 	}
 
 	int getNumSurroundingMines(int col, int row, bool flaggedOnly) const {
@@ -213,10 +239,9 @@ private:
 		int minX = 5 * m_boardW;
 		int minY = 2 * m_boardH + 10;
 
-		HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 		// Get current console settings
 		CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo;
-		if (!GetConsoleScreenBufferInfo(hStdout, &screenBufferInfo)) {
+		if (!GetConsoleScreenBufferInfo(m_stdHandle, &screenBufferInfo)) {
 			cerr << "Error trying to get console screen buffer info: err " << GetLastError() << endl;
 			return;
 		}
@@ -228,7 +253,7 @@ private:
 			COORD buffSize;
 			buffSize.X = minX;
 			buffSize.Y = minY;
-			if (!SetConsoleScreenBufferSize(hStdout, buffSize)) {
+			if (!SetConsoleScreenBufferSize(m_stdHandle, buffSize)) {
 				cerr << "Error trying to set console screen buffer info: err " << GetLastError() << endl;
 				return;
 			}
@@ -243,7 +268,7 @@ private:
 			rectSize.Bottom = minY-1;
 			rectSize.Left = 0;
 			rectSize.Right = minX-1;
-			if (!SetConsoleWindowInfo(hStdout, true, &rectSize)) {
+			if (!SetConsoleWindowInfo(m_stdHandle, true, &rectSize)) {
 				cerr << "Error trying to set console screen info: err " << GetLastError() << endl;
 				return;
 			}
@@ -304,27 +329,6 @@ private:
 			}
 		}
 		return (total == 0 && mines == m_totalMines);
-	}
-
-	void KeyEventUserAction(KEY_EVENT_RECORD ker) {
-		
-		switch (ker.wVirtualKeyCode) {
-			case 0x51: //Q
-			{
-				m_choice = ACTION::QUIT;
-				break;
-			}
-			case 0x52: //R
-			{
-				m_choice = ACTION::RESTART;
-				break;
-			}
-			case 0x4C: //L
-			{
-				m_choice = ACTION::LEVEL_SELECT;
-				break;
-			}
-		}
 	}
 	
 	bool KeyEventProc(KEY_EVENT_RECORD ker)
@@ -412,7 +416,7 @@ private:
 		return row >= 0 && row < m_boardH && col >= 0 && col < m_boardW;
 	}
 
-	static bool continueFill(int cell) {
+	constexpr static bool continueFill(int cell) {
 		switch (cell) {
 		case SAFE:
 			return true;
@@ -445,11 +449,11 @@ private:
 	}
 
 	void initConsole() {
-		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+		
 		CONSOLE_CURSOR_INFO ConsoleCursorInfo;
 		ConsoleCursorInfo.bVisible = TRUE;
 		ConsoleCursorInfo.dwSize = 100;
-		SetConsoleCursorInfo(hConsole, &ConsoleCursorInfo);
+		SetConsoleCursorInfo(m_stdHandle, &ConsoleCursorInfo);
 	}
 
 	void stepOnMine(int col, int row) {
@@ -475,7 +479,7 @@ private:
 		}
 	}
 
-	Minesweeper() {
+	Minesweeper(): m_stdHandle(GetStdHandle(STD_OUTPUT_HANDLE)) {
 
 		LEVEL level = levelSection();
 		auto [w, h, mines] = getGameSettings(level);
@@ -485,6 +489,7 @@ private:
 	
 	void winScreen() const {
 		system("CLS");
+
 		setCursorPosn(GAMEOVER_XPOSN, GAMEOVER_YPOSN);
 		cout << "__     ______  _    _  __          ______  _   _ _ " << endl;
 		cout << "\\ \\   / / __ \\| |  | | \\ \\        / / __ \\| \\ | | |" << endl;
@@ -513,22 +518,22 @@ private:
 				if (cell == MINE) {
 					setCell(m_xposn, m_yposn, FLAGGED_MINE);
 					m_remainingMines--;
-					updateCellsAndMines(FLAGGED_MINE);
+					updateCellsAndMines(m_xposn, m_yposn, FLAGGED_MINE);
 				}
 				else if (cell == FLAGGED_MINE) {
 					setCell(m_xposn, m_yposn, MINE);
 					m_remainingMines++;
-					updateCellsAndMines(MINE);
+					updateCellsAndMines(m_xposn, m_yposn, MINE);
 				}
 				else if (cell == FLAG) {
 					setCell(m_xposn, m_yposn, SAFE);
 					m_remainingMines++;
-					updateCellsAndMines(SAFE);
+					updateCellsAndMines(m_xposn, m_yposn, SAFE);
 				}
 				else {
 					setCell(m_xposn, m_yposn, FLAG);
 					m_remainingMines--;
-					updateCellsAndMines(FLAG);
+					updateCellsAndMines(m_xposn, m_yposn, FLAG);
 				}
 			}
 			else if (m_choice == ACTION::REVEAL) {
@@ -537,8 +542,7 @@ private:
 					stepOnMine(m_xposn, m_yposn);
 				}
 				else if (cell >= 1 && cell <= 7) {
-					revealSurroundingSqr(m_xposn, m_yposn);
-					updateBoard = true;
+					updateBoard = revealSurroundingSqr(m_xposn, m_yposn);
 				}
 				else {
 					if (cell == FLAG || cell == FLAGGED_MINE) {
@@ -546,7 +550,7 @@ private:
 					}
 					int numMines = getNumSurroundingMines(m_xposn, m_yposn, false);
 					setCell(m_xposn, m_yposn, numMines);
-					updateCellsAndMines(numMines);
+					updateCellsAndMines(m_xposn, m_yposn, numMines);
 					if (numMines == 0) {
 						autoRevealAll(m_xposn, m_yposn, true);
 						updateBoard = true;
@@ -585,7 +589,7 @@ private:
 		}
 	}
 
-	static tuple<int, int, int> getGameSettings(LEVEL level) {
+	constexpr static tuple<int, int, int> getGameSettings(LEVEL level) {
 		switch (level) {
 		case LEVEL::EASY:
 			return { 9, 9, 10 };
@@ -622,7 +626,7 @@ private:
 			level = Minesweeper::LEVEL::HARD;
 			break;
 		}
-		cout.flush();
+		
 		return level;
 	}
 public:
@@ -648,7 +652,6 @@ public:
 };
 
 int main() {
-
 
 	Minesweeper::play();
 	
