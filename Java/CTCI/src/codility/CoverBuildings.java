@@ -1,7 +1,8 @@
 package codility;
 
-import java.util.HashSet;
-import java.util.Set;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 public class CoverBuildings {
     
@@ -88,27 +89,28 @@ public class CoverBuildings {
         return Math.min(minArea1, minArea2);
     }
     
-    public static void main(String[] args) {
-    	int N = 100;
-    	int input[] = new int[N];
-    	Set<Integer> in = new HashSet<Integer>(N);
-
-    	for (int i = 1; i <= N; i++) {
-    		in.add(i);
-    	}
-    	
-    	int count = 0;
-    	for (Integer i : in) {
-    		input[count] = i;
-    		count++;
-    	}
-    	
-//    	int input[] = {5,3,2,4};
-//    	int input2[] = {1, 1, 7, 6, 6, 6};
-//    	int input3[] = {7, 7, 3, 7, 7};
-//    	int input4[] = {5, 3, 5, 2, 1};
-//    	int input5[] = {3, 1, 4};
-    	//System.out.println(in);
-		System.out.println(solution(input));
+    @Test
+	public void testCoverBuildings() {
+    	int input[] = {5, 3, 2, 4};
+    	int input2[] = {1, 1, 7, 6, 6, 6};
+    	int input3[] = {7, 7, 3, 7, 7};
+    	int input4[] = {5, 3, 5, 2, 1};
+    	int input5[] = {3, 1, 4};
+    	int input6[] = {1, 2, 3, 4, 5, 6};
+    	int input7[] = {6, 5, 4, 3, 2, 1};
+		assertEquals(17, solution(input));
+		assertEquals(30, solution(input2));
+		assertEquals(35, solution(input3));
+		assertEquals(19, solution(input4));
+		assertEquals(10, solution(input5));
+		assertEquals(27, solution(input6));
+		assertEquals(27, solution(input7));
+		
+		int input8[] = new int[100];
+		for (int i = 1; i <= 100 ; i++) {
+			input8[i-1] = i;
+		}
+		assertEquals(7500, solution(input8));
 	}
+    
 }
