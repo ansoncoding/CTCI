@@ -27,7 +27,7 @@ bool is_prime(int x) {
     for (int i = 2; i < x; ++i) if (x % i == 0) return false;
     return true;
 }
-
+#if 0
 int main()
 {
     // call function asynchronously:
@@ -45,3 +45,5 @@ int main()
 
     return 0;
 }
+
+#endif

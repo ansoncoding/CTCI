@@ -19,7 +19,7 @@ TEST_P(MyTestSuite, MyTest) {
 }
 
 INSTANTIATE_TEST_CASE_P(RangeTest, MyTestSuite, testing::Range(0, 10));
-#if 1
+#if 0
 int main(int argc, char ** argv) {
 	testing::InitGoogleTest(&argc, argv);
 	RUN_ALL_TESTS();

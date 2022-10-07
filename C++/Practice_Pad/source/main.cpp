@@ -6,7 +6,7 @@
 
 
 using namespace std;
-#if 0
+#if 1
 int main()
 {
     
@@ -17,7 +17,7 @@ int main()
     cout << *arr << endl;
     cout << *++arr << endl;
     cout << (*arr)++ << endl;*/
-    extern int a;
+    int a;
     a = 1;
     cout << a << endl;
     
