@@ -8,7 +8,7 @@
 // 1) const declaration ; E.g. const int x =10;
 // 2) function signature return value
 // 3) function parameter passing
-// 4) function method. E.g. void function() const {};
+// 4) function method. E.g. void function() const {...};
 
 
 char* Function1()

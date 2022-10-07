@@ -59,3 +59,11 @@ void DSQueue::remove() {
 bool DSQueue::isEmpty() const {
 	return stacks[newest].isEmpty() && stacks[oldest].isEmpty();
 }
+
+void DSQueue::EmptyQueueIntoString(std::string& ret) {
+	
+	for (int i = 0; isEmpty() != true; i++) {
+		ret.append(std::to_string(peek()));
+		remove();
+	}
+}

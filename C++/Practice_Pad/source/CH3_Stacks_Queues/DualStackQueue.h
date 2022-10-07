@@ -21,6 +21,7 @@ public:
 	void add(int data);
 	void remove();
 	bool isEmpty() const;
+	void EmptyQueueIntoString(std::string& ret);
 };
 
 #endif

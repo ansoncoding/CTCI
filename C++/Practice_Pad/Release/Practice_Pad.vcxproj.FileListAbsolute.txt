@@ -1,4 +1,0 @@
-D:\Programming\Interview_Practice\CTCI\C++\Practice_Pad\Release\Practice_Pad.vcxproj.CopyComplete
-D:\Programming\Interview_Practice\CTCI\C++\Practice_Pad\Release\Practice_Pad.exe
-D:\Programming\Interview_Practice\CTCI\C++\Practice_Pad\Release\gtest.pdb
-D:\Programming\Interview_Practice\CTCI\C++\Practice_Pad\Release\gtest_main.pdb
